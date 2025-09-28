@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>PWA Test</title>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#06b6d4" />
+    </head>
+    <body>
+        <h1>PWA Manifest Test Page</h1>
+        <p>This page is used to test the PWA manifest.</p>
+        <script>
+            window.addEventListener("load", () => {
+                console.log("Page loaded, checking manifest...");
+                const manifestLink = document.querySelector('link[rel="manifest"]');
+                if (manifestLink) {
+                    console.log("Manifest link found:", manifestLink.href);
+                    fetch(manifestLink.href)
+                        .then(response => {
+                            if (response.ok) {
+                                console.log("Manifest fetched successfully");
+                                return response.json();
+                            }
+                            throw new Error(`Failed to fetch manifest: ${response.status}`);
+                        })
+                        .then(data => {
+                            console.log("Manifest content:", data);
+                            const hasScreenshots = data.screenshots && data.screenshots.length > 0;
+                            const wideScreenshots = hasScreenshots
+                                ? data.screenshots.filter(s => s.form_factor === "wide")
+                                : [];
+                            const narrowScreenshots = hasScreenshots
+                                ? data.screenshots.filter(
+                                      s => s.form_factor === "narrow" || !s.form_factor
+                                  )
+                                : [];
+
+                            document.body.innerHTML += `
+                            <div>
+                                <h2>Manifest Details:</h2>
+                                <p>Name: ${data.name}</p>
+                                <p>Short Name: ${data.short_name}</p>
+                                <p>Icons: ${data.icons?.length || 0}</p>
+                                <p>Screenshots: ${data.screenshots?.length || 0}</p>
+                                <p>- Wide Screenshots: ${wideScreenshots.length}</p>
+                                <p>- Narrow Screenshots: ${narrowScreenshots.length}</p>
+                                
+                                <h3>Screenshots:</h3>
+                                <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                                    ${
+                                        data.screenshots
+                                            ?.map(
+                                                screenshot => `
+                                        <div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                                            <p>Type: ${screenshot.form_factor || "default"}</p>
+                                            <img src="${screenshot.src}" alt="${
+                                                    screenshot.label
+                                                }" style="max-width: 300px; height: auto;">
+                                            <p>${screenshot.label} (${screenshot.sizes})</p>
+                                        </div>
+                                    `
+                                            )
+                                            .join("") || "No screenshots found"
+                                    }
+                                </div>
+                            </div>
+                        `;
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                            document.body.innerHTML += `
+                            <div style="color: red">
+                                <h2>Error loading manifest:</h2>
+                                <p>${error.message}</p>
+                            </div>
+                        `;
+                        });
+                } else {
+                    console.error("No manifest link found");
+                    document.body.innerHTML += `
+                    <div style="color: red">
+                        <h2>Error:</h2>
+                        <p>No manifest link found in the document</p>
+                    </div>
+                `;
+                }
+            });
+        </script>
+    </body>
+</html>
