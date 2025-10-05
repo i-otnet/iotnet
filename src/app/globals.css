@@ -3,7 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --color-scheme: "default";
+  --color-scheme: "primary";
 }
 
 @theme inline {
@@ -11,15 +11,26 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-primary-50: var(--primary-50);
+  --color-primary-100: var(--primary-100);
+  --color-primary-200: var(--primary-200);
+  --color-primary-300: var(--primary-300);
+  --color-primary-400: var(--primary-400);
+  --color-primary-500: var(--primary-500);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
+  --color-primary-800: var(--primary-800);
+  --color-primary-900: var(--primary-900);
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
-    --color-scheme: "default-dark";
+    --color-scheme: "primary-dark";
   }
-}
+} */
 
 body {
   background: var(--background);
@@ -28,7 +39,7 @@ body {
 }
 
 /* Dynamic color scheme handling */
-[data-color-scheme="default"] {
+[data-color-scheme="primary"] {
   --primary-50: #ecfeff;
   --primary-100: #cffafe;
   --primary-200: #a5f3fc;
@@ -69,7 +80,7 @@ body {
 }
 
 /* Adding dark variants for blue and green color schemes */
-[data-color-scheme="default-dark"] {
+/* [data-color-scheme="primary-dark"] {
   --primary-50: #083344;
   --primary-100: #164e63;
   --primary-200: #155e75;
@@ -81,9 +92,9 @@ body {
   --primary-800: #a5f3fc;
   --primary-900: #cffafe;
   --primary-950: #ecfeff;
-}
+} */
 
-[data-color-scheme="blue-dark"] {
+/* [data-color-scheme="blue-dark"] {
   --primary-50: #1e3a8a;
   --primary-100: #1e40af;
   --primary-200: #1d4ed8;
@@ -94,9 +105,9 @@ body {
   --primary-700: #bfdbfe;
   --primary-800: #dbeafe;
   --primary-900: #eff6ff;
-}
+} */
 
-[data-color-scheme="green-dark"] {
+/* [data-color-scheme="green-dark"] {
   --primary-50: #14532d;
   --primary-100: #166534;
   --primary-200: #15803d;
@@ -107,4 +118,4 @@ body {
   --primary-700: #bbf7d0;
   --primary-800: #dcfce7;
   --primary-900: #f0fdf4;
-}
+} */
