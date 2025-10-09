@@ -5,7 +5,7 @@ import SetupOption from "./SetupOption";
 import SetupOwnBroker from "./SetupOwnBroker";
 import SetupIotnet from "./SetupIotnet";
 import SetupExternal from "./SetupExternal";
-``
+
 const SetupModal: React.FC = () => {
   const [selected, setSelected] = useState<string | null>(null); // default to null, no option selected initially
   const [showOwnBroker, setShowOwnBroker] = useState<boolean>(false);
@@ -20,7 +20,6 @@ const SetupModal: React.FC = () => {
     } else if (selected === "custom") {
       setShowExternal(true);
     } else {
-      // Handle other options or show an alert if no option is selected
       alert("Please select an option to continue.");
     }
   };

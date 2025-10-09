@@ -14,7 +14,6 @@ export function useTheme(): [Theme, (theme: Theme) => void] {
 
 	useEffect(() => {
 		document.documentElement.setAttribute('data-theme', theme);
-		// Sinkronkan juga data-color-scheme agar CSS variable berubah
 		if (theme === 'light') {
 			document.documentElement.setAttribute('data-color-scheme', 'default');
 		} else {

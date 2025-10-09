@@ -1,7 +1,7 @@
 "use client";
 
 
-import { useTheme } from '../../lib/theme-switch/LightDark';
+import { useTheme } from '@/lib/theme-switch/LightDark';
 import { useEffect, useState } from 'react';
 
 export default function LightDark() {
