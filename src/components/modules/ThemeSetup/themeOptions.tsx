@@ -27,17 +27,22 @@ type Theme =
 
 export function ThemeOptions() {
   const { setTheme, theme } = useTheme();
-  const [selectedTheme, setSelectedTheme] = React.useState<Theme>(
-    (ThemeStorage.getPrimaryTheme() as Theme) || "primary"
-  );
+  const [selectedTheme, setSelectedTheme] = React.useState<Theme>("blue");
   const [selectedMode, setSelectedMode] = React.useState<
     "light" | "dark" | "system"
-  >((ThemeStorage.getPreferredMode() as "light" | "dark" | "system") || "system");
+  >("system");
   const [mounted, setMounted] = React.useState(false);
 
   // Ensure component is mounted before using theme
   React.useEffect(() => {
     setMounted(true);
+    
+    // Initialize from localStorage after mounting to avoid hydration mismatch
+    const savedTheme = (ThemeStorage.getPrimaryTheme() as Theme) || "blue";
+    const savedMode = (ThemeStorage.getPreferredMode() as "light" | "dark" | "system") || "system";
+    
+    setSelectedTheme(savedTheme);
+    setSelectedMode(savedMode);
   }, []);
 
   // Initialize from current theme only after mounting
@@ -49,6 +54,7 @@ export function ThemeOptions() {
 
   React.useEffect(() => {
     if (mounted) {
+      // Update CSS variables when theme changes
       document.documentElement.style.setProperty(
         "--theme-primary-color",
         `var(--primary-${selectedTheme})`

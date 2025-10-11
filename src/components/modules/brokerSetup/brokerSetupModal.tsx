@@ -8,23 +8,23 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
+import { useProgressBar } from "@/components/providers/progressBarProvider";
 import BrokerOptions from "./brokerOptions";
 import BrokerIonetSetup from "./brokerIonetSetup";
 import BrokerCreateSetup from "./brokerCreateSetup";
 import BrokerExternalSetup from "./brokerExternalSetup";
 
 interface BrokerSetupModalProps {
-  children: React.ReactNode;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onBack?: () => void;
 }
 
-export function BrokerSetupModal({ children, open, onOpenChange, onBack }: BrokerSetupModalProps) {
+export function BrokerSetupModal({ open, onOpenChange, onBack }: BrokerSetupModalProps) {
   const [currentView, setCurrentView] = useState<string>("options");
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const { showProgress } = useProgressBar();
 
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option);
@@ -95,7 +95,6 @@ export function BrokerSetupModal({ children, open, onOpenChange, onBack }: Broke
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[600px] max-h-[85vh] bg-white dark:bg-slate-900/85 backdrop-blur-xl border-gray-200 dark:border-white/10 flex flex-col">
         <DialogHeader className="flex-shrink-0">
           <DialogTitle>{getTitle()}</DialogTitle>
@@ -128,6 +127,38 @@ export function BrokerSetupModal({ children, open, onOpenChange, onBack }: Broke
           )}
           {currentView !== "options" && (
             <Button onClick={() => {
+              // Show progress bar with different text based on setup type
+              let loadingText = "";
+              let duration = 4000;
+              
+              switch (currentView) {
+                case "iotnet":
+                  loadingText = "Building the IoTNet project...";
+                  duration = 3000;
+                  break;
+                case "create":
+                  loadingText = "Building the IoTNet project...";
+                  duration = 5000;
+                  break;
+                case "external":
+                  loadingText = "Building the IoTNet project...";
+                  duration = 4000;
+                  break;
+                default:
+                  loadingText = "Processing setup...";
+                  break;
+              }
+
+              // Show progress bar
+              showProgress(loadingText, duration);
+
+              // Close modal after progress completes
+              setTimeout(() => {
+                onOpenChange(false);
+                // Reset modal state
+                setCurrentView("options");
+                setSelectedOption(null);
+              }, duration + 500);
             }}>
               {getContinueButtonText()}
             </Button>

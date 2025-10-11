@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/themeProvider";
+import { ProgressBarProvider } from "@/components/providers/progressBarProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,6 +26,38 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script>
+          {`
+            (function() {
+              try {
+                // Load theme from localStorage before hydration
+                const primaryTheme = localStorage.getItem('selected-primary-theme') || 'blue';
+                
+                // Set CSS variables immediately
+                document.documentElement.style.setProperty(
+                  '--theme-primary-color',
+                  'var(--primary-' + primaryTheme + ')'
+                );
+                document.documentElement.style.setProperty(
+                  '--theme-primary-color-foreground',
+                  'var(--primary-' + primaryTheme + '-foreground)'
+                );
+              } catch (e) {
+                // Fallback to blue if localStorage fails
+                document.documentElement.style.setProperty(
+                  '--theme-primary-color',
+                  'var(--primary-blue)'
+                );
+                document.documentElement.style.setProperty(
+                  '--theme-primary-color-foreground',
+                  'var(--primary-blue-foreground)'
+                );
+              }
+            })();
+          `}
+        </script>
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning={true}
@@ -35,7 +68,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <ProgressBarProvider>
+            {children}
+          </ProgressBarProvider>
         </ThemeProvider>
       </body>
     </html>

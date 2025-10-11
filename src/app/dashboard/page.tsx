@@ -19,22 +19,37 @@ export default function DashboardPage() {
     setIsThemeModalOpen(true);
   };
 
+  const handleSetupProject = () => {
+    setIsThemeModalOpen(true);
+  };
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24">
+    <div className="flex min-h-screen flex-col items-center justify-center p-24">
+      <div className="text-center space-y-6">
+        <h1 className="text-4xl font-bold">Welcome to IoTNet Dashboard</h1>
+        <p className="text-lg text-muted-foreground">
+          Get started by setting up your project configuration
+        </p>
+        <Button 
+          onClick={handleSetupProject}
+          size="lg"
+          className="mt-8"
+        >
+          Setup your project
+        </Button>
+      </div>
+
       <ThemeSetupModal
         open={isThemeModalOpen}
         onOpenChange={setIsThemeModalOpen}
         onContinue={handleThemeContinue}
       />
-      <Button onClick={() => setIsThemeModalOpen(true)}>Open Theme Setup</Button>
 
       <BrokerSetupModal
         open={isBrokerModalOpen}
         onOpenChange={setIsBrokerModalOpen}
         onBack={handleBrokerBack}
-      >
-        <div></div>
-      </BrokerSetupModal>
+      />
     </div>
   );
 }

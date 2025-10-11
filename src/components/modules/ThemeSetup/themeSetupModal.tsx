@@ -7,9 +7,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Paintbrush } from "lucide-react";
 import { ThemeOptions } from "./themeOptions";
 
 interface ThemeSetupModalProps {
@@ -25,12 +23,6 @@ export function ThemeSetupModal({ open, onOpenChange, onContinue }: ThemeSetupMo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Paintbrush className="h-[1.2rem] w-[1.2rem]" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] max-h-[85vh] bg-white dark:bg-slate-900/85 backdrop-blur-xl border-gray-200 dark:border-white/10 flex flex-col">
         <DialogHeader className="flex-shrink-0">
           <DialogTitle>Setup Your Theme</DialogTitle>
