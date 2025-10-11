@@ -20,7 +20,6 @@ interface ThemeSetupModalProps {
 
 export function ThemeSetupModal({ open, onOpenChange, onContinue }: ThemeSetupModalProps) {
   const handleContinueClick = () => {
-    console.log("Theme setup continued.");
     onContinue();
   };
 
@@ -32,15 +31,17 @@ export function ThemeSetupModal({ open, onOpenChange, onContinue }: ThemeSetupMo
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] bg-white dark:bg-slate-900/85 backdrop-blur-xl border-gray-200 dark:border-white/10">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-[600px] max-h-[85vh] bg-white dark:bg-slate-900/85 backdrop-blur-xl border-gray-200 dark:border-white/10 flex flex-col">
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle>Setup Your Theme</DialogTitle>
           <DialogDescription>
             Choose your preferred theme for the application.
           </DialogDescription>
         </DialogHeader>
-        <ThemeOptions />
-        <div className="flex justify-end gap-2 mt-4">
+        <div className="flex-1 overflow-y-auto min-h-0 pr-2">
+          <ThemeOptions />
+        </div>
+        <div className="flex justify-end gap-2 mt-4 flex-shrink-0">
           <Button onClick={handleContinueClick}>Continue</Button>
         </div>
       </DialogContent>

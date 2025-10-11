@@ -7,10 +7,11 @@ import { Network, ServerCog } from "lucide-react";
 
 interface SetupOptionProps {
   selected: string | null;
-  setSelected: (value: string) => void;
+  setSelected: (option: string) => void;
 }
 
 export default function SetupOption({ selected, setSelected }: SetupOptionProps) {
+
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col gap-6 pt-4">
       {/* === Option 1: Use IoTNet (Recommended) === */}
@@ -84,10 +85,10 @@ export default function SetupOption({ selected, setSelected }: SetupOptionProps)
         {/* Use Your Broker */}
         <Card
           role="button"
-          onClick={() => setSelected("custom")}
+          onClick={() => setSelected("external")}
           className={cn(
             "cursor-pointer transition-all rounded-xl p-6 border shadow-sm flex flex-col items-center gap-3 text-center hover:shadow-md",
-            selected === "custom"
+            selected === "external"
               ? "border-primary bg-primary/10"
               : "bg-background"
           )}
@@ -95,7 +96,7 @@ export default function SetupOption({ selected, setSelected }: SetupOptionProps)
           <div
             className={cn(
               "w-10 h-10 flex items-center justify-center rounded-full",
-              selected === "custom" ? "bg-primary text-primary-foreground" : "bg-primary/20 text-primary"
+              selected === "external" ? "bg-primary text-primary-foreground" : "bg-primary/20 text-primary"
             )}
           >
             <Network className="w-5 h-5" />
@@ -103,10 +104,10 @@ export default function SetupOption({ selected, setSelected }: SetupOptionProps)
           <h3
             className={cn(
               "text-sm font-medium",
-              selected === "custom" ? "text-primary" : "text-foreground"
+              selected === "external" ? "text-primary" : "text-foreground"
             )}
           >
-            Use your existing broker
+            Use existing broker
           </h3>
           <p className="text-muted-foreground text-xs leading-snug">
             Connect to an external MQTT broker with your own credentials.

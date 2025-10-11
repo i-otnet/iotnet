@@ -26,7 +26,7 @@ export default function DashboardPage() {
         onOpenChange={setIsThemeModalOpen}
         onContinue={handleThemeContinue}
       />
-      <Button onClick={() => setIsThemeModalOpen(true)}>Open Setup</Button>
+      <Button onClick={() => setIsThemeModalOpen(true)}>Open Theme Setup</Button>
 
       <BrokerSetupModal
         open={isBrokerModalOpen}
