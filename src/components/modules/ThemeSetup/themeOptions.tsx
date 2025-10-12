@@ -65,6 +65,11 @@ export function ThemeOptions() {
       );
       // Save to localStorage
       ThemeStorage.setPrimaryTheme(selectedTheme);
+      
+      // Dispatch custom event for components that need to react to theme changes
+      window.dispatchEvent(new CustomEvent('themeChanged', { 
+        detail: { theme: selectedTheme } 
+      }));
     }
   }, [selectedTheme, mounted]);
 
