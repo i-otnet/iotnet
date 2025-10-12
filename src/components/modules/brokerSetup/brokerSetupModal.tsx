@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,6 +26,7 @@ export function BrokerSetupModal({ open, onOpenChange, onBack }: BrokerSetupModa
   const [currentView, setCurrentView] = useState<string>("options");
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const { showProgress } = useProgressBar();
+  const router = useRouter();
 
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option);
@@ -149,16 +151,12 @@ export function BrokerSetupModal({ open, onOpenChange, onBack }: BrokerSetupModa
                   break;
               }
 
-              // Show progress bar
-              showProgress(loadingText, duration);
-
-              // Close modal after progress completes
-              setTimeout(() => {
+              showProgress(loadingText, duration, () => {
                 onOpenChange(false);
-                // Reset modal state
                 setCurrentView("options");
                 setSelectedOption(null);
-              }, duration + 500);
+                router.push("/auth/login");
+              });
             }}>
               {getContinueButtonText()}
             </Button>
