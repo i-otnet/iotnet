@@ -1,12 +1,12 @@
 "use client";
 
 import DashboardLayout from "@/components/layout/dashboard/DashboardLayout";
-import OverviewContent from "@/components/modules/dashboard/content/overviewContent";
+import UsersContent from "@/components/modules/dashboard/content/usersContent";
 
-export default function DashboardPage() {
+export default function UsersPage() {
   return (
     <DashboardLayout>
-      <OverviewContent />
+      <UsersContent />
     </DashboardLayout>
   );
 }

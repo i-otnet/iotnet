@@ -5,7 +5,7 @@ import { BrokerSetupModal } from "@/components/modules/brokerSetup/brokerSetupMo
 import { ThemeSetupModal } from "@/components/modules/ThemeSetup/themeSetupModal";
 import { Button } from "@/components/ui/button";
 
-export default function DashboardPage() {
+export default function SetupPage() {
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
   const [isBrokerModalOpen, setIsBrokerModalOpen] = useState(false);
 
@@ -17,6 +17,10 @@ export default function DashboardPage() {
   const handleBrokerBack = () => {
     setIsBrokerModalOpen(false);
     setIsThemeModalOpen(true);
+  };
+
+  const handleBrokerContinue = () => {
+    setIsBrokerModalOpen(false);
   };
 
   const handleSetupProject = () => {
@@ -152,6 +156,7 @@ export default function DashboardPage() {
         open={isBrokerModalOpen}
         onOpenChange={setIsBrokerModalOpen}
         onBack={handleBrokerBack}
+        onContinue={handleBrokerContinue}
       />
     </div>
   );
