@@ -1,6 +1,7 @@
 "use client";
 
-import DashboardLayout from "@/components/layout/dashboard/DashboardLayout";
+import DashboardLayout from "@/components/layout/dashboard/dashboardLayout";
+import DashboardHeader from "@/components/modules/dashboard/header";
 import DashboardOverviewLayout from "@/components/layout/dashboard/dashboardOverviewLayout";
 import DashboardOverviewSection from "@/components/modules/dashboard/overview/DashboardOverviewSection";
 import QuickAccessSection from "@/components/modules/dashboard/overview/QuickAccessSection";
@@ -11,13 +12,21 @@ import GettingStartedSection from "@/components/modules/dashboard/overview/Getti
 export default function DashboardPage() {
   return (
     <DashboardLayout>
-      <DashboardOverviewLayout
-        dashboardOverview={<DashboardOverviewSection />}
-        quickAccess={<QuickAccessSection />}
-        systemStatus={<SystemStatusSection />}
-        recentActivity={<RecentActivitySection />}
-        gettingStarted={<GettingStartedSection />}
-      />
+      {/* Header */}
+      <DashboardHeader />
+
+      {/* Main Content */}
+      <main className="flex-1 p-6 overflow-y-auto bg-muted/30">
+        <div className="w-full mx-auto">
+          <DashboardOverviewLayout
+            dashboardOverview={<DashboardOverviewSection />}
+            quickAccess={<QuickAccessSection />}
+            systemStatus={<SystemStatusSection />}
+            recentActivity={<RecentActivitySection />}
+            gettingStarted={<GettingStartedSection />}
+          />
+        </div>
+      </main>
     </DashboardLayout>
   );
 }
