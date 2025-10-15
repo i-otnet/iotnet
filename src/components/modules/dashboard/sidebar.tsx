@@ -9,9 +9,9 @@ import {
   Settings, 
   Activity,
   Zap,
-  BarChart3,
   ChevronRight,
-  Home
+  Home,
+  LineChart
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -31,7 +31,7 @@ const menuItems = [
   {
     title: "Analytics",
     href: "/dashboard/analytics",
-    icon: BarChart3,
+    icon: LineChart,
     description: "Data insights"
   },
   {
