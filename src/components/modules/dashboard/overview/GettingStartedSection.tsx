@@ -6,7 +6,7 @@ import {
   BookOpen,
   FileText,
   Smartphone,
-  BarChart3
+  Brain
 } from "lucide-react";
 
 export default function GettingStartedSection() {
@@ -41,11 +41,11 @@ export default function GettingStartedSection() {
           </div>
           <div className="p-4 rounded-lg border border-border/50 bg-card/50 hover:bg-accent/50 transition-colors cursor-pointer">
             <div className="flex items-center gap-3 mb-2">
-              <BarChart3 className="w-5 h-5 text-primary" />
-              <span className="font-medium text-foreground">Analytics Tutorial</span>
+              <Brain className="w-5 h-5 text-primary" />
+              <span className="font-medium text-foreground">ML Models Tutorial</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              Create your first analytics dashboard
+              Create your first machine learning model
             </p>
           </div>
         </div>

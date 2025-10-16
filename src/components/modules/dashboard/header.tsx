@@ -14,7 +14,7 @@ export default function DashboardHeader() {
           <div className="relative w-full">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
-              placeholder="Search devices, analytics, users..."
+              placeholder="Search devices, models, users..."
               className="pl-10 bg-muted/50 border-0 focus-visible:ring-1 focus-visible:ring-ring"
             />
           </div>

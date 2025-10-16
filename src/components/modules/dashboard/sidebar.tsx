@@ -11,7 +11,7 @@ import {
   Zap,
   ChevronRight,
   Home,
-  LineChart
+  Brain
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -29,14 +29,14 @@ const menuItems = [
     description: "Manage IoT devices"
   },
   {
-    title: "Analytics",
-    href: "/dashboard/analytics",
-    icon: LineChart,
-    description: "Data insights"
+    title: "Models",
+    href: "/dashboard/models",
+    icon: Brain,
+    description: "ML models"
   },
   {
-    title: "Automation",
-    href: "/dashboard/automation",
+    title: "Automations",
+    href: "/dashboard/automations",
     icon: Zap,
     description: "Smart rules"
   },

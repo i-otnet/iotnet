@@ -1,80 +1,84 @@
 "use client";
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
   Users, 
   UserPlus,
   Activity,
-  Globe
+  Globe,
+  Plus
 } from "lucide-react";
 
 const mockUsersData = {
   totalUsers: 156,
   activeUsers: 89,
-  newUsersThisMonth: 23,
+  inactiveUsers: 67,
   onlineUsers: 34,
 };
 
 export default function UsersOverviewSection() {
   return (
-    <>
+    <div className="flex flex-col gap-4">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">MQTT User Management</h1>
           <p className="text-muted-foreground">
             Manage MQTT users, their roles, and monitor their broker connections
           </p>
         </div>
-        <Button className="flex items-center gap-2">
-          <UserPlus className="w-4 h-4" />
+        <Button size="lg" className="gap-2">
+          <Plus className="w-5 h-5" />
           Add User
         </Button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{mockUsersData.totalUsers}</div>
-            <p className="text-xs text-muted-foreground">
-              +{mockUsersData.newUsersThisMonth} new this month
-            </p>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-full bg-primary/10">
+                <Users className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{mockUsersData.totalUsers}</p>
+                <p className="text-sm text-muted-foreground">Total Users</p>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Users</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{mockUsersData.activeUsers}</div>
-            <p className="text-xs text-muted-foreground">
-              {((mockUsersData.activeUsers / mockUsersData.totalUsers) * 100).toFixed(1)}% of total users
-            </p>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-full bg-green-500/10">
+                <Activity className="w-6 h-6 text-green-500" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{mockUsersData.activeUsers}</p>
+                <p className="text-sm text-muted-foreground">Active Users</p>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Online Now</CardTitle>
-            <Globe className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{mockUsersData.onlineUsers}</div>
-            <p className="text-xs text-muted-foreground">
-              Currently active users
-            </p>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-full bg-muted">
+                <Globe className="w-6 h-6 text-muted-foreground" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{mockUsersData.inactiveUsers}</p>
+                <p className="text-sm text-muted-foreground">Inactive Users</p>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
-    </>
+    </div>
   );
 }

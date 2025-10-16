@@ -198,6 +198,35 @@
 
 /* Custom Dialog Overlay and Content Styles */
 @layer components {
+  /* Native select styling for dark/light, ensure dropdown visibility */
+  select {
+    color: var(--foreground);
+    background-color: var(--background);
+    color-scheme: light dark;
+  }
+  /* Options dropdown panel inherits popover colors for better contrast */
+  select option {
+    color: var(--popover-foreground);
+    background-color: var(--popover);
+  }
+  select option:hover {
+    background-color: var(--muted);
+    color: var(--foreground);
+  }
+  select option:checked {
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+  }
+  .dark select {
+    color: var(--foreground);
+    background-color: var(--card);
+    color-scheme: dark;
+  }
+  .dark select option {
+    color: var(--popover-foreground);
+    background-color: var(--popover);
+  }
+
   /* Dialog overlay - semi-transparent backdrop */
   [data-radix-dialog-overlay] {
     background-color: rgb(0 0 0 / 0.4) !important;

@@ -6,7 +6,7 @@ import { Activity } from "lucide-react";
 
 const recentActivity = [
   { id: 1, action: "New device registered", details: "Temperature Sensor #47", time: "2 minutes ago", type: "device" },
-  { id: 2, action: "Analytics report generated", details: "Monthly Performance Report", time: "15 minutes ago", type: "analytics" },
+  { id: 2, action: "Model deployed", details: "Temperature Prediction Model", time: "15 minutes ago", type: "model" },
   { id: 3, action: "User invited", details: "john.doe@company.com", time: "1 hour ago", type: "user" },
   { id: 4, action: "Automation triggered", details: "Temperature Alert Rule", time: "2 hours ago", type: "automation" },
   { id: 5, action: "Data backup completed", details: "Weekly System Backup", time: "3 hours ago", type: "system" },
@@ -17,7 +17,7 @@ export default function RecentActivitySection() {
     switch (type) {
       case "device":
         return "text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-950";
-      case "analytics":
+      case "model":
         return "text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-950";
       case "user":
         return "text-purple-600 bg-purple-50 dark:text-purple-400 dark:bg-purple-950";

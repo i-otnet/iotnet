@@ -3,9 +3,9 @@
 import { useState } from "react";
 import DashboardLayout from "@/components/layout/dashboard/dashboardLayout";
 import DashboardHeader from "@/components/modules/dashboard/header";
-import DashboardAnalyticsLayout from "@/components/layout/dashboard/dashboardAnalyticsLayout";
-import ModelsOverviewSection from "@/components/modules/dashboard/analytics/ModelsOverviewSection";
-import ModelsGridSection from "@/components/modules/dashboard/analytics/ModelsGridSection";
+import DashboardModelsLayout from "@/components/layout/dashboard/dashboardModelsLayout";
+import ModelsOverviewSection from "@/components/modules/dashboard/models/ModelsOverviewSection";
+import ModelsGridSection from "@/components/modules/dashboard/models/ModelsGridSection";
 import {
   BrainCircuit,
   Network,
@@ -115,7 +115,7 @@ const mockModelsData = {
   ]
 };
 
-export default function AnalyticsPage() {
+export default function ModelsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
 
@@ -160,7 +160,7 @@ export default function AnalyticsPage() {
       {/* Main Content */}
       <main className="flex-1 p-6 overflow-y-auto bg-muted/30">
         <div className="w-full mx-auto">
-          <DashboardAnalyticsLayout
+          <DashboardModelsLayout
             modelsOverview={
               <ModelsOverviewSection
                 searchQuery={searchQuery}

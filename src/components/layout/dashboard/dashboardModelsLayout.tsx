@@ -2,17 +2,17 @@
 
 import React, { ReactNode } from "react";
 
-interface DashboardAnalyticsLayoutProps {
+interface DashboardModelsLayoutProps {
   children?: ReactNode;
   modelsOverview?: ReactNode;
   modelsGrid?: ReactNode;
 }
 
-export default function DashboardAnalyticsLayout({
+export default function DashboardModelsLayout({
   children,
   modelsOverview,
   modelsGrid
-}: DashboardAnalyticsLayoutProps) {
+}: DashboardModelsLayoutProps) {
   return (
     <div className="flex-1 space-y-6">
       {/* Models Overview Section (Header + Stats + Search/Filter) */}

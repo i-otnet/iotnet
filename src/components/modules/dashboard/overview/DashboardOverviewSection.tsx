@@ -15,12 +15,12 @@ import {
 const mockData = {
   totalDevices: 2847,
   totalUsers: 156,
-  totalAnalytics: 847,
+  totalModels: 847,
   totalAutomations: 234,
   monthlyGrowth: {
     devices: 12.3,
     users: 8.7,
-    analytics: 25.4,
+    models: 25.4,
     automations: 15.2
   },
   recentStats: {
@@ -39,7 +39,7 @@ export default function DashboardOverviewSection() {
         <div>
           <h1 className="text-3xl font-bold text-foreground">Dashboard Overview</h1>
           <p className="text-muted-foreground mt-1">
-            Welcome to your IoTNet platform - manage devices, users, analytics, and automation
+            Welcome to your IoTNet platform - manage devices, users, models, and automation
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -57,85 +57,81 @@ export default function DashboardOverviewSection() {
       {/* Main Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Devices */}
-        <Card className="border-l-4 border-l-primary">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total Devices</CardTitle>
-              <Cpu className="w-4 h-4 text-primary" />
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-full bg-primary/10">
+                <Cpu className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{mockData.totalDevices.toLocaleString()}</p>
+                <p className="text-sm text-muted-foreground">Total Devices</p>
+              </div>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-foreground">{mockData.totalDevices.toLocaleString()}</div>
-            <div className="flex items-center mt-2 text-sm">
+            <div className="flex items-center mt-4 text-sm">
               <TrendingUp className="w-3 h-3 text-primary mr-1" />
               <span className="text-primary">+{mockData.monthlyGrowth.devices}%</span>
               <span className="text-muted-foreground ml-1">this month</span>
-            </div>
-            <div className="text-xs text-muted-foreground mt-1">
-              {mockData.recentStats.devicesOnline} online
             </div>
           </CardContent>
         </Card>
 
         {/* Total Users */}
-        <Card className="border-l-4 border-l-primary">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total Users</CardTitle>
-              <Users className="w-4 h-4 text-primary" />
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-full bg-primary/10">
+                <Users className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{mockData.totalUsers.toLocaleString()}</p>
+                <p className="text-sm text-muted-foreground">Total Users</p>
+              </div>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-foreground">{mockData.totalUsers.toLocaleString()}</div>
-            <div className="flex items-center mt-2 text-sm">
+            <div className="flex items-center mt-4 text-sm">
               <TrendingUp className="w-3 h-3 text-primary mr-1" />
               <span className="text-primary">+{mockData.monthlyGrowth.users}%</span>
               <span className="text-muted-foreground ml-1">this month</span>
             </div>
-            <div className="text-xs text-muted-foreground mt-1">
-              {mockData.recentStats.activeUsers} active today
-            </div>
           </CardContent>
         </Card>
 
-        {/* Total Analytics */}
-        <Card className="border-l-4 border-l-primary">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Analytics Reports</CardTitle>
-              <BarChart3 className="w-4 h-4 text-primary" />
+        {/* Total Models */}
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-full bg-primary/10">
+                <BarChart3 className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{mockData.totalModels.toLocaleString()}</p>
+                <p className="text-sm text-muted-foreground">ML Models</p>
+              </div>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-foreground">{mockData.totalAnalytics.toLocaleString()}</div>
-            <div className="flex items-center mt-2 text-sm">
+            <div className="flex items-center mt-4 text-sm">
               <TrendingUp className="w-3 h-3 text-primary mr-1" />
-              <span className="text-primary">+{mockData.monthlyGrowth.analytics}%</span>
+              <span className="text-primary">+{mockData.monthlyGrowth.models}%</span>
               <span className="text-muted-foreground ml-1">this month</span>
-            </div>
-            <div className="text-xs text-muted-foreground mt-1">
-              {mockData.recentStats.dataPointsToday} data points today
             </div>
           </CardContent>
         </Card>
 
         {/* Total Automations */}
-        <Card className="border-l-4 border-l-primary">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Automation Rules</CardTitle>
-              <Zap className="w-4 h-4 text-primary" />
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-full bg-primary/10">
+                <Zap className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{mockData.totalAutomations.toLocaleString()}</p>
+                <p className="text-sm text-muted-foreground">Automation Rules</p>
+              </div>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-foreground">{mockData.totalAutomations.toLocaleString()}</div>
-            <div className="flex items-center mt-2 text-sm">
+            <div className="flex items-center mt-4 text-sm">
               <TrendingUp className="w-3 h-3 text-primary mr-1" />
               <span className="text-primary">+{mockData.monthlyGrowth.automations}%</span>
               <span className="text-muted-foreground ml-1">this month</span>
-            </div>
-            <div className="text-xs text-muted-foreground mt-1">
-              {mockData.recentStats.runningAutomations} running now
             </div>
           </CardContent>
         </Card>

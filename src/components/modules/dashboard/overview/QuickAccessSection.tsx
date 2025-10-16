@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { 
   Users, 
   Cpu, 
-  BarChart3, 
+  Brain, 
   Settings,
   BookOpen,
   ArrowRight,
@@ -22,11 +22,11 @@ const quickActions = [
     count: "2,847 devices"
   },
   { 
-    title: "Analytics Dashboard", 
-    description: "View detailed monitoring and analytics",
-    icon: BarChart3,
-    path: "/dashboard/monitoring",
-    count: "847 reports"
+    title: "ML Models", 
+    description: "View and manage machine learning models",
+    icon: Brain,
+    path: "/dashboard/models",
+    count: "847 models"
   },
   { 
     title: "User Management", 

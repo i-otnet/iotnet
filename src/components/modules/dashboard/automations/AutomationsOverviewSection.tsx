@@ -7,69 +7,60 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
   Plus,
-  BrainCircuit,
-  Sparkles,
+  Zap,
+  PlayCircle,
+  PauseCircle,
+  Activity,
   Search,
   Filter,
-  PauseCircle,
 } from "lucide-react";
 
-const modelTypeFilters = [
-  { label: "All Models", value: "all", count: 8 },
-  { label: "Classification", value: "classification", count: 3 },
-  { label: "Regression", value: "regression", count: 2 },
-  { label: "Clustering", value: "clustering", count: 1 },
-  { label: "Time Series", value: "timeseries", count: 2 }
+const automationTypeFilters = [
+  { label: "All Triggers", value: "all", count: 12 },
+  { label: "Time-based", value: "time", count: 4 },
+  { label: "Sensor-based", value: "sensor", count: 5 },
+  { label: "Event-based", value: "event", count: 3 }
 ];
 
-interface Model {
-  accuracy?: string;
+interface Automation {
+  id: number;
+  status: string;
 }
 
-interface ModelsOverviewSectionProps {
+interface AutomationsOverviewSectionProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   selectedFilter: string;
   setSelectedFilter: (filter: string) => void;
-  filteredModels: Model[];
-  totalModels: number;
-  deployedModels: number;
-  inactiveModels: number;
-  newModelsThisWeek: number;
+  filteredAutomations: Automation[];
+  totalAutomations: number;
+  activeAutomations: number;
+  pausedAutomations: number;
+  triggeredToday: number;
   getFilteredCount: (filterType: string) => number;
 }
 
-export default function ModelsOverviewSection({
+export default function AutomationsOverviewSection({
   searchQuery,
   setSearchQuery,
   selectedFilter,
   setSelectedFilter,
-  filteredModels,
-  totalModels,
-  deployedModels,
-  inactiveModels,
+  filteredAutomations,
+  triggeredToday,
   getFilteredCount
-}: ModelsOverviewSectionProps) {
-  // Calculate average accuracy
-  const avgAccuracy = filteredModels.length > 0 
-    ? (filteredModels.reduce((sum, model) => {
-        const accuracy = parseFloat(model.accuracy || "0");
-        return sum + accuracy;
-      }, 0) / filteredModels.length).toFixed(1)
-    : "0";
-
+}: AutomationsOverviewSectionProps) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Analytics</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Automations</h1>
           <p className="text-muted-foreground">
-            Manage and deploy your machine learning models
+            Create and manage automated triggers for your IoT devices
           </p>
         </div>
         <Button size="lg" className="gap-2">
           <Plus className="w-5 h-5" />
-          Deploy Model
+          Add Trigger
         </Button>
       </div>
 
@@ -79,11 +70,13 @@ export default function ModelsOverviewSection({
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
               <div className="p-3 rounded-full bg-primary/10">
-                <BrainCircuit className="w-6 h-6 text-primary" />
+                <Zap className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{totalModels}</p>
-                <p className="text-sm text-muted-foreground">Total Models</p>
+                <p className="text-2xl font-bold">{filteredAutomations.length}</p>
+                <p className="text-sm text-muted-foreground">
+                  {selectedFilter === "all" ? "Total Triggers" : "Filtered Triggers"}
+                </p>
               </div>
             </div>
           </CardContent>
@@ -92,12 +85,14 @@ export default function ModelsOverviewSection({
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="p-3 rounded-full bg-primary/10">
-                <Sparkles className="w-6 h-6 text-primary" />
+              <div className="p-3 rounded-full bg-green-500/10">
+                <PlayCircle className="w-6 h-6 text-green-500" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{deployedModels}</p>
-                <p className="text-sm text-muted-foreground">Deployed</p>
+                <p className="text-2xl font-bold">
+                  {filteredAutomations.filter(auto => auto.status === "active").length}
+                </p>
+                <p className="text-sm text-muted-foreground">Active</p>
               </div>
             </div>
           </CardContent>
@@ -110,8 +105,10 @@ export default function ModelsOverviewSection({
                 <PauseCircle className="w-6 h-6 text-muted-foreground" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{inactiveModels}</p>
-                <p className="text-sm text-muted-foreground">Inactive</p>
+                <p className="text-2xl font-bold">
+                  {filteredAutomations.filter(auto => auto.status === "paused").length}
+                </p>
+                <p className="text-sm text-muted-foreground">Paused</p>
               </div>
             </div>
           </CardContent>
@@ -121,11 +118,11 @@ export default function ModelsOverviewSection({
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
               <div className="p-3 rounded-full bg-primary/10">
-                <Sparkles className="w-6 h-6 text-primary" />
+                <Activity className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{avgAccuracy}%</p>
-                <p className="text-sm text-muted-foreground">Avg. Accuracy</p>
+                <p className="text-2xl font-bold">{triggeredToday}</p>
+                <p className="text-sm text-muted-foreground">Triggered Today</p>
               </div>
             </div>
           </CardContent>
@@ -138,7 +135,7 @@ export default function ModelsOverviewSection({
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
-              placeholder="Search models..."
+              placeholder="Search automations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"
@@ -149,28 +146,20 @@ export default function ModelsOverviewSection({
           </Button>
         </div>
 
-        {/* Model Type Filters */}
-        <div className="flex items-center gap-2 overflow-x-auto">
-          {modelTypeFilters.map((filter) => (
-            <Button
+        {/* Filter Badges */}
+        <div className="flex flex-wrap gap-2">
+          {automationTypeFilters.map((filter) => (
+            <Badge
               key={filter.value}
               variant={selectedFilter === filter.value ? "default" : "outline"}
-              size="sm"
+              className="cursor-pointer px-3 py-1 hover:bg-primary/80"
               onClick={() => setSelectedFilter(filter.value)}
-              className="whitespace-nowrap"
             >
               {filter.label}
-              <Badge 
-                variant={selectedFilter === filter.value ? "secondary" : "outline"}
-                className={`ml-2 ${
-                  selectedFilter === filter.value 
-                    ? "bg-primary-foreground text-primary border-primary-foreground" 
-                    : "text-primary border-primary"
-                }`}
-              >
+              <span className="ml-2 font-semibold">
                 {getFilteredCount(filter.value)}
-              </Badge>
-            </Button>
+              </span>
+            </Badge>
           ))}
         </div>
       </div>
