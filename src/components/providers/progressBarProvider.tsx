@@ -4,7 +4,7 @@ import * as React from "react"
 import { ProgressBar } from "@/components/ui/progressBar"
 
 interface ProgressBarContextType {
-  showProgress: (text?: string, duration?: number) => void
+  showProgress: (text?: string, duration?: number, onComplete?: () => void) => void
   hideProgress: () => void
   isVisible: boolean
   progress: number
@@ -30,11 +30,13 @@ export const ProgressBarProvider: React.FC<ProgressBarProviderProps> = ({ childr
   const [progress, setProgress] = React.useState(0)
   const [loadingText, setLoadingText] = React.useState("Loading...")
   const intervalRef = React.useRef<NodeJS.Timeout | null>(null)
+  const onCompleteRef = React.useRef<(() => void) | null>(null)
 
-  const showProgress = React.useCallback((text: string = "Loading...", duration: number = 5000) => {
+  const showProgress = React.useCallback((text: string = "Loading...", duration: number = 5000, onComplete?: () => void) => {
     setLoadingText(text)
     setIsVisible(true)
     setProgress(0)
+    onCompleteRef.current = onComplete || null
 
     // Clear existing interval if any
     if (intervalRef.current) {
@@ -52,10 +54,15 @@ export const ProgressBarProvider: React.FC<ProgressBarProviderProps> = ({ childr
         setProgress(100)
         clearInterval(intervalRef.current!)
         
-        // Auto hide after completion (optional)
+        // Auto hide after completion and call onComplete callback
         setTimeout(() => {
           setIsVisible(false)
           setProgress(0)
+          // Call the completion callback if provided
+          if (onCompleteRef.current) {
+            onCompleteRef.current()
+            onCompleteRef.current = null
+          }
         }, 500)
         
         return
@@ -75,6 +82,7 @@ export const ProgressBarProvider: React.FC<ProgressBarProviderProps> = ({ childr
     }
     setIsVisible(false)
     setProgress(0)
+    onCompleteRef.current = null
   }, [])
 
   // Cleanup on unmount
@@ -114,39 +122,5 @@ export const ProgressBarProvider: React.FC<ProgressBarProviderProps> = ({ childr
         </div>
       )}
     </ProgressBarContext.Provider>
-  )
-}
-
-// Demo Component untuk testing
-export const ProgressBarDemo: React.FC = () => {
-  const { showProgress } = useProgressBar()
-
-  const dummyLoadingTexts = [
-    "Connecting to IoT Network...",
-    "Synchronizing data...",
-    "Processing sensor readings...",
-    "Updating dashboard...",
-    "Optimizing network performance...",
-    "Analyzing device metrics...",
-    "Configuring broker settings...",
-    "Establishing secure connection...",
-  ]
-
-  const handleDemoProgress = () => {
-    const randomText = dummyLoadingTexts[Math.floor(Math.random() * dummyLoadingTexts.length)]
-    const randomDuration = Math.random() * 3000 + 3000 // 3-6 seconds
-    showProgress(randomText, randomDuration)
-  }
-
-  return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-semibold">Progress Bar Demo</h3>
-      <button
-        onClick={handleDemoProgress}
-        className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors"
-      >
-        Start Random Loading Process
-      </button>
-    </div>
   )
 }
