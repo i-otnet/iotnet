@@ -10,7 +10,7 @@ import {
   Cpu,
   Wifi,
   WifiOff,
-  Zap,
+  CalendarPlus,
   Search,
   Filter,
 } from "lucide-react";
@@ -120,7 +120,7 @@ export default function DevicesOverviewSection({
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
               <div className="p-3 rounded-full bg-primary/10">
-                <Zap className="w-6 h-6 text-primary" />
+                <CalendarPlus className="w-6 h-6 text-primary" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{newDevicesThisWeek}</p>

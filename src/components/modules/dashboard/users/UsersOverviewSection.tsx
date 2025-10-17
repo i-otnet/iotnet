@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
@@ -10,6 +10,7 @@ import {
   Globe,
   Plus
 } from "lucide-react";
+import { BrokerSetupModal } from "@/components/modules/dashboard/users/addMqttUser/addUserModal";
 
 const mockUsersData = {
   totalUsers: 156,
@@ -19,6 +20,7 @@ const mockUsersData = {
 };
 
 export default function UsersOverviewSection() {
+  const [isAddUserOpen, setIsAddUserOpen] = useState(false);
   return (
     <div className="flex flex-col gap-4">
       {/* Header */}
@@ -29,7 +31,7 @@ export default function UsersOverviewSection() {
             Manage MQTT users, their roles, and monitor their broker connections
           </p>
         </div>
-        <Button size="lg" className="gap-2">
+        <Button size="lg" className="gap-2" onClick={() => setIsAddUserOpen(true)}>
           <Plus className="w-5 h-5" />
           Add User
         </Button>
@@ -79,6 +81,9 @@ export default function UsersOverviewSection() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Add MQTT User Modal */}
+      <BrokerSetupModal open={isAddUserOpen} onOpenChange={setIsAddUserOpen} />
     </div>
   );
 }

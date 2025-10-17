@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
   Users, 
   Cpu, 
-  BarChart3, 
+  BrainCircuit, 
   TrendingUp,
   Zap,
   Clock
@@ -101,7 +101,7 @@ export default function DashboardOverviewSection() {
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
               <div className="p-3 rounded-full bg-primary/10">
-                <BarChart3 className="w-6 h-6 text-primary" />
+                <BrainCircuit className="w-6 h-6 text-primary" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{mockData.totalModels.toLocaleString()}</p>
