@@ -11,7 +11,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdownMenu'
 import { Info, ChevronDown } from 'lucide-react'
-import { mockDeviceTypesData, iconMap } from '@/lib/json/deviceTypesData'
+import { mockDeviceTypesData } from '@/lib/json/deviceTypesData'
+import { iconsData, iconMap } from '@/lib/json/iconsData'
 
 interface QuickSetupProps {
   onDeviceAdded?: (deviceData: DeviceData) => void
@@ -36,13 +37,13 @@ interface IconOption {
   icon: React.ComponentType<{ className?: string }>
 }
 
-// Map API icon names to actual components
-const iconOptions: IconOption[] = mockDeviceTypesData.data.icons.map(
-  (icon) => ({
+// Map API icon names to actual components - filter device icons only
+const iconOptions: IconOption[] = iconsData.data.icons
+  .filter((icon) => icon.category === 'device')
+  .map((icon) => ({
     name: icon.name,
     icon: iconMap[icon.name],
-  })
-)
+  }))
 
 const deviceTypeOptions = mockDeviceTypesData.data.deviceTypes
 
@@ -89,6 +90,31 @@ const QuickSetup = forwardRef<QuickSetupRef, QuickSetupProps>(
     return (
       <div className="w-full max-w-4xl mx-auto flex flex-col gap-6 pt-4">
         <div className="space-y-4">
+          {/* Icon Selector - First */}
+          <div className="space-y-2">
+            <Label>Device Icon</Label>
+            <div className="grid grid-cols-8 gap-2">
+              {iconOptions.map((option) => {
+                const IconComponent = option.icon
+                return (
+                  <button
+                    key={option.name}
+                    onClick={() => setDeviceIcon(IconComponent)}
+                    className={`flex items-center justify-center p-3 rounded-lg border-2 transition-all ${
+                      deviceIcon === IconComponent
+                        ? 'border-primary bg-primary/10'
+                        : 'border-muted-foreground/20 hover:border-primary/50'
+                    }`}
+                    type="button"
+                    title={option.name}
+                  >
+                    <IconComponent className="w-5 h-5 text-primary" />
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
           {/* Device Name */}
           <div className="space-y-2">
             <Label htmlFor="device-name">Device Name</Label>
@@ -161,31 +187,6 @@ const QuickSetup = forwardRef<QuickSetupRef, QuickSetupProps>(
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
-          </div>
-
-          {/* Icon Selector */}
-          <div className="space-y-2">
-            <Label>Device Icon</Label>
-            <div className="grid grid-cols-8 gap-2">
-              {iconOptions.map((option) => {
-                const IconComponent = option.icon
-                return (
-                  <button
-                    key={option.name}
-                    onClick={() => setDeviceIcon(IconComponent)}
-                    className={`flex items-center justify-center p-3 rounded-lg border-2 transition-all ${
-                      deviceIcon === IconComponent
-                        ? 'border-primary bg-primary/10'
-                        : 'border-muted-foreground/20 hover:border-primary/50'
-                    }`}
-                    type="button"
-                    title={option.name}
-                  >
-                    <IconComponent className="w-5 h-5 text-primary" />
-                  </button>
-                )
-              })}
-            </div>
           </div>
 
           {/* Location */}

@@ -14,7 +14,15 @@ import {
   BarChart3,
   Plus,
   Search,
+  Eye,
+  Trash2,
 } from 'lucide-react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdownMenu'
 import { AddDeviceModal } from './addDevice/addDeviceModal'
 import { EditDeviceModal } from './editDevice/editDeviceModal'
 
@@ -51,10 +59,15 @@ export default function DevicesGridSection({
 }: DevicesGridSectionProps) {
   const [editDeviceModalOpen, setEditDeviceModalOpen] = useState(false)
   const [selectedDevice, setSelectedDevice] = useState<Device | null>(null)
+  const [deletedDevices, setDeletedDevices] = useState<number[]>([])
 
   const handleEditDevice = (device: Device) => {
     setSelectedDevice(device)
     setEditDeviceModalOpen(true)
+  }
+
+  const handleDeleteDevice = (device: Device) => {
+    setDeletedDevices([...deletedDevices, device.id])
   }
 
   const getStatusIcon = (status: string) => {
@@ -98,6 +111,11 @@ export default function DevicesGridSection({
       ) : (
         <>
           {filteredDevices.map((device) => {
+            // Skip deleted devices
+            if (deletedDevices.includes(device.id)) {
+              return null
+            }
+
             const IconComponent = device.icon
             return (
               <Card
@@ -119,13 +137,36 @@ export default function DevicesGridSection({
                         </p>
                       </div>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <MoreVertical className="w-4 h-4" />
-                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <MoreVertical className="w-4 h-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem>
+                          <Eye className="w-4 h-4 mr-2" />
+                          View
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleEditDevice(device)}
+                        >
+                          <Settings className="w-4 h-4 mr-2" />
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleDeleteDevice(device)}
+                          className="text-destructive focus:text-destructive"
+                        >
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </CardHeader>
 

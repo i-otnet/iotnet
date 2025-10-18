@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -16,6 +16,7 @@ import {
   Trash2,
   Eye,
   Plus,
+  Search,
 } from 'lucide-react'
 import {
   DropdownMenu,
@@ -24,6 +25,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdownMenu'
+import { AddModelModal } from './addModel/addModelModal'
+import { EditModelModal } from './editModel/editModelModal'
+import { FilterModelModal } from './filterModel/filterModelModal'
+import { SearchModelModal } from './searchModel/searchModelModal'
 
 interface Model {
   id: number
@@ -43,6 +48,9 @@ interface ModelsGridSectionProps {
   setSearchQuery: (query: string) => void
   selectedFilter: string
   setSelectedFilter: (filter: string) => void
+  onModelAdded?: (newModel: Model) => void
+  isAddModelModalOpen?: boolean
+  setIsAddModelModalOpen?: (open: boolean) => void
 }
 
 export default function ModelsGridSection({
@@ -51,7 +59,25 @@ export default function ModelsGridSection({
   setSearchQuery,
   selectedFilter,
   setSelectedFilter,
+  onModelAdded,
+  isAddModelModalOpen = false,
+  setIsAddModelModalOpen = () => {},
 }: ModelsGridSectionProps) {
+  const [editModelModalOpen, setEditModelModalOpen] = useState(false)
+  const [selectedModel, setSelectedModel] = useState<Model | null>(null)
+  const [deletedModels, setDeletedModels] = useState<number[]>([])
+  const [showFilterModal, setShowFilterModal] = useState(false)
+  const [showSearchModal, setShowSearchModal] = useState(false)
+  const [selectedModelTypes, setSelectedModelTypes] = useState<string[]>([])
+
+  const handleEditModel = (model: Model) => {
+    setSelectedModel(model)
+    setEditModelModalOpen(true)
+  }
+
+  const handleDeleteModel = (model: Model) => {
+    setDeletedModels([...deletedModels, model.id])
+  }
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'deployed':
@@ -118,6 +144,11 @@ export default function ModelsGridSection({
       ) : (
         <>
           {filteredModels.map((model) => {
+            // Skip deleted models
+            if (deletedModels.includes(model.id)) {
+              return null
+            }
+
             const IconComponent = model.icon
             return (
               <Card
@@ -152,29 +183,21 @@ export default function ModelsGridSection({
                       <DropdownMenuContent align="end" className="w-48">
                         <DropdownMenuItem className="gap-2">
                           <Eye className="w-4 h-4" />
-                          View Details
+                          View
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="gap-2">
-                          <BarChart3 className="w-4 h-4" />
-                          View Metrics
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="gap-2">
+                        <DropdownMenuItem
+                          className="gap-2"
+                          onClick={() => handleEditModel(model)}
+                        >
                           <Settings className="w-4 h-4" />
-                          Configure
+                          Edit
                         </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="gap-2">
-                          <Download className="w-4 h-4" />
-                          Export Model
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="gap-2">
-                          <Upload className="w-4 h-4" />
-                          Update Version
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="gap-2 text-destructive focus:text-destructive">
+                        <DropdownMenuItem
+                          className="gap-2 text-destructive focus:text-destructive"
+                          onClick={() => handleDeleteModel(model)}
+                        >
                           <Trash2 className="w-4 h-4" />
-                          Delete Model
+                          Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -220,7 +243,12 @@ export default function ModelsGridSection({
                   </div>
 
                   <div className="pt-2 flex gap-2">
-                    <Button variant="outline" size="sm" className="flex-1">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1"
+                      onClick={() => handleEditModel(model)}
+                    >
                       <Settings className="w-3 h-3 mr-1" />
                       Settings
                     </Button>
@@ -235,7 +263,10 @@ export default function ModelsGridSection({
           })}
 
           {/* Add New Model Card */}
-          <Card className="group hover:shadow-lg transition-all duration-200 border-2 border-dashed border-muted-foreground/25 hover:border-primary/50 bg-muted/20 hover:bg-muted/30 cursor-pointer">
+          <Card
+            className="group hover:shadow-lg transition-all duration-200 border-2 border-dashed border-muted-foreground/25 hover:border-primary/50 bg-muted/20 hover:bg-muted/30 cursor-pointer"
+            onClick={() => setIsAddModelModalOpen(true)}
+          >
             <CardContent className="flex flex-col items-center justify-center h-full p-6 text-center min-h-[300px]">
               <div className="p-4 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors mb-4">
                 <Plus className="w-8 h-8 text-primary" />
@@ -246,6 +277,10 @@ export default function ModelsGridSection({
               </p>
               <Button
                 variant="outline"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setIsAddModelModalOpen(true)
+                }}
                 className="text-muted-foreground hover:text-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
               >
                 Get Started
@@ -254,6 +289,48 @@ export default function ModelsGridSection({
           </Card>
         </>
       )}
+
+      {/* Add Model Modal */}
+      <AddModelModal
+        open={isAddModelModalOpen}
+        onOpenChange={setIsAddModelModalOpen}
+        onModelAdded={(modelData) => {
+          onModelAdded?.({
+            id: Math.random(),
+            name: modelData.name,
+            type: modelData.type,
+            status: modelData.status,
+            framework: modelData.framework,
+            lastUpdated: 'just now',
+            icon: modelData.icon || (() => <></>),
+            version: modelData.version,
+          })
+          setIsAddModelModalOpen(false)
+        }}
+      />
+
+      {/* Edit Model Modal */}
+      <EditModelModal
+        open={editModelModalOpen}
+        onOpenChange={setEditModelModalOpen}
+        model={selectedModel}
+      />
+
+      {/* Filter Model Modal */}
+      <FilterModelModal
+        open={showFilterModal}
+        onOpenChange={setShowFilterModal}
+        selectedModelTypes={selectedModelTypes}
+        setSelectedModelTypes={setSelectedModelTypes}
+      />
+
+      {/* Search Model Modal */}
+      <SearchModelModal
+        open={showSearchModal}
+        onOpenChange={setShowSearchModal}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
     </div>
   )
 }

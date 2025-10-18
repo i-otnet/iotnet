@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/card'
 import { FileUpload } from '@/components/modules/shared/fileUpload'
 import { Upload, AlertCircle } from 'lucide-react'
+import { iconsData, iconMap } from '@/lib/json/iconsData'
 
 interface Device {
   id: number
@@ -30,6 +31,19 @@ interface EditDeviceDefaultProps {
   device: Device
 }
 
+interface IconOption {
+  name: string
+  icon: React.ComponentType<{ className?: string }>
+}
+
+// Map API icon names to actual components - filter device icons only
+const iconOptions: IconOption[] = iconsData.data.icons
+  .filter((icon) => icon.category === 'device')
+  .map((icon) => ({
+    name: icon.name,
+    icon: iconMap[icon.name],
+  }))
+
 export default function EditDeviceDefault({ device }: EditDeviceDefaultProps) {
   const [name, setName] = useState(device.name)
   const [location, setLocation] = useState(device.location)
@@ -37,10 +51,38 @@ export default function EditDeviceDefault({ device }: EditDeviceDefaultProps) {
   const [useOTA, setUseOTA] = useState(false)
   const [firmwareVersion, setFirmwareVersion] = useState(device.firmwareVersion)
   const [otaFiles, setOtaFiles] = useState<File[]>([])
+  const [selectedIcon, setSelectedIcon] = useState<
+    React.ComponentType<{ className?: string }> | undefined
+  >(device.icon)
 
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col gap-6 pt-4">
       <div className="space-y-4">
+        {/* Icon Selector */}
+        <div className="space-y-2">
+          <Label>Device Icon</Label>
+          <div className="grid grid-cols-8 gap-2">
+            {iconOptions.map((option) => {
+              const IconComponent = option.icon
+              return (
+                <button
+                  key={option.name}
+                  onClick={() => setSelectedIcon(IconComponent)}
+                  className={`flex items-center justify-center p-3 rounded-lg border-2 transition-all ${
+                    selectedIcon === IconComponent
+                      ? 'border-primary bg-primary/10'
+                      : 'border-muted-foreground/20 hover:border-primary/50'
+                  }`}
+                  type="button"
+                  title={option.name}
+                >
+                  <IconComponent className="w-5 h-5 text-primary" />
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
         {/* Basic Information */}
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
           <div className="space-y-2">

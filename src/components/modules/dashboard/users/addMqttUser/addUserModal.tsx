@@ -9,12 +9,25 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useMultiViewModal } from '@/lib/hooks/useModalState'
 import { getBrokerTitle, getBrokerDescription } from '@/lib/utils/brokerUtils'
 import BrokerOptions from './addUserOptions'
 import BrokerIonetSetup from './addUserByIotnetBroker'
 import BrokerPersonalSetup from './addUserByPersonalBroker'
 import BrokerExternalSetup from './addUserByExternalBroker'
+  
+function useMultiViewModal<T extends string>(initialView: T) {
+  const [currentView, setCurrentView] = useState<T>(initialView)
+
+  const resetView = () => {
+    setCurrentView(initialView)
+  }
+
+  return {
+    currentView,
+    setCurrentView,
+    resetView,
+  }
+}
 
 interface BrokerSetupModalProps {
   open: boolean

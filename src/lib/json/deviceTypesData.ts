@@ -12,7 +12,7 @@ import {
 export const mockDeviceTypesData = {
   success: true,
   code: 200,
-  message: 'Device types and icons retrieved successfully',
+  message: 'Device types retrieved successfully',
   data: {
     deviceTypes: [
       // ESP32 SoC Variants (Main Series)
@@ -60,28 +60,16 @@ export const mockDeviceTypesData = {
       { name: 'Raspberry Pi', category: 'mini-computer', disabled: true },
       { name: 'Orange Pi', category: 'mini-computer', disabled: true },
     ],
-    icons: [
-      // API hanya kirim name, FE mapping ke icon
-      { name: 'Smartphone' },
-      { name: 'Router' },
-      { name: 'Lightbulb' },
-      { name: 'Shield' },
-      { name: 'Camera' },
-      { name: 'Activity' },
-      { name: 'Cpu' },
-      { name: 'Settings' },
-    ],
   },
   meta: {
     totalDeviceTypes: 25,
     enabledDeviceTypes: 23,
-    totalIcons: 8,
     timestamp: new Date().toISOString(),
   },
   timestamp: new Date().toISOString(),
 }
 
-// FE Icon Mapping - mapping icon name ke lucide component
+// Re-export deprecated for backward compatibility (will be removed)
 export const iconMap: Record<
   string,
   React.ComponentType<{ className?: string }>
