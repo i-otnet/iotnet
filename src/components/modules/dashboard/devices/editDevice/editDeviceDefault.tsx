@@ -22,7 +22,7 @@ interface Device {
   status: string
   location: string
   lastSeen: string
-  icon: React.ComponentType<{ className?: string }>
+  icon: string
   firmwareVersion: string
   chipId: string
 }
@@ -51,9 +51,7 @@ export default function EditDeviceDefault({ device }: EditDeviceDefaultProps) {
   const [useOTA, setUseOTA] = useState(false)
   const [firmwareVersion, setFirmwareVersion] = useState(device.firmwareVersion)
   const [otaFiles, setOtaFiles] = useState<File[]>([])
-  const [selectedIcon, setSelectedIcon] = useState<
-    React.ComponentType<{ className?: string }> | undefined
-  >(device.icon)
+  const [selectedIcon, setSelectedIcon] = useState<string>(device.icon)
 
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col gap-6 pt-4">
@@ -67,9 +65,9 @@ export default function EditDeviceDefault({ device }: EditDeviceDefaultProps) {
               return (
                 <button
                   key={option.name}
-                  onClick={() => setSelectedIcon(IconComponent)}
+                  onClick={() => setSelectedIcon(option.name)}
                   className={`flex items-center justify-center p-3 rounded-lg border-2 transition-all ${
-                    selectedIcon === IconComponent
+                    selectedIcon === option.name
                       ? 'border-primary bg-primary/10'
                       : 'border-muted-foreground/20 hover:border-primary/50'
                   }`}

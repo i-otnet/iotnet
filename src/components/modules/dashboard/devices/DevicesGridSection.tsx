@@ -25,6 +25,7 @@ import {
 } from '@/components/ui/dropdownMenu'
 import { AddDeviceModal } from './addDevice/addDeviceModal'
 import { EditDeviceModal } from './editDevice/editDeviceModal'
+import { iconMap } from '@/lib/json/iconsData'
 
 interface Device {
   id: number
@@ -33,7 +34,7 @@ interface Device {
   status: string
   location: string
   lastSeen: string
-  icon: React.ComponentType<{ className?: string }>
+  icon: string
   firmwareVersion: string
   chipId: string
 }
@@ -116,7 +117,7 @@ export default function DevicesGridSection({
               return null
             }
 
-            const IconComponent = device.icon
+            const IconComponent = iconMap[device.icon]
             return (
               <Card
                 key={device.id}
@@ -126,7 +127,11 @@ export default function DevicesGridSection({
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
                       <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                        <IconComponent className="w-6 h-6 text-primary" />
+                        {IconComponent ? (
+                          <IconComponent className="w-6 h-6 text-primary" />
+                        ) : (
+                          <Settings className="w-6 h-6 text-primary" />
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="font-semibold text-sm truncate">
@@ -273,7 +278,7 @@ export default function DevicesGridSection({
             status: deviceData.status,
             location: deviceData.location,
             lastSeen: 'just now',
-            icon: deviceData.icon || (() => <></>),
+            icon: deviceData.icon || 'Smartphone',
             firmwareVersion: 'v1.0.0',
             chipId: deviceData.chipId,
           })

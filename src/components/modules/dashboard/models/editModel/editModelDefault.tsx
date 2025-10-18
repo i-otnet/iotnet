@@ -13,7 +13,7 @@ interface Model {
   status: string
   framework: string
   lastUpdated: string
-  icon: React.ComponentType<{ className?: string }>
+  icon: string
   version: string
   accuracy?: string
 }
@@ -36,9 +36,7 @@ const iconOptions: IconOption[] = iconsData.data.icons
   }))
 
 export default function EditModelDefault({ model }: EditModelDefaultProps) {
-  const [selectedIcon, setSelectedIcon] = useState<
-    React.ComponentType<{ className?: string }> | undefined
-  >(model.icon)
+  const [selectedIcon, setSelectedIcon] = useState<string>(model.icon)
 
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col gap-6 pt-4">
@@ -54,9 +52,9 @@ export default function EditModelDefault({ model }: EditModelDefaultProps) {
               return (
                 <button
                   key={option.name}
-                  onClick={() => setSelectedIcon(IconComponent)}
+                  onClick={() => setSelectedIcon(option.name)}
                   className={`flex items-center justify-center p-3 rounded-lg border-2 transition-all ${
-                    selectedIcon === IconComponent
+                    selectedIcon === option.name
                       ? 'border-primary bg-primary/10'
                       : 'border-muted-foreground/20 hover:border-primary/50'
                   }`}

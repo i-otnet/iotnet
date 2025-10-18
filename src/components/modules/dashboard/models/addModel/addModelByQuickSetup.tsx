@@ -16,7 +16,7 @@ interface AddModelByQuickSetupProps {
     framework: string
     version: string
     status: string
-    icon?: React.ComponentType<{ className?: string }>
+    icon?: string
     accuracy?: string
   }) => void
 }
@@ -41,9 +41,7 @@ const AddModelByQuickSetup = forwardRef<
   const nameRef = useRef<HTMLInputElement>(null)
   const typeRef = useRef<HTMLInputElement>(null)
   const frameworkRef = useRef<HTMLInputElement>(null)
-  const [modelIcon, setModelIcon] = useState<
-    React.ComponentType<{ className?: string }> | undefined
-  >()
+  const [modelIcon, setModelIcon] = useState<string | undefined>()
 
   useImperativeHandle(ref, () => ({
     submit: () => {
@@ -71,9 +69,9 @@ const AddModelByQuickSetup = forwardRef<
             return (
               <button
                 key={option.name}
-                onClick={() => setModelIcon(IconComponent)}
+                onClick={() => setModelIcon(option.name)}
                 className={`flex items-center justify-center p-3 rounded-lg border-2 transition-all ${
-                  modelIcon === IconComponent
+                  modelIcon === option.name
                     ? 'border-primary bg-primary/10'
                     : 'border-muted-foreground/20 hover:border-primary/50'
                 }`}

@@ -17,7 +17,7 @@ interface DeviceData {
   location: string
   chipId: string
   status: string
-  icon?: React.ComponentType<{ className?: string }>
+  icon?: string
 }
 
 interface AddDeviceModalProps {

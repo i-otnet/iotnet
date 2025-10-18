@@ -29,6 +29,7 @@ import { AddModelModal } from './addModel/addModelModal'
 import { EditModelModal } from './editModel/editModelModal'
 import { FilterModelModal } from './filterModel/filterModelModal'
 import { SearchModelModal } from './searchModel/searchModelModal'
+import { iconMap } from '@/lib/json/iconsData'
 
 interface Model {
   id: number
@@ -37,7 +38,7 @@ interface Model {
   status: string
   framework: string
   lastUpdated: string
-  icon: React.ComponentType<{ className?: string }>
+  icon: string
   version: string
   accuracy?: string
 }
@@ -149,7 +150,7 @@ export default function ModelsGridSection({
               return null
             }
 
-            const IconComponent = model.icon
+            const IconComponent = iconMap[model.icon]
             return (
               <Card
                 key={model.id}
@@ -159,7 +160,11 @@ export default function ModelsGridSection({
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3 flex-1 min-w-0">
                       <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                        <IconComponent className="w-6 h-6 text-primary" />
+                        {IconComponent ? (
+                          <IconComponent className="w-6 h-6 text-primary" />
+                        ) : (
+                          <Settings className="w-6 h-6 text-primary" />
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="font-semibold text-sm truncate">
@@ -302,7 +307,7 @@ export default function ModelsGridSection({
             status: modelData.status,
             framework: modelData.framework,
             lastUpdated: 'just now',
-            icon: modelData.icon || (() => <></>),
+            icon: modelData.icon || 'BrainCircuit',
             version: modelData.version,
           })
           setIsAddModelModalOpen(false)

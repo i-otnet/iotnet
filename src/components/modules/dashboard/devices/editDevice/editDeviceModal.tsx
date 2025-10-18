@@ -20,7 +20,7 @@ interface Device {
   status: string
   location: string
   lastSeen: string
-  icon: React.ComponentType<{ className?: string }>
+  icon: string
   firmwareVersion: string
   chipId: string
 }

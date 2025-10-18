@@ -19,7 +19,7 @@ interface ModelData {
   framework: string
   version: string
   status: string
-  icon?: React.ComponentType<{ className?: string }>
+  icon?: string
   accuracy?: string
 }
 

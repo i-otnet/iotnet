@@ -15,6 +15,13 @@ import {
   GitBranch,
   Brain,
   Boxes,
+  Sun,
+  Thermometer,
+  Lock,
+  CloudRain,
+  Fan,
+  Bell,
+  Timer,
 } from 'lucide-react'
 
 export const iconsData = {
@@ -41,12 +48,21 @@ export const iconsData = {
       { id: 14, name: 'Brain', category: 'model', disabled: false },
       { id: 15, name: 'GitBranch', category: 'model', disabled: false },
       { id: 16, name: 'Boxes', category: 'model', disabled: false },
+      // Automation Icons
+      { id: 17, name: 'Sun', category: 'automation', disabled: false },
+      { id: 18, name: 'Thermometer', category: 'automation', disabled: false },
+      { id: 19, name: 'Lock', category: 'automation', disabled: false },
+      { id: 20, name: 'CloudRain', category: 'automation', disabled: false },
+      { id: 21, name: 'Fan', category: 'automation', disabled: false },
+      { id: 22, name: 'Bell', category: 'automation', disabled: false },
+      { id: 23, name: 'Timer', category: 'automation', disabled: false },
     ],
   },
   meta: {
-    totalIcons: 16,
+    totalIcons: 23,
     deviceIcons: 8,
     modelIcons: 8,
+    automationIcons: 7,
     timestamp: new Date().toISOString(),
   },
   timestamp: new Date().toISOString(),
@@ -75,4 +91,12 @@ export const iconMap: Record<
   Brain,
   GitBranch,
   Boxes,
+  // Automation Icons
+  Sun,
+  Thermometer,
+  Lock,
+  CloudRain,
+  Fan,
+  Bell,
+  Timer,
 }

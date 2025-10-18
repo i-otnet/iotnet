@@ -25,7 +25,7 @@ interface DeviceData {
   location: string
   chipId: string
   status: string
-  icon?: React.ComponentType<{ className?: string }>
+  icon?: string
 }
 
 export interface QuickSetupRef {
@@ -51,9 +51,7 @@ const QuickSetup = forwardRef<QuickSetupRef, QuickSetupProps>(
   ({ onDeviceAdded, onSubmit }, ref) => {
     const [deviceName, setDeviceName] = useState('')
     const [deviceType, setDeviceType] = useState('')
-    const [deviceIcon, setDeviceIcon] = useState<
-      React.ComponentType<{ className?: string }> | undefined
-    >()
+    const [deviceIcon, setDeviceIcon] = useState<string | undefined>()
     const [deviceLocation, setDeviceLocation] = useState('')
     const [deviceChipId, setDeviceChipId] = useState('')
     const [searchQuery, setSearchQuery] = useState('')
@@ -99,9 +97,9 @@ const QuickSetup = forwardRef<QuickSetupRef, QuickSetupProps>(
                 return (
                   <button
                     key={option.name}
-                    onClick={() => setDeviceIcon(IconComponent)}
+                    onClick={() => setDeviceIcon(option.name)}
                     className={`flex items-center justify-center p-3 rounded-lg border-2 transition-all ${
-                      deviceIcon === IconComponent
+                      deviceIcon === option.name
                         ? 'border-primary bg-primary/10'
                         : 'border-muted-foreground/20 hover:border-primary/50'
                     }`}

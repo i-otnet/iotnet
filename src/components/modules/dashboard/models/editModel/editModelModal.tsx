@@ -19,7 +19,7 @@ interface Model {
   status: string
   framework: string
   lastUpdated: string
-  icon: React.ComponentType<{ className?: string }>
+  icon: string
   version: string
   accuracy?: string
 }

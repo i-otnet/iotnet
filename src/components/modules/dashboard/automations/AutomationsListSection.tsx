@@ -12,11 +12,11 @@ import {
   Trash2,
   Zap,
   Bell,
-  LucideIcon,
   Cpu,
   BrainCircuit,
   Plus,
 } from 'lucide-react'
+import { iconMap } from '@/lib/json/iconsData'
 
 interface Automation {
   id: number
@@ -26,7 +26,7 @@ interface Automation {
   trigger: string
   action: string
   lastTriggered: string
-  icon: LucideIcon
+  icon: string
   description: string
   createdDate: string
   source: string
@@ -79,7 +79,7 @@ export default function AutomationsListSection({
       {/* Automations Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {automations.map((automation) => {
-          const Icon = automation.icon
+          const Icon = iconMap[automation.icon]
           return (
             <Card
               key={automation.id}
@@ -89,7 +89,11 @@ export default function AutomationsListSection({
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
                     <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                      <Icon className="w-6 h-6 text-primary" />
+                      {Icon ? (
+                        <Icon className="w-6 h-6 text-primary" />
+                      ) : (
+                        <Zap className="w-6 h-6 text-primary" />
+                      )}
                     </div>
                     <div>
                       <CardTitle className="text-base font-semibold">
