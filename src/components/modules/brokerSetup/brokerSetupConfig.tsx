@@ -12,6 +12,13 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { FileUpload } from '@/components/ui/fileUpload'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdownMenu'
+import { ChevronDown, Lock, Wifi, Check } from 'lucide-react'
 
 type SslCertificateOption =
   | 'new-certificate'
@@ -123,24 +130,41 @@ export default function BrokerCreateSetup() {
               >
                 SSL Certificate Option
               </Label>
-              <select
-                id="ssl-certificate-option"
-                value={sslOption}
-                onChange={(e) =>
-                  setSslOption(e.target.value as SslCertificateOption)
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              >
-                <option value="new-certificate">
-                  Request a new SSL certificate (with Let&apos;s Encrypt)
-                </option>
-                <option value="own-certificate">
-                  Use your own certificate
-                </option>
-                <option value="existing-domain">
-                  Use existing domain SSL (example.com, api.example.com)
-                </option>
-              </select>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="w-full justify-between">
+                    <span className="truncate">
+                      {sslOption === 'new-certificate' &&
+                        "Request a new SSL certificate (with Let's Encrypt)"}
+                      {sslOption === 'own-certificate' &&
+                        'Use your own certificate'}
+                      {sslOption === 'existing-domain' &&
+                        'Use existing domain SSL (example.com, api.example.com)'}
+                    </span>
+                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                  align="start"
+                >
+                  <DropdownMenuItem
+                    onClick={() => setSslOption('new-certificate')}
+                  >
+                    Request a new SSL certificate (with Let&apos;s Encrypt)
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setSslOption('own-certificate')}
+                  >
+                    Use your own certificate
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setSslOption('existing-domain')}
+                  >
+                    Use existing domain SSL (example.com, api.example.com)
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
             {sslOption === 'new-certificate' && (
@@ -152,19 +176,7 @@ export default function BrokerCreateSetup() {
                     alert('SSL certificate request initiated for your domain!')
                   }}
                 >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                    />
-                  </svg>
+                  <Lock className="w-4 h-4" />
                   Request SSL Certificate
                 </Button>
               </div>
@@ -178,18 +190,44 @@ export default function BrokerCreateSetup() {
                 >
                   Select Existing Domain
                 </Label>
-                <select
-                  id="existing-domain"
-                  value={selectedDomain}
-                  onChange={(e) => setSelectedDomain(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                >
-                  <option value="">Select a domain...</option>
-                  <option value="example.com">example.com</option>
-                  <option value="api.example.com">api.example.com</option>
-                  <option value="mqtt.example.com">mqtt.example.com</option>
-                  <option value="broker.example.com">broker.example.com</option>
-                </select>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-between"
+                    >
+                      <span className="truncate">
+                        {selectedDomain || 'Select a domain...'}
+                      </span>
+                      <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                    align="start"
+                  >
+                    <DropdownMenuItem
+                      onClick={() => setSelectedDomain('example.com')}
+                    >
+                      example.com
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => setSelectedDomain('api.example.com')}
+                    >
+                      api.example.com
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => setSelectedDomain('mqtt.example.com')}
+                    >
+                      mqtt.example.com
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => setSelectedDomain('broker.example.com')}
+                    >
+                      broker.example.com
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             )}
 
@@ -257,36 +295,12 @@ export default function BrokerCreateSetup() {
               setConnectionStatus('MQTT Connected successfully!')
             }}
           >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"
-              />
-            </svg>
+            <Wifi className="w-4 h-4" />
             Test Connection
           </Button>
           {connectionStatus && (
             <div className="text-sm font-medium text-green-600 dark:text-green-400 flex items-center gap-1">
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
+              <Check className="w-4 h-4" />
               {connectionStatus}
             </div>
           )}

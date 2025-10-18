@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -11,6 +12,13 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { FileUpload } from '@/components/ui/fileUpload'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdownMenu'
+import { ChevronDown } from 'lucide-react'
 
 export default function BrokerExternalSetup() {
   const [name, setName] = useState('')
@@ -49,15 +57,22 @@ export default function BrokerExternalSetup() {
 
         <div className="space-y-2">
           <Label htmlFor="user-role">Role</Label>
-          <select
-            id="user-role"
-            value={role}
-            onChange={(e) => setRole(e.target.value as 'user' | 'admin')}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-950 dark:border-slate-700"
-          >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="w-full justify-between">
+                <span>{role === 'user' ? 'User' : 'Admin'}</span>
+                <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)]" align="start">
+              <DropdownMenuItem onClick={() => setRole('user')}>
+                User
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setRole('admin')}>
+                Admin
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         <div className="flex gap-4">

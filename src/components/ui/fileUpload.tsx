@@ -7,75 +7,7 @@ import { cn } from '@/lib/utils'
 import { Button } from './button'
 import { Card, CardContent } from './card'
 import { Badge } from './badge'
-
-// Icons - you can replace with your preferred icon library
-const UploadIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-    />
-  </svg>
-)
-
-const FileIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-    />
-  </svg>
-)
-
-const ImageIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-    />
-  </svg>
-)
-
-const TrashIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-    />
-  </svg>
-)
+import { Upload, File, Image as ImageIcon, Trash2, Loader } from 'lucide-react'
 
 // File upload variants - simplified since we're using Card component
 const fileUploadVariants = cva('transition-all duration-300 ease-in-out', {
@@ -214,7 +146,7 @@ const FilePreview = ({
               {isImage ? (
                 <ImageIcon className="w-5 h-5 text-muted-foreground" />
               ) : (
-                <FileIcon className="w-5 h-5 text-muted-foreground" />
+                <File className="w-5 h-5 text-muted-foreground" />
               )}
             </div>
           )}
@@ -245,7 +177,7 @@ const FilePreview = ({
           onClick={onRemove}
           className="flex-shrink-0 text-muted-foreground hover:text-destructive h-8 w-8 transition-colors duration-200"
         >
-          <TrashIcon className="w-4 h-4" />
+          <Trash2 className="w-4 h-4" />
         </Button>
       </CardContent>
     </Card>
@@ -545,7 +477,7 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
                 dragActive ? 'scale-110 transform' : 'group-hover:scale-105'
               )}
             >
-              <UploadIcon
+              <Upload
                 className={cn(
                   'w-12 h-12 transition-all duration-500 ease-out',
                   dragActive
@@ -624,7 +556,7 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
                       className="text-xs"
                     >
                       {uploading && (
-                        <div className="w-3 h-3 border border-current border-t-transparent rounded-full animate-spin mr-1" />
+                        <Loader className="w-3 h-3 mr-1 animate-spin" />
                       )}
                       {uploading ? 'Uploading...' : 'Upload Files'}
                     </Button>

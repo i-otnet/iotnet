@@ -5,9 +5,15 @@ import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Info, Copy, CheckCircle } from 'lucide-react'
+import { Info, Copy, CheckCircle, ChevronDown } from 'lucide-react'
 import { generateCredentials } from '@/lib/credentials'
 import React, { useState } from 'react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdownMenu'
 
 interface BrokerIonetSetupProps {
   onCredentialsGenerated?: () => void
@@ -67,15 +73,25 @@ export default function BrokerIonetSetup({
 
         <div className="space-y-2">
           <Label htmlFor="user-role">Role</Label>
-          <select
-            id="user-role"
-            value={role}
-            onChange={(e) => setRole(e.target.value as 'user' | 'admin')}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-950 dark:border-slate-700"
-          >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="w-full justify-between">
+                <span>{role === 'user' ? 'User' : 'Admin'}</span>
+                <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="w-[var(--radix-dropdown-menu-trigger-width)]"
+              align="start"
+            >
+              <DropdownMenuItem onClick={() => setRole('user')}>
+                User
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setRole('admin')}>
+                Admin
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
 

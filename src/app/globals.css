@@ -205,31 +205,40 @@
 @layer components {
   /* Native select styling for dark/light, ensure dropdown visibility */
   select {
-    color: var(--foreground);
-    background-color: var(--background);
+    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background transition-colors;
+    @apply file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground;
+    @apply placeholder:text-muted-foreground;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+    @apply disabled:cursor-not-allowed disabled:opacity-50;
+    @apply appearance-none cursor-pointer;
     color-scheme: light dark;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
   }
+
   /* Options dropdown panel inherits popover colors for better contrast */
   select option {
-    color: var(--popover-foreground);
-    background-color: var(--popover);
+    @apply bg-popover text-popover-foreground py-1.5 px-2;
   }
+
   select option:hover {
-    background-color: var(--muted);
-    color: var(--foreground);
+    @apply bg-accent text-accent-foreground;
   }
+
   select option:checked {
-    background-color: var(--accent);
-    color: var(--accent-foreground);
+    @apply bg-accent text-accent-foreground font-medium;
   }
+
+  /* Dark mode adjustments */
   .dark select {
-    color: var(--foreground);
-    background-color: var(--card);
-    color-scheme: dark;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
   }
+
   .dark select option {
-    color: var(--popover-foreground);
-    background-color: var(--popover);
+    @apply bg-popover text-popover-foreground;
   }
 
   /* Dialog overlay - semi-transparent backdrop */

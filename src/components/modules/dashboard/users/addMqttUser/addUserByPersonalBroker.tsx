@@ -3,8 +3,15 @@
 import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Eye, EyeOff, RotateCw } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Eye, EyeOff, RotateCw, ChevronDown } from 'lucide-react'
 import { generateHashPassword } from '@/lib/credentials'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdownMenu'
 
 export default function BrokerPersonalSetup() {
   const [name, setName] = useState('')
@@ -46,15 +53,25 @@ export default function BrokerPersonalSetup() {
 
         <div className="space-y-2">
           <Label htmlFor="user-role">Role</Label>
-          <select
-            id="user-role"
-            value={role}
-            onChange={(e) => setRole(e.target.value as 'user' | 'admin')}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-950 dark:border-slate-700"
-          >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="w-full justify-between">
+                <span>{role === 'user' ? 'User' : 'Admin'}</span>
+                <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="w-[var(--radix-dropdown-menu-trigger-width)]"
+              align="start"
+            >
+              <DropdownMenuItem onClick={() => setRole('user')}>
+                User
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setRole('admin')}>
+                Admin
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         <div className="space-y-2">
@@ -77,26 +94,28 @@ export default function BrokerPersonalSetup() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="icon"
               onClick={() => setShowPassword(!showPassword)}
-              className="px-3 py-2 border border-gray-300 rounded-md bg-white text-foreground hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-950 dark:border-slate-700 dark:hover:bg-slate-900 transition-colors flex-shrink-0"
               title={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? (
-                <Eye className="w-4 h-4" />
-              ) : (
                 <EyeOff className="w-4 h-4" />
+              ) : (
+                <Eye className="w-4 h-4" />
               )}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="outline"
+              size="icon"
               onClick={generateRandomPassword}
-              className="px-3 py-2 border border-gray-300 rounded-md bg-white text-foreground hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-950 dark:border-slate-700 dark:hover:bg-slate-900 transition-colors flex-shrink-0"
               title="Generate random password"
             >
               <RotateCw className="w-4 h-4" />
-            </button>
+            </Button>
           </div>
         </div>
       </div>
