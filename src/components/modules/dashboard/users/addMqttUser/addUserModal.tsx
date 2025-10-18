@@ -13,7 +13,7 @@ import {
 import { useProgressBar } from "@/components/providers/progressBarProvider";
 import BrokerOptions from "./addUserOptions";
 import BrokerIonetSetup from "./addUserByIotnetBroker";
-import BrokerCreateSetup from "./addUserByPersonalBroker";
+import BrokerPersonalSetup from "./addUserByPersonalBroker";
 import BrokerExternalSetup from "./addUserByExternalBroker";
 
 interface BrokerSetupModalProps {
@@ -25,7 +25,7 @@ interface BrokerSetupModalProps {
 export function BrokerSetupModal({ open, onOpenChange, onBack }: BrokerSetupModalProps) {
   const [currentView, setCurrentView] = useState<string>("options");
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const { showProgress } = useProgressBar();
+  // const { showProgress } = useProgressBar();
   const router = useRouter();
 
   const handleOptionSelect = (option: string) => {
@@ -47,8 +47,8 @@ export function BrokerSetupModal({ open, onOpenChange, onBack }: BrokerSetupModa
     switch (currentView) {
       case "iotnet":
         return <BrokerIonetSetup />;
-      case "create":
-        return <BrokerCreateSetup />;
+      case "personal":
+        return <BrokerPersonalSetup />;
       case "external":
         return <BrokerExternalSetup />;
       default:
@@ -60,8 +60,8 @@ export function BrokerSetupModal({ open, onOpenChange, onBack }: BrokerSetupModa
     switch (currentView) {
       case "iotnet":
         return "Connect to IoTNet";
-      case "create":
-        return "Create Broker";
+      case "personal":
+        return "Use Personal Broker";
       case "external":
         return "Test Connection";
       default:
@@ -73,8 +73,8 @@ export function BrokerSetupModal({ open, onOpenChange, onBack }: BrokerSetupModa
     switch (currentView) {
       case "iotnet":
         return "IoTNet Broker Setup";
-      case "create":
-        return "Create Your Own Broker";
+      case "personal":
+        return "Use Personal Broker";
       case "external":
         return "Setup External Broker";
       default:
@@ -86,8 +86,8 @@ export function BrokerSetupModal({ open, onOpenChange, onBack }: BrokerSetupModa
     switch (currentView) {
       case "iotnet":
         return "Connect to the default IoTNet broker with automatic configuration.";
-      case "create":
-        return "Configure your private MQTT broker.";
+      case "personal":
+        return "Configure and use your personal MQTT broker.";
       case "external":
         return "Connect to your existing MQTT broker.";
       default:
@@ -118,7 +118,6 @@ export function BrokerSetupModal({ open, onOpenChange, onBack }: BrokerSetupModa
               Back
             </Button>
           )}
-          
           {currentView === "options" && (
             <Button 
               onClick={handleContinue}
@@ -129,34 +128,7 @@ export function BrokerSetupModal({ open, onOpenChange, onBack }: BrokerSetupModa
           )}
           {currentView !== "options" && (
             <Button onClick={() => {
-              // Show progress bar with different text based on setup type
-              let loadingText = "";
-              let duration = 4000;
-              
-              switch (currentView) {
-                case "iotnet":
-                  loadingText = "Building the IoTNet project...";
-                  duration = 3000;
-                  break;
-                case "create":
-                  loadingText = "Building the IoTNet project...";
-                  duration = 5000;
-                  break;
-                case "external":
-                  loadingText = "Building the IoTNet project...";
-                  duration = 4000;
-                  break;
-                default:
-                  loadingText = "Processing setup...";
-                  break;
-              }
-
-              showProgress(loadingText, duration, () => {
-                onOpenChange(false);
-                setCurrentView("options");
-                setSelectedOption(null);
-                router.push("/auth/login");
-              });
+              onOpenChange(false);
             }}>
               {getContinueButtonText()}
             </Button>

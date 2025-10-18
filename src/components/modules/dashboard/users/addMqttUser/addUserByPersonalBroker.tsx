@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileUpload } from "@/components/ui/fileUpload";
 
-export default function BrokerCreateSetup() {
+export default function BrokerPersonalSetup() {
   const [useMqtts, setUseMqtts] = useState(false);
   const [useCustomCertificate, setUseCustomCertificate] = useState(false);
   const [, setCertificateFiles] = useState<File[]>([]);
@@ -85,7 +85,7 @@ export default function BrokerCreateSetup() {
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-amber-600 dark:text-amber-400 mt-0.5 font-medium">•</span>
-                    <span>For local or private network devices, please use the default IoTNet broker, or alternatively upload your own SSL certificates below.</span>
+                    <span>For local or private network devices, please use the default IoTNet broker, or alternatively use your own broker by uploading your SSL certificates below.</span>
                   </li>
                 </ul>
               </CardContent>

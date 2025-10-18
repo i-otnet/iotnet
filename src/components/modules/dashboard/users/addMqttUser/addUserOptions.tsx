@@ -50,13 +50,13 @@ export default function SetupOption({ selected, setSelected }: SetupOptionProps)
 
       {/* === Option 2 & 3 === */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Create Your Own Broker */}
+  {/* Use Personal Broker */}
         <Card
           role="button"
-          onClick={() => setSelected("create")}
+          onClick={() => setSelected("personal")}
           className={cn(
             "cursor-pointer transition-all rounded-xl p-6 border shadow-sm flex flex-col items-center gap-3 text-center hover:shadow-md",
-            selected === "create"
+            selected === "personal"
               ? "border-primary bg-primary/10"
               : "bg-background"
           )}
@@ -64,7 +64,7 @@ export default function SetupOption({ selected, setSelected }: SetupOptionProps)
           <div
             className={cn(
               "w-10 h-10 flex items-center justify-center rounded-full",
-              selected === "create" ? "bg-primary text-primary-foreground" : "bg-primary/20 text-primary"
+              selected === "personal" ? "bg-primary text-primary-foreground" : "bg-primary/20 text-primary"
             )}
           >
             <ServerCog className="w-5 h-5" />
@@ -72,10 +72,10 @@ export default function SetupOption({ selected, setSelected }: SetupOptionProps)
           <h3
             className={cn(
               "text-sm font-medium",
-              selected === "create" ? "text-primary" : "text-foreground"
+              selected === "personal" ? "text-primary" : "text-foreground"
             )}
           >
-            Create your own broker
+            Use personal broker
           </h3>
           <p className="text-muted-foreground text-xs leading-snug">
             Set up a private MQTT broker for full control and enhanced security.
