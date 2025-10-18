@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
+import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -14,28 +13,53 @@ import {
 import { FileUpload } from '@/components/ui/fileUpload'
 
 export default function BrokerExternalSetup() {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [role, setRole] = useState<'user' | 'admin'>('user')
   const [useMqtts, setUseMqtts] = useState(false)
   const [useCustomCertificate, setUseCustomCertificate] = useState(false)
   const [, setCertificateFiles] = useState<File[]>([])
   const [, setKeyFiles] = useState<File[]>([])
-  const [clientId, setClientId] = useState('')
-
-  // Generate random client ID
-  const generateClientId = () => {
-    const randomString =
-      Math.random().toString(36).substring(2, 15) +
-      Math.random().toString(36).substring(2, 15)
-    return `iotnet_client_${randomString}`
-  }
-
-  // Initialize client ID on component mount
-  useEffect(() => {
-    setClientId(generateClientId())
-  }, [])
 
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col gap-6 pt-4">
       <div className="space-y-4">
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="user-name">Name</Label>
+            <Input
+              id="user-name"
+              placeholder="Full Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="user-email">Email</Label>
+            <Input
+              id="user-email"
+              placeholder="user@example.com"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="user-role">Role</Label>
+          <select
+            id="user-role"
+            value={role}
+            onChange={(e) => setRole(e.target.value as 'user' | 'admin')}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-950 dark:border-slate-700"
+          >
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
         <div className="flex gap-4">
           <div className="flex-1 space-y-2">
             <Label htmlFor="broker-url">Broker URL</Label>
@@ -153,44 +177,6 @@ export default function BrokerExternalSetup() {
             placeholder="Enter password"
             type="password"
           />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="client-id">Client ID</Label>
-          <div className="flex items-center gap-2">
-            <Input
-              id="client-id"
-              value={clientId}
-              readOnly
-              className="bg-muted/50"
-            />
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setClientId(generateClientId())}
-              className="px-3 flex-shrink-0"
-              title="Generate new Client ID"
-            >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                />
-              </svg>
-            </Button>
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Auto-generated unique identifier for this client connection
-          </p>
         </div>
       </div>
     </div>

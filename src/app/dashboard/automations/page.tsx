@@ -7,7 +7,6 @@ import DashboardAutomationsLayout from '@/components/layout/dashboard/dashboardA
 import AutomationsOverviewSection from '@/components/modules/dashboard/automations/AutomationsOverviewSection'
 import AutomationsListSection from '@/components/modules/dashboard/automations/AutomationsListSection'
 import {
-  Clock,
   Thermometer,
   Zap,
   Sun,

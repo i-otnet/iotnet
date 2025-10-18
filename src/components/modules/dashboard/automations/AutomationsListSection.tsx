@@ -10,8 +10,6 @@ import {
   PauseCircle,
   Pencil,
   Trash2,
-  Clock,
-  Thermometer,
   Zap,
   Bell,
   LucideIcon,

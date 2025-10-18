@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Users, UserPlus, Activity, Globe, Plus } from 'lucide-react'
+import { Users, Activity, Globe, Plus } from 'lucide-react'
 import { BrokerSetupModal } from '@/components/modules/dashboard/users/addMqttUser/addUserModal'
 
 const mockUsersData = {

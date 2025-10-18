@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -10,7 +9,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useProgressBar } from '@/components/providers/progressBarProvider'
 import BrokerOptions from './addUserOptions'
 import BrokerIonetSetup from './addUserByIotnetBroker'
 import BrokerPersonalSetup from './addUserByPersonalBroker'
@@ -29,8 +27,7 @@ export function BrokerSetupModal({
 }: BrokerSetupModalProps) {
   const [currentView, setCurrentView] = useState<string>('options')
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
-  // const { showProgress } = useProgressBar();
-  const router = useRouter()
+  const [credentialsGenerated, setCredentialsGenerated] = useState(false)
 
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option)
@@ -45,12 +42,24 @@ export function BrokerSetupModal({
   const handleBackToOptions = () => {
     setCurrentView('options')
     setSelectedOption(null)
+    setCredentialsGenerated(false)
+  }
+
+  const handleClose = () => {
+    setCurrentView('options')
+    setSelectedOption(null)
+    setCredentialsGenerated(false)
+    onOpenChange(false)
   }
 
   const renderContent = () => {
     switch (currentView) {
       case 'iotnet':
-        return <BrokerIonetSetup />
+        return (
+          <BrokerIonetSetup
+            onCredentialsGenerated={() => setCredentialsGenerated(true)}
+          />
+        )
       case 'personal':
         return <BrokerPersonalSetup />
       case 'external':
@@ -81,11 +90,11 @@ export function BrokerSetupModal({
   const getTitle = () => {
     switch (currentView) {
       case 'iotnet':
-        return 'IoTNet Broker Setup'
+        return 'Use IoTNet Broker'
       case 'personal':
         return 'Use Personal Broker'
       case 'external':
-        return 'Setup External Broker'
+        return 'Use Your Broker'
       default:
         return 'Setup Your MQTT Broker'
     }
@@ -105,7 +114,7 @@ export function BrokerSetupModal({
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[600px] max-h-[85vh] bg-white dark:bg-slate-900/85 backdrop-blur-xl border-gray-200 dark:border-white/10 flex flex-col">
         <DialogHeader className="flex-shrink-0">
           <DialogTitle>{getTitle()}</DialogTitle>
@@ -120,7 +129,12 @@ export function BrokerSetupModal({
               Back
             </Button>
           )}
-          {currentView !== 'options' && (
+          {currentView === 'iotnet' && !credentialsGenerated && (
+            <Button variant="outline" onClick={handleBackToOptions}>
+              Back
+            </Button>
+          )}
+          {(currentView === 'personal' || currentView === 'external') && (
             <Button variant="outline" onClick={handleBackToOptions}>
               Back
             </Button>
@@ -131,13 +145,7 @@ export function BrokerSetupModal({
             </Button>
           )}
           {currentView !== 'options' && (
-            <Button
-              onClick={() => {
-                onOpenChange(false)
-              }}
-            >
-              {getContinueButtonText()}
-            </Button>
+            <Button onClick={handleClose}>{getContinueButtonText()}</Button>
           )}
         </div>
       </DialogContent>
