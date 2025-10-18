@@ -1,50 +1,48 @@
-"use client";
+'use client'
 
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import React from 'react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import {
   Sparkles,
-  PauseCircle,
   AlertTriangle,
   Clock,
   MoreVertical,
   Settings,
   BarChart3,
-  Play,
   Download,
   Upload,
   Trash2,
   Eye,
   Plus,
-} from "lucide-react";
+} from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdownMenu";
+} from '@/components/ui/dropdownMenu'
 
 interface Model {
-  id: number;
-  name: string;
-  type: string;
-  status: string;
-  framework: string;
-  lastUpdated: string;
-  icon: React.ComponentType<{ className?: string }>;
-  version: string;
-  accuracy?: string;
+  id: number
+  name: string
+  type: string
+  status: string
+  framework: string
+  lastUpdated: string
+  icon: React.ComponentType<{ className?: string }>
+  version: string
+  accuracy?: string
 }
 
 interface ModelsGridSectionProps {
-  filteredModels: Model[];
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-  selectedFilter: string;
-  setSelectedFilter: (filter: string) => void;
+  filteredModels: Model[]
+  searchQuery: string
+  setSearchQuery: (query: string) => void
+  selectedFilter: string
+  setSelectedFilter: (filter: string) => void
 }
 
 export default function ModelsGridSection({
@@ -52,33 +50,33 @@ export default function ModelsGridSection({
   searchQuery,
   setSearchQuery,
   selectedFilter,
-  setSelectedFilter
+  setSelectedFilter,
 }: ModelsGridSectionProps) {
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case "deployed":
-        return <Sparkles className="w-4 h-4 text-green-500" />;
-      case "inactive":
-        return <PauseCircle className="w-4 h-4 text-muted-foreground" />;
-      case "error":
-        return <AlertTriangle className="w-4 h-4 text-destructive" />;
+      case 'deployed':
+        return <Sparkles className="w-4 h-4 text-green-500" />
+      case 'inactive':
+        return <Clock className="w-4 h-4 text-muted-foreground" />
+      case 'error':
+        return <AlertTriangle className="w-4 h-4 text-destructive" />
       default:
-        return <Clock className="w-4 h-4 text-muted-foreground" />;
+        return <Clock className="w-4 h-4 text-muted-foreground" />
     }
-  };
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "deployed":
-        return "bg-green-500/10 text-green-500 border-green-500/20";
-      case "inactive":
-        return "bg-muted text-muted-foreground border-muted";
-      case "error":
-        return "bg-destructive/10 text-destructive border-destructive/20";
+      case 'deployed':
+        return 'bg-green-500/10 text-green-500 border-green-500/20'
+      case 'inactive':
+        return 'bg-muted text-muted-foreground border-muted'
+      case 'error':
+        return 'bg-destructive/10 text-destructive border-destructive/20'
       default:
-        return "bg-muted text-muted-foreground border-muted";
+        return 'bg-muted text-muted-foreground border-muted'
     }
-  };
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -89,22 +87,23 @@ export default function ModelsGridSection({
               <Plus className="w-10 h-10 text-primary" />
             </div>
             <h3 className="text-xl font-semibold mb-3">
-              {searchQuery || selectedFilter !== "all" ? "No models found" : "Add New Model"}
+              {searchQuery || selectedFilter !== 'all'
+                ? 'No models found'
+                : 'Add New Model'}
             </h3>
             <p className="text-sm text-muted-foreground mb-6">
-              {searchQuery 
+              {searchQuery
                 ? `No models match "${searchQuery}" in the selected category.`
-                : selectedFilter !== "all"
-                ? "No models found in the selected category."
-                : "Connect a new ML model to your network"
-              }
+                : selectedFilter !== 'all'
+                ? 'No models found in the selected category.'
+                : 'Connect a new ML model to your network'}
             </p>
-            {searchQuery || selectedFilter !== "all" ? (
-              <Button 
-                variant="outline" 
+            {searchQuery || selectedFilter !== 'all' ? (
+              <Button
+                variant="outline"
                 onClick={() => {
-                  setSearchQuery("");
-                  setSelectedFilter("all");
+                  setSearchQuery('')
+                  setSelectedFilter('all')
                 }}
               >
                 Clear filters
@@ -119,9 +118,12 @@ export default function ModelsGridSection({
       ) : (
         <>
           {filteredModels.map((model) => {
-            const IconComponent = model.icon;
+            const IconComponent = model.icon
             return (
-              <Card key={model.id} className="group hover:shadow-lg transition-all duration-200 border-0 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm">
+              <Card
+                key={model.id}
+                className="group hover:shadow-lg transition-all duration-200 border-0 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm"
+              >
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -129,13 +131,21 @@ export default function ModelsGridSection({
                         <IconComponent className="w-6 h-6 text-primary" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-sm truncate">{model.name}</h3>
-                        <p className="text-xs text-muted-foreground">{model.type}</p>
+                        <h3 className="font-semibold text-sm truncate">
+                          {model.name}
+                        </h3>
+                        <p className="text-xs text-muted-foreground">
+                          {model.type}
+                        </p>
                       </div>
                     </div>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
                           <MoreVertical className="w-4 h-4" />
                         </Button>
                       </DropdownMenuTrigger>
@@ -178,7 +188,10 @@ export default function ModelsGridSection({
                         {model.status}
                       </span>
                     </div>
-                    <Badge variant="outline" className={getStatusColor(model.status)}>
+                    <Badge
+                      variant="outline"
+                      className={getStatusColor(model.status)}
+                    >
                       {model.status}
                     </Badge>
                   </div>
@@ -195,7 +208,9 @@ export default function ModelsGridSection({
                     {model.accuracy && (
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Accuracy:</span>
-                        <span className="font-medium text-primary">{model.accuracy}</span>
+                        <span className="font-medium text-primary">
+                          {model.accuracy}
+                        </span>
                       </div>
                     )}
                     <div className="flex justify-between">
@@ -205,24 +220,18 @@ export default function ModelsGridSection({
                   </div>
 
                   <div className="pt-2 flex gap-2">
-                    {model.status === "deployed" ? (
-                      <Button variant="outline" size="sm" className="flex-1 gap-2">
-                        <PauseCircle className="w-4 h-4" />
-                        Pause
-                      </Button>
-                    ) : (
-                      <Button size="sm" className="flex-1 gap-2">
-                        <Play className="w-4 h-4" />
-                        Deploy
-                      </Button>
-                    )}
-                    <Button variant="outline" size="sm" className="gap-2">
-                      <BarChart3 className="w-4 h-4" />
+                    <Button variant="outline" size="sm" className="flex-1">
+                      <Settings className="w-3 h-3 mr-1" />
+                      Settings
+                    </Button>
+                    <Button variant="default" size="sm" className="flex-1">
+                      <BarChart3 className="w-3 h-3 mr-1" />
+                      Metrics
                     </Button>
                   </div>
                 </CardContent>
               </Card>
-            );
+            )
           })}
 
           {/* Add New Model Card */}
@@ -235,7 +244,10 @@ export default function ModelsGridSection({
               <p className="text-sm text-muted-foreground mb-4">
                 Connect a new ML model to your network
               </p>
-              <Button variant="outline" className="group-hover:bg-primary transition-colors">
+              <Button
+                variant="outline"
+                className="text-muted-foreground hover:text-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+              >
                 Get Started
               </Button>
             </CardContent>
@@ -243,5 +255,5 @@ export default function ModelsGridSection({
         </>
       )}
     </div>
-  );
+  )
 }

@@ -1,17 +1,32 @@
-import React from "react";
-import Profile from "@/components/modules/dashboard/profile";
-import { ThemeDropdown } from "@/components/modules/ThemeSetup/themeDropdown";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search, Bell } from "lucide-react";
+import React from 'react'
+import Profile from '@/components/modules/dashboard/profile'
+import { ThemeDropdown } from '@/components/modules/ThemeSetup/themeDropdown'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Search, Bell, Menu } from 'lucide-react'
 
-export default function DashboardHeader() {
+interface DashboardHeaderProps {
+  onMenuClick?: () => void
+}
+
+export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
   return (
     <header className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border sticky top-0 z-40">
-      <div className="flex h-16 items-center justify-between px-6">
-        {/* Left side - Search */}
-        <div className="flex items-center gap-4 flex-1 max-w-md">
-          <div className="relative w-full">
+      <div className="flex h-16 items-center justify-between px-4 md:px-6 gap-4">
+        {/* Left side - Mobile Menu + Search */}
+        <div className="flex items-center gap-2 md:gap-4 flex-1 max-w-md">
+          {/* Mobile Menu Button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden text-muted-foreground hover:text-foreground hover:bg-accent"
+            onClick={onMenuClick}
+          >
+            <Menu className="w-5 h-5" />
+          </Button>
+
+          {/* Search - Hidden on very small screens */}
+          <div className="relative w-full hidden sm:block">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
               placeholder="Search devices, models, users..."
@@ -21,7 +36,16 @@ export default function DashboardHeader() {
         </div>
 
         {/* Right side - Theme, Notifications, Profile */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 md:gap-3">
+          {/* Search icon for mobile */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="sm:hidden text-muted-foreground hover:text-foreground hover:bg-accent"
+          >
+            <Search className="w-5 h-5" />
+          </Button>
+
           {/* Theme Selector */}
           <ThemeDropdown />
 
@@ -39,12 +63,12 @@ export default function DashboardHeader() {
           </Button>
 
           {/* Profile */}
-          <Profile 
+          <Profile
             username="Admin User"
             // avatarUrl="/path/to/avatar.jpg" // Optional: uncomment and set avatar URL
           />
         </div>
       </div>
     </header>
-  );
+  )
 }

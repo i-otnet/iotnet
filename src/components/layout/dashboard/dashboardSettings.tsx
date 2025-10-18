@@ -1,15 +1,15 @@
-"use client";
+'use client'
 
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react'
 
 interface DashboardSettingsLayoutProps {
-  children?: ReactNode;
-  profileSettings?: ReactNode;
-  passwordSettings?: ReactNode;
-  brokerSettings?: ReactNode;
-  notificationSettings?: ReactNode;
-  apiKeys?: ReactNode;
-  dangerZone?: ReactNode;
+  children?: ReactNode
+  profileSettings?: ReactNode
+  passwordSettings?: ReactNode
+  brokerSettings?: ReactNode
+  notificationSettings?: ReactNode
+  apiKeys?: ReactNode
+  dangerZone?: ReactNode
 }
 
 export default function DashboardSettingsLayout({
@@ -19,10 +19,22 @@ export default function DashboardSettingsLayout({
   brokerSettings,
   notificationSettings,
   apiKeys,
-  dangerZone
+  dangerZone,
 }: DashboardSettingsLayoutProps) {
   return (
     <div className="space-y-6">
+      {/* Header Section - Responsive */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
+            Settings
+          </h1>
+          <p className="text-sm md:text-base text-muted-foreground">
+            Manage your account settings and preferences
+          </p>
+        </div>
+      </div>
+
       {/* Profile Settings Section */}
       {profileSettings}
 
@@ -44,5 +56,5 @@ export default function DashboardSettingsLayout({
       {/* Default children container jika ada konten tambahan */}
       {children}
     </div>
-  );
+  )
 }

@@ -1,21 +1,21 @@
-"use client";
+'use client'
 
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import BrokerCreateSetup from "./brokerSetupConfig";
+} from '@/components/ui/dialog'
+import BrokerCreateSetup from './brokerSetupConfig'
 
 interface BrokerSetupModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onBack?: () => void;
-  onContinue?: () => void;
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  onBack?: () => void
+  onContinue?: () => void
 }
 
 export function BrokerSetupModal({
@@ -23,7 +23,7 @@ export function BrokerSetupModal({
   onOpenChange,
   onBack,
 }: BrokerSetupModalProps) {
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -43,15 +43,17 @@ export function BrokerSetupModal({
               Back
             </Button>
           )}
-          
-          <Button onClick={() => {
-            onOpenChange(false);
-            router.push('/auth/login');
-          }}>
+
+          <Button
+            onClick={() => {
+              onOpenChange(false)
+              router.push('/auth/login')
+            }}
+          >
             Get Started
           </Button>
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

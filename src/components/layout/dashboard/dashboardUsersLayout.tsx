@@ -1,20 +1,20 @@
-"use client";
+'use client'
 
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react'
 
 interface DashboardUsersLayoutProps {
-  children?: ReactNode;
+  children?: ReactNode
   // Props untuk users layout
-  usersOverview?: ReactNode;
-  usersTable?: ReactNode;
-  brokerDistribution?: ReactNode;
+  usersOverview?: ReactNode
+  usersTable?: ReactNode
+  brokerDistribution?: ReactNode
 }
 
 export default function DashboardUsersLayout({
   children,
   usersOverview,
   usersTable,
-  brokerDistribution
+  brokerDistribution,
 }: DashboardUsersLayoutProps) {
   return (
     <div className="space-y-6">
@@ -30,5 +30,5 @@ export default function DashboardUsersLayout({
       {/* Default children container jika ada konten tambahan */}
       {children}
     </div>
-  );
+  )
 }

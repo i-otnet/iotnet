@@ -1,22 +1,28 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import { ProgressBar } from "@/components/ui/progressBar"
+import * as React from 'react'
+import { ProgressBar } from '@/components/ui/progressBar'
 
 interface ProgressBarContextType {
-  showProgress: (text?: string, duration?: number, onComplete?: () => void) => void
+  showProgress: (
+    text?: string,
+    duration?: number,
+    onComplete?: () => void
+  ) => void
   hideProgress: () => void
   isVisible: boolean
   progress: number
   loadingText: string
 }
 
-const ProgressBarContext = React.createContext<ProgressBarContextType | undefined>(undefined)
+const ProgressBarContext = React.createContext<
+  ProgressBarContextType | undefined
+>(undefined)
 
 export const useProgressBar = () => {
   const context = React.useContext(ProgressBarContext)
   if (!context) {
-    throw new Error("useProgressBar must be used within a ProgressBarProvider")
+    throw new Error('useProgressBar must be used within a ProgressBarProvider')
   }
   return context
 }
@@ -25,55 +31,64 @@ interface ProgressBarProviderProps {
   children: React.ReactNode
 }
 
-export const ProgressBarProvider: React.FC<ProgressBarProviderProps> = ({ children }) => {
+export const ProgressBarProvider: React.FC<ProgressBarProviderProps> = ({
+  children,
+}) => {
   const [isVisible, setIsVisible] = React.useState(false)
   const [progress, setProgress] = React.useState(0)
-  const [loadingText, setLoadingText] = React.useState("Loading...")
+  const [loadingText, setLoadingText] = React.useState('Loading...')
   const intervalRef = React.useRef<NodeJS.Timeout | null>(null)
   const onCompleteRef = React.useRef<(() => void) | null>(null)
 
-  const showProgress = React.useCallback((text: string = "Loading...", duration: number = 5000, onComplete?: () => void) => {
-    setLoadingText(text)
-    setIsVisible(true)
-    setProgress(0)
-    onCompleteRef.current = onComplete || null
+  const showProgress = React.useCallback(
+    (
+      text: string = 'Loading...',
+      duration: number = 5000,
+      onComplete?: () => void
+    ) => {
+      setLoadingText(text)
+      setIsVisible(true)
+      setProgress(0)
+      onCompleteRef.current = onComplete || null
 
-    // Clear existing interval if any
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current)
-    }
-
-    const steps = 50 // Number of steps for smooth animation
-    const stepDuration = duration / steps
-    let currentStep = 0
-
-    intervalRef.current = setInterval(() => {
-      currentStep++
-      
-      if (currentStep >= steps) {
-        setProgress(100)
-        clearInterval(intervalRef.current!)
-        
-        // Auto hide after completion and call onComplete callback
-        setTimeout(() => {
-          setIsVisible(false)
-          setProgress(0)
-          // Call the completion callback if provided
-          if (onCompleteRef.current) {
-            onCompleteRef.current()
-            onCompleteRef.current = null
-          }
-        }, 500)
-        
-        return
+      // Clear existing interval if any
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
       }
 
-      const linearProgress = (currentStep / steps) * 100
-      const easedProgress = 100 * (1 - Math.pow(1 - linearProgress / 100, 2))
-      
-      setProgress(Math.min(easedProgress, 95)) // Cap at 95% until completion
-    }, stepDuration)
-  }, [])
+      const steps = 50 // Number of steps for smooth animation
+      const stepDuration = duration / steps
+      let currentStep = 0
+
+      intervalRef.current = setInterval(() => {
+        currentStep++
+
+        if (currentStep >= steps) {
+          setProgress(100)
+          clearInterval(intervalRef.current!)
+
+          // Auto hide after completion and call onComplete callback
+          setTimeout(() => {
+            setIsVisible(false)
+            setProgress(0)
+            // Call the completion callback if provided
+            if (onCompleteRef.current) {
+              onCompleteRef.current()
+              onCompleteRef.current = null
+            }
+          }, 500)
+
+          return
+        }
+
+        const linearProgress = (currentStep / steps) * 100
+        const easedProgress = 100 * (1 - Math.pow(1 - linearProgress / 100, 2))
+
+        setProgress(Math.min(easedProgress, 95)) // Cap at 95% until completion
+      }, stepDuration)
+    },
+    []
+  )
 
   const hideProgress = React.useCallback(() => {
     if (intervalRef.current) {
@@ -94,18 +109,21 @@ export const ProgressBarProvider: React.FC<ProgressBarProviderProps> = ({ childr
     }
   }, [])
 
-  const value = React.useMemo(() => ({
-    showProgress,
-    hideProgress,
-    isVisible,
-    progress,
-    loadingText,
-  }), [showProgress, hideProgress, isVisible, progress, loadingText])
+  const value = React.useMemo(
+    () => ({
+      showProgress,
+      hideProgress,
+      isVisible,
+      progress,
+      loadingText,
+    }),
+    [showProgress, hideProgress, isVisible, progress, loadingText]
+  )
 
   return (
     <ProgressBarContext.Provider value={value}>
       {children}
-      
+
       {/* Global Progress Bar Overlay - Centered with solid background */}
       {isVisible && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white/95 dark:bg-gray-900/95">

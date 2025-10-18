@@ -1,17 +1,17 @@
-"use client";
+'use client'
 
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react'
 
 interface DashboardModelsLayoutProps {
-  children?: ReactNode;
-  modelsOverview?: ReactNode;
-  modelsGrid?: ReactNode;
+  children?: ReactNode
+  modelsOverview?: ReactNode
+  modelsGrid?: ReactNode
 }
 
 export default function DashboardModelsLayout({
   children,
   modelsOverview,
-  modelsGrid
+  modelsGrid,
 }: DashboardModelsLayoutProps) {
   return (
     <div className="flex-1 space-y-6">
@@ -24,5 +24,5 @@ export default function DashboardModelsLayout({
       {/* Default children container jika ada konten tambahan */}
       {children}
     </div>
-  );
+  )
 }

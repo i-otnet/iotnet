@@ -1,19 +1,19 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
 
 export default function LoginPage() {
-  const router = useRouter();
+  const router = useRouter()
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    router.push('/dashboard');
-  };
+    e.preventDefault()
+    router.push('/dashboard')
+  }
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md shadow-sm border border-border/60">
@@ -48,13 +48,16 @@ export default function LoginPage() {
           </form>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
-            Don&apos;t have an account?{" "}
-            <Link href="/auth/register" className="text-primary hover:underline">
+            Don&apos;t have an account?{' '}
+            <Link
+              href="/auth/register"
+              className="text-primary hover:underline"
+            >
               Register
             </Link>
           </p>
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

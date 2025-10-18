@@ -1,17 +1,17 @@
-"use client";
+'use client'
 
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react'
 
 interface DashboardAutomationsLayoutProps {
-  children?: ReactNode;
-  automationsOverview?: ReactNode;
-  automationsList?: ReactNode;
+  children?: ReactNode
+  automationsOverview?: ReactNode
+  automationsList?: ReactNode
 }
 
 export default function DashboardAutomationsLayout({
   children,
   automationsOverview,
-  automationsList
+  automationsList,
 }: DashboardAutomationsLayoutProps) {
   return (
     <div className="flex-1 space-y-6">
@@ -24,5 +24,5 @@ export default function DashboardAutomationsLayout({
       {/* Default children container jika ada konten tambahan */}
       {children}
     </div>
-  );
+  )
 }
