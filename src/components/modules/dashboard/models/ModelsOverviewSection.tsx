@@ -1,10 +1,10 @@
-"use client";
+'use client'
 
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import React from 'react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Badge } from '@/components/ui/badge'
 import {
   Plus,
   BrainCircuit,
@@ -12,31 +12,31 @@ import {
   Search,
   Filter,
   PauseCircle,
-} from "lucide-react";
+} from 'lucide-react'
 
 const modelTypeFilters = [
-  { label: "All Models", value: "all", count: 8 },
-  { label: "Classification", value: "classification", count: 3 },
-  { label: "Regression", value: "regression", count: 2 },
-  { label: "Clustering", value: "clustering", count: 1 },
-  { label: "Time Series", value: "timeseries", count: 2 }
-];
+  { label: 'All Models', value: 'all', count: 8 },
+  { label: 'Classification', value: 'classification', count: 3 },
+  { label: 'Regression', value: 'regression', count: 2 },
+  { label: 'Clustering', value: 'clustering', count: 1 },
+  { label: 'Time Series', value: 'timeseries', count: 2 },
+]
 
 interface Model {
-  accuracy?: string;
+  accuracy?: string
 }
 
 interface ModelsOverviewSectionProps {
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-  selectedFilter: string;
-  setSelectedFilter: (filter: string) => void;
-  filteredModels: Model[];
-  totalModels: number;
-  deployedModels: number;
-  inactiveModels: number;
-  newModelsThisWeek: number;
-  getFilteredCount: (filterType: string) => number;
+  searchQuery: string
+  setSearchQuery: (query: string) => void
+  selectedFilter: string
+  setSelectedFilter: (filter: string) => void
+  filteredModels: Model[]
+  totalModels: number
+  deployedModels: number
+  inactiveModels: number
+  newModelsThisWeek: number
+  getFilteredCount: (filterType: string) => number
 }
 
 export default function ModelsOverviewSection({
@@ -48,15 +48,18 @@ export default function ModelsOverviewSection({
   totalModels,
   deployedModels,
   inactiveModels,
-  getFilteredCount
+  getFilteredCount,
 }: ModelsOverviewSectionProps) {
   // Calculate average accuracy
-  const avgAccuracy = filteredModels.length > 0 
-    ? (filteredModels.reduce((sum, model) => {
-        const accuracy = parseFloat(model.accuracy || "0");
-        return sum + accuracy;
-      }, 0) / filteredModels.length).toFixed(1)
-    : "0";
+  const avgAccuracy =
+    filteredModels.length > 0
+      ? (
+          filteredModels.reduce((sum, model) => {
+            const accuracy = parseFloat(model.accuracy || '0')
+            return sum + accuracy
+          }, 0) / filteredModels.length
+        ).toFixed(1)
+      : '0'
 
   return (
     <div className="flex flex-col gap-4">
@@ -154,18 +157,20 @@ export default function ModelsOverviewSection({
           {modelTypeFilters.map((filter) => (
             <Button
               key={filter.value}
-              variant={selectedFilter === filter.value ? "default" : "outline"}
+              variant={selectedFilter === filter.value ? 'default' : 'outline'}
               size="sm"
               onClick={() => setSelectedFilter(filter.value)}
               className="whitespace-nowrap"
             >
               {filter.label}
-              <Badge 
-                variant={selectedFilter === filter.value ? "secondary" : "outline"}
+              <Badge
+                variant={
+                  selectedFilter === filter.value ? 'secondary' : 'outline'
+                }
                 className={`ml-2 ${
-                  selectedFilter === filter.value 
-                    ? "bg-primary-foreground text-primary border-primary-foreground" 
-                    : "text-primary border-primary"
+                  selectedFilter === filter.value
+                    ? 'bg-primary-foreground text-primary border-primary-foreground'
+                    : 'text-primary border-primary'
                 }`}
               >
                 {getFilteredCount(filter.value)}
@@ -175,5 +180,5 @@ export default function ModelsOverviewSection({
         </div>
       </div>
     </div>
-  );
+  )
 }

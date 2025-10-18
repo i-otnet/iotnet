@@ -1,51 +1,49 @@
-"use client";
+'use client'
 
-import React, { useState, useRef, useEffect } from "react";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { 
-  LogOut, 
-  User, 
-  ChevronDown,
-  Settings
-} from "lucide-react";
+import React, { useState, useRef, useEffect } from 'react'
+import Image from 'next/image'
+import { Button } from '@/components/ui/button'
+import { LogOut, User, ChevronDown, Settings } from 'lucide-react'
 
 interface ProfileProps {
-  username?: string;
-  avatarUrl?: string;
-  onLogout?: () => void;
+  username?: string
+  avatarUrl?: string
+  onLogout?: () => void
 }
 
-export default function Profile({ 
-  username = "Admin User", 
+export default function Profile({
+  username = 'Admin User',
   avatarUrl,
-  onLogout
+  onLogout,
 }: ProfileProps) {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false)
       }
-    };
+    }
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside)
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
 
   const handleLogout = () => {
     if (onLogout) {
-      onLogout();
+      onLogout()
     } else {
       // Default logout behavior - redirect to login
-      window.location.href = "/auth/login";
+      window.location.href = '/auth/login'
     }
-  };
+  }
 
   return (
     <div className="flex items-center">
@@ -82,7 +80,11 @@ export default function Profile({
           </div>
 
           {/* Dropdown Arrow */}
-          <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+          <ChevronDown
+            className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${
+              isDropdownOpen ? 'rotate-180' : ''
+            }`}
+          />
         </Button>
 
         {/* Dropdown Menu */}
@@ -90,10 +92,14 @@ export default function Profile({
           <div className="absolute right-0 top-full mt-2 w-56 bg-popover border border-border rounded-lg shadow-lg z-50">
             <div className="p-2">
               <div className="px-3 py-2 border-b border-border">
-                <p className="text-sm font-medium text-foreground">{username}</p>
-                <p className="text-xs text-muted-foreground">admin@iotnet.com</p>
+                <p className="text-sm font-medium text-foreground">
+                  {username}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  admin@iotnet.com
+                </p>
               </div>
-              
+
               <div className="py-1">
                 <Button
                   variant="ghost"
@@ -103,7 +109,7 @@ export default function Profile({
                   <Settings className="w-4 h-4" />
                   Settings
                 </Button>
-                
+
                 <Button
                   variant="ghost"
                   className="w-full justify-start gap-3 px-3 py-2 h-auto text-sm text-destructive hover:text-destructive hover:bg-destructive/10"
@@ -118,5 +124,5 @@ export default function Profile({
         )}
       </div>
     </div>
-  );
+  )
 }

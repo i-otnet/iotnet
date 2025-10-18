@@ -1,9 +1,9 @@
-import React from "react";
-import Profile from "@/components/modules/dashboard/profile";
-import { ThemeDropdown } from "@/components/modules/ThemeSetup/themeDropdown";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search, Bell } from "lucide-react";
+import React from 'react'
+import Profile from '@/components/modules/dashboard/profile'
+import { ThemeDropdown } from '@/components/modules/ThemeSetup/themeDropdown'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Search, Bell } from 'lucide-react'
 
 export default function DashboardHeader() {
   return (
@@ -39,12 +39,12 @@ export default function DashboardHeader() {
           </Button>
 
           {/* Profile */}
-          <Profile 
+          <Profile
             username="Admin User"
             // avatarUrl="/path/to/avatar.jpg" // Optional: uncomment and set avatar URL
           />
         </div>
       </div>
     </header>
-  );
+  )
 }

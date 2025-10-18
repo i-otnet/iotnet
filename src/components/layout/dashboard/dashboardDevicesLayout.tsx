@@ -1,17 +1,17 @@
-"use client";
+'use client'
 
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react'
 
 interface DashboardDevicesLayoutProps {
-  children?: ReactNode;
-  devicesOverview?: ReactNode;
-  devicesGrid?: ReactNode;
+  children?: ReactNode
+  devicesOverview?: ReactNode
+  devicesGrid?: ReactNode
 }
 
 export default function DashboardDevicesLayout({
   children,
   devicesOverview,
-  devicesGrid
+  devicesGrid,
 }: DashboardDevicesLayoutProps) {
   return (
     <div className="flex-1 space-y-6">
@@ -24,5 +24,5 @@ export default function DashboardDevicesLayout({
       {/* Default children container jika ada konten tambahan */}
       {children}
     </div>
-  );
+  )
 }

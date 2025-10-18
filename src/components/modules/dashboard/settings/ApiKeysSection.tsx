@@ -1,89 +1,103 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { useState } from 'react'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 
 interface ApiKey {
-  id: string;
-  name: string;
-  key: string;
-  createdAt: string;
-  lastUsed: string | null;
-  status: "active" | "revoked";
+  id: string
+  name: string
+  key: string
+  createdAt: string
+  lastUsed: string | null
+  status: 'active' | 'revoked'
 }
 
 export default function ApiKeysSection() {
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([
     {
-      id: "1",
-      name: "Production API Key",
-      key: "iotnet_pk_1234567890abcdefghijklmnopqrstuvwxyz",
-      createdAt: "2024-01-15",
-      lastUsed: "2024-10-15",
-      status: "active",
+      id: '1',
+      name: 'Production API Key',
+      key: 'iotnet_pk_1234567890abcdefghijklmnopqrstuvwxyz',
+      createdAt: '2024-01-15',
+      lastUsed: '2024-10-15',
+      status: 'active',
     },
     {
-      id: "2",
-      name: "Development API Key",
-      key: "iotnet_pk_abcdefghijklmnopqrstuvwxyz1234567890",
-      createdAt: "2024-02-20",
-      lastUsed: "2024-10-10",
-      status: "active",
+      id: '2',
+      name: 'Development API Key',
+      key: 'iotnet_pk_abcdefghijklmnopqrstuvwxyz1234567890',
+      createdAt: '2024-02-20',
+      lastUsed: '2024-10-10',
+      status: 'active',
     },
-  ]);
+  ])
 
-  const [showCreateForm, setShowCreateForm] = useState(false);
-  const [newKeyName, setNewKeyName] = useState("");
+  const [showCreateForm, setShowCreateForm] = useState(false)
+  const [newKeyName, setNewKeyName] = useState('')
 
   const handleCreateApiKey = () => {
     if (!newKeyName.trim()) {
-      alert("Please enter a name for your API key");
-      return;
+      alert('Please enter a name for your API key')
+      return
     }
 
     const newKey: ApiKey = {
       id: Date.now().toString(),
       name: newKeyName,
-      key: `iotnet_pk_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`,
-      createdAt: new Date().toISOString().split("T")[0],
+      key: `iotnet_pk_${Math.random()
+        .toString(36)
+        .substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`,
+      createdAt: new Date().toISOString().split('T')[0],
       lastUsed: null,
-      status: "active",
-    };
+      status: 'active',
+    }
 
-    setApiKeys([...apiKeys, newKey]);
-    setNewKeyName("");
-    setShowCreateForm(false);
-    
+    setApiKeys([...apiKeys, newKey])
+    setNewKeyName('')
+    setShowCreateForm(false)
+
     // TODO: Implement API call to create new key
-    console.log("Creating new API key:", newKey);
-  };
+    console.log('Creating new API key:', newKey)
+  }
 
   const handleRevokeKey = (id: string) => {
-    if (confirm("Are you sure you want to revoke this API key? This action cannot be undone.")) {
-      setApiKeys(apiKeys.map(key => 
-        key.id === id ? { ...key, status: "revoked" as const } : key
-      ));
+    if (
+      confirm(
+        'Are you sure you want to revoke this API key? This action cannot be undone.'
+      )
+    ) {
+      setApiKeys(
+        apiKeys.map((key) =>
+          key.id === id ? { ...key, status: 'revoked' as const } : key
+        )
+      )
       // TODO: Implement API call to revoke key
-      console.log("Revoking API key:", id);
+      console.log('Revoking API key:', id)
     }
-  };
+  }
 
   const handleDeleteKey = (id: string) => {
-    if (confirm("Are you sure you want to delete this API key permanently?")) {
-      setApiKeys(apiKeys.filter(key => key.id !== id));
+    if (confirm('Are you sure you want to delete this API key permanently?')) {
+      setApiKeys(apiKeys.filter((key) => key.id !== id))
       // TODO: Implement API call to delete key
-      console.log("Deleting API key:", id);
+      console.log('Deleting API key:', id)
     }
-  };
+  }
 
   const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    alert("API key copied to clipboard!");
-  };
+    navigator.clipboard.writeText(text)
+    alert('API key copied to clipboard!')
+  }
 
   return (
     <Card>
@@ -91,7 +105,9 @@ export default function ApiKeysSection() {
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="pb-2">API Keys</CardTitle>
-            <CardDescription>Manage your API keys for programmatic access</CardDescription>
+            <CardDescription>
+              Manage your API keys for programmatic access
+            </CardDescription>
           </div>
           {!showCreateForm && (
             <Button onClick={() => setShowCreateForm(true)}>
@@ -120,10 +136,13 @@ export default function ApiKeysSection() {
                     </p>
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="outline" onClick={() => {
-                      setShowCreateForm(false);
-                      setNewKeyName("");
-                    }}>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setShowCreateForm(false)
+                        setNewKeyName('')
+                      }}
+                    >
                       Cancel
                     </Button>
                     <Button onClick={handleCreateApiKey}>
@@ -143,24 +162,34 @@ export default function ApiKeysSection() {
               </div>
             ) : (
               apiKeys.map((apiKey) => (
-                <Card key={apiKey.id} className={apiKey.status === "revoked" ? "opacity-60" : ""}>
+                <Card
+                  key={apiKey.id}
+                  className={apiKey.status === 'revoked' ? 'opacity-60' : ''}
+                >
                   <CardContent className="pt-6">
                     <div className="space-y-4">
                       <div className="flex items-start justify-between">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
                             <h4 className="font-semibold">{apiKey.name}</h4>
-                            <Badge variant={apiKey.status === "active" ? "default" : "secondary"}>
+                            <Badge
+                              variant={
+                                apiKey.status === 'active'
+                                  ? 'default'
+                                  : 'secondary'
+                              }
+                            >
                               {apiKey.status}
                             </Badge>
                           </div>
                           <p className="text-sm text-muted-foreground">
                             Created: {apiKey.createdAt}
-                            {apiKey.lastUsed && ` • Last used: ${apiKey.lastUsed}`}
+                            {apiKey.lastUsed &&
+                              ` • Last used: ${apiKey.lastUsed}`}
                           </p>
                         </div>
                         <div className="flex gap-2">
-                          {apiKey.status === "active" && (
+                          {apiKey.status === 'active' && (
                             <Button
                               variant="outline"
                               size="sm"
@@ -191,8 +220,11 @@ export default function ApiKeysSection() {
                           variant="outline"
                           size="sm"
                           onClick={() => {
-                            const input = document.getElementById(`key-${apiKey.id}`) as HTMLInputElement;
-                            input.type = input.type === "password" ? "text" : "password";
+                            const input = document.getElementById(
+                              `key-${apiKey.id}`
+                            ) as HTMLInputElement
+                            input.type =
+                              input.type === 'password' ? 'text' : 'password'
                           }}
                         >
                           Show
@@ -214,5 +246,5 @@ export default function ApiKeysSection() {
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

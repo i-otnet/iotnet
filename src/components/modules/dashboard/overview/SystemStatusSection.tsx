@@ -1,31 +1,37 @@
-"use client";
+'use client'
 
-import React from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { 
+import React from 'react'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import {
   Globe,
   Router,
   MonitorCheck,
   Server,
   HardDrive,
-  LineChart
-} from "lucide-react";
+  LineChart,
+} from 'lucide-react'
 
 const systemStatus = {
-  platform: "operational",
-  api: "operational",
-  database: "operational",
-  timeSeriesDB: "operational",
-  mqttBroker: "operational"
-};
+  platform: 'operational',
+  api: 'operational',
+  database: 'operational',
+  timeSeriesDB: 'operational',
+  mqttBroker: 'operational',
+}
 
 export default function SystemStatusSection() {
   const getSystemStatusColor = (status: string) => {
-    return status === "operational" 
-      ? "text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-950"
-      : "text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-950";
-  };
+    return status === 'operational'
+      ? 'text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-950'
+      : 'text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-950'
+  }
 
   return (
     <Card className="h-full">
@@ -77,7 +83,9 @@ export default function SystemStatusSection() {
           <div className="flex items-center justify-between p-3 rounded-lg border border-border/50 bg-card/50">
             <div className="flex items-center gap-3">
               <LineChart className="w-4 h-4 text-muted-foreground" />
-              <span className="font-medium text-foreground">Time Series DB</span>
+              <span className="font-medium text-foreground">
+                Time Series DB
+              </span>
             </div>
             <Badge className={getSystemStatusColor(systemStatus.timeSeriesDB)}>
               {systemStatus.timeSeriesDB}
@@ -86,5 +94,5 @@ export default function SystemStatusSection() {
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

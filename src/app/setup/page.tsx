@@ -1,31 +1,31 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { BrokerSetupModal } from "@/components/modules/brokerSetup/brokerSetupModal";
-import { ThemeSetupModal } from "@/components/modules/ThemeSetup/themeSetupModal";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react'
+import { BrokerSetupModal } from '@/components/modules/brokerSetup/brokerSetupModal'
+import { ThemeSetupModal } from '@/components/modules/ThemeSetup/themeSetupModal'
+import { Button } from '@/components/ui/button'
 
 export default function SetupPage() {
-  const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
-  const [isBrokerModalOpen, setIsBrokerModalOpen] = useState(false);
+  const [isThemeModalOpen, setIsThemeModalOpen] = useState(false)
+  const [isBrokerModalOpen, setIsBrokerModalOpen] = useState(false)
 
   const handleThemeContinue = () => {
-    setIsThemeModalOpen(false);
-    setIsBrokerModalOpen(true);
-  };
+    setIsThemeModalOpen(false)
+    setIsBrokerModalOpen(true)
+  }
 
   const handleBrokerBack = () => {
-    setIsBrokerModalOpen(false);
-    setIsThemeModalOpen(true);
-  };
+    setIsBrokerModalOpen(false)
+    setIsThemeModalOpen(true)
+  }
 
   const handleBrokerContinue = () => {
-    setIsBrokerModalOpen(false);
-  };
+    setIsBrokerModalOpen(false)
+  }
 
   const handleSetupProject = () => {
-    setIsThemeModalOpen(true);
-  };
+    setIsThemeModalOpen(true)
+  }
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center p-24 overflow-hidden">
@@ -33,39 +33,49 @@ export default function SetupPage() {
       <div className="fixed inset-0 z-0 pointer-events-none">
         {/* Base gradient using Tailwind primary color classes */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-background" />
-        
+
         {/* Animated grid using primary color */}
-        <div 
+        <div
           className="absolute opacity-3"
           style={{
-            top: "-200px",
-            left: "-200px", 
-            right: "-200px",
-            bottom: "-200px",
+            top: '-200px',
+            left: '-200px',
+            right: '-200px',
+            bottom: '-200px',
             backgroundImage: `
               linear-gradient(var(--primary) 1px, transparent 1px),
               linear-gradient(90deg, var(--primary) 1px, transparent 1px)
             `,
-            backgroundSize: "60px 60px",
-            animation: "float-glow-left 30s linear infinite"
+            backgroundSize: '60px 60px',
+            animation: 'float-glow-left 30s linear infinite',
           }}
         />
 
         {/* Floating particles using primary color */}
-        <div className="absolute top-[20%] left-[40%] w-3 h-3 rounded-full animate-float-particles 
-          bg-primary opacity-50 dark:opacity-70 shadow-lg shadow-primary/50" />
-        <div className="absolute top-[55%] right-[35%] w-2 h-2 rounded-full animate-float-particles 
-          bg-primary opacity-40 dark:opacity-60 shadow-md shadow-primary/40" 
-          style={{ animationDelay: "2s" }} />
-        <div className="absolute bottom-[40%] left-[55%] w-2.5 h-2.5 rounded-full animate-float-particles 
-          bg-primary opacity-35 dark:opacity-55 shadow-lg shadow-primary/60" 
-          style={{ animationDelay: "4s" }} />
-        <div className="absolute top-[40%] left-[25%] w-1.5 h-1.5 rounded-full animate-float-particles 
-          bg-primary opacity-60 dark:opacity-80 shadow-sm shadow-primary/70" 
-          style={{ animationDelay: "1s" }} />
-        <div className="absolute bottom-[55%] right-[20%] w-2 h-2 rounded-full animate-float-particles 
-          bg-primary opacity-45 dark:opacity-65 shadow-md shadow-primary/50" 
-          style={{ animationDelay: "3s" }} />
+        <div
+          className="absolute top-[20%] left-[40%] w-3 h-3 rounded-full animate-float-particles 
+          bg-primary opacity-50 dark:opacity-70 shadow-lg shadow-primary/50"
+        />
+        <div
+          className="absolute top-[55%] right-[35%] w-2 h-2 rounded-full animate-float-particles 
+          bg-primary opacity-40 dark:opacity-60 shadow-md shadow-primary/40"
+          style={{ animationDelay: '2s' }}
+        />
+        <div
+          className="absolute bottom-[40%] left-[55%] w-2.5 h-2.5 rounded-full animate-float-particles 
+          bg-primary opacity-35 dark:opacity-55 shadow-lg shadow-primary/60"
+          style={{ animationDelay: '4s' }}
+        />
+        <div
+          className="absolute top-[40%] left-[25%] w-1.5 h-1.5 rounded-full animate-float-particles 
+          bg-primary opacity-60 dark:opacity-80 shadow-sm shadow-primary/70"
+          style={{ animationDelay: '1s' }}
+        />
+        <div
+          className="absolute bottom-[55%] right-[20%] w-2 h-2 rounded-full animate-float-particles 
+          bg-primary opacity-45 dark:opacity-65 shadow-md shadow-primary/50"
+          style={{ animationDelay: '3s' }}
+        />
 
         {/* Subtle overlay to blend with content */}
         <div className="absolute inset-0 bg-gradient-radial from-transparent via-background/30 to-background/70" />
@@ -159,5 +169,5 @@ export default function SetupPage() {
         onContinue={handleBrokerContinue}
       />
     </div>
-  );
+  )
 }

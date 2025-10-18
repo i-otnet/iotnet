@@ -1,32 +1,32 @@
-import "./globals.css";
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "@/components/providers/themeProvider";
-import { ProgressBarProvider } from "@/components/providers/progressBarProvider";
+import './globals.css'
+import type { Metadata } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
+import { ThemeProvider } from '@/components/providers/themeProvider'
+import { ProgressBarProvider } from '@/components/providers/progressBarProvider'
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+})
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
 
 export const metadata: Metadata = {
-  title: "IoTNet - IoT Network Management Platform",
-  description: "Comprehensive IoT device management and monitoring platform",
+  title: 'IoTNet - IoT Network Management Platform',
+  description: 'Comprehensive IoT device management and monitoring platform',
   icons: {
-    icon: "/favicon.ico",
-    apple: "/favicon.ico",
+    icon: '/favicon.ico',
+    apple: '/favicon.ico',
   },
-};
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -75,11 +75,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ProgressBarProvider>
-            {children}
-          </ProgressBarProvider>
+          <ProgressBarProvider>{children}</ProgressBarProvider>
         </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }

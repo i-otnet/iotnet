@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -40,7 +40,6 @@
 }
 
 :root {
-
   --background: oklch(1 0 0);
   --foreground: oklch(0.13 0.028 261.692);
   --card: oklch(1 0 0);
@@ -87,7 +86,10 @@
   --primary-rose-foreground: oklch(0.985 0.002 247.839);
 
   --primary: var(--theme-primary-color, var(--primary-blue));
-  --primary-foreground: var(--theme-primary-color-foreground, var(--primary-blue-foreground));
+  --primary-foreground: var(
+    --theme-primary-color-foreground,
+    var(--primary-blue-foreground)
+  );
   --secondary: oklch(0.967 0.003 264.542);
   --secondary-foreground: oklch(0.21 0.034 264.665);
   --muted: oklch(0.967 0.003 264.542);
@@ -161,7 +163,10 @@
   --primary-rose-foreground: oklch(0.985 0.002 247.839);
 
   --primary: var(--theme-primary-color, var(--primary-blue));
-  --primary-foreground: var(--theme-primary-color-foreground, var(--primary-blue-foreground));
+  --primary-foreground: var(
+    --theme-primary-color-foreground,
+    var(--primary-blue-foreground)
+  );
   --secondary: oklch(0.967 0.003 264.542);
   --secondary-foreground: oklch(0.985 0.002 247.839);
   --muted: oklch(0.278 0.033 256.848);
@@ -232,14 +237,14 @@
     background-color: rgb(0 0 0 / 0.4) !important;
     backdrop-filter: blur(4px) !important;
   }
-  
+
   /* Dialog content - transparent with backdrop blur */
   [data-radix-dialog-content] {
     background-color: rgb(255 255 255 / 0.85) !important;
     backdrop-filter: blur(12px) !important;
     border: 1px solid rgb(255 255 255 / 0.2) !important;
   }
-  
+
   /* Dark mode dialog content */
   .dark [data-radix-dialog-content] {
     background-color: rgb(15 23 42 / 0.85) !important;
@@ -264,73 +269,75 @@
 
 @layer utilities {
   @keyframes float-glow-right {
-    0% { 
+    0% {
       transform: translate3d(0, 0, 0) scale(1);
       opacity: 0.4;
     }
-    25% { 
+    25% {
       transform: translate3d(8%, 3%, 0) scale(1.1);
       opacity: 0.6;
     }
-    50% { 
+    50% {
       transform: translate3d(15%, 8%, 0) scale(1.2);
       opacity: 0.8;
     }
-    75% { 
+    75% {
       transform: translate3d(8%, 12%, 0) scale(1.1);
       opacity: 0.6;
     }
-    100% { 
+    100% {
       transform: translate3d(0, 0, 0) scale(1);
       opacity: 0.4;
     }
   }
 
   @keyframes float-glow-left {
-    0% { 
+    0% {
       transform: translate3d(0, 0, 0) scale(1);
       opacity: 0.3;
     }
-    25% { 
+    25% {
       transform: translate3d(-6%, 2%, 0) scale(1.05);
       opacity: 0.5;
     }
-    50% { 
+    50% {
       transform: translate3d(-12%, 6%, 0) scale(1.15);
       opacity: 0.7;
     }
-    75% { 
+    75% {
       transform: translate3d(-8%, 10%, 0) scale(1.1);
       opacity: 0.5;
     }
-    100% { 
+    100% {
       transform: translate3d(0, 0, 0) scale(1);
       opacity: 0.3;
     }
   }
 
   @keyframes pulse-glow {
-    0%, 100% { 
-      opacity: 0.2; 
+    0%,
+    100% {
+      opacity: 0.2;
       transform: scale(0.95);
     }
-    50% { 
-      opacity: 0.8; 
+    50% {
+      opacity: 0.8;
       transform: scale(1.1);
     }
   }
 
   @keyframes rotate-slow {
-    from { 
+    from {
       transform: translate(-50%, -50%) rotate(0deg);
     }
-    to { 
+    to {
       transform: translate(-50%, -50%) rotate(360deg);
     }
   }
 
   @keyframes float-particles {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateY(0px) rotate(0deg);
       opacity: 0.3;
     }

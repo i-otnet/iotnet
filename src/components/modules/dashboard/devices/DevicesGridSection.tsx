@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import React from 'react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import {
   CheckCircle,
   WifiOff,
@@ -14,47 +14,47 @@ import {
   BarChart3,
   Plus,
   Search,
-} from "lucide-react";
+} from 'lucide-react'
 
 interface Device {
-  id: number;
-  name: string;
-  type: string;
-  status: string;
-  location: string;
-  lastSeen: string;
-  icon: React.ComponentType<{ className?: string }>;
-  firmwareVersion: string;
-  chipId: string;
+  id: number
+  name: string
+  type: string
+  status: string
+  location: string
+  lastSeen: string
+  icon: React.ComponentType<{ className?: string }>
+  firmwareVersion: string
+  chipId: string
 }
 
 interface DevicesGridSectionProps {
-  filteredDevices: Device[];
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-  setSelectedFilter: (filter: string) => void;
+  filteredDevices: Device[]
+  searchQuery: string
+  setSearchQuery: (query: string) => void
+  setSelectedFilter: (filter: string) => void
 }
 
 export default function DevicesGridSection({
   filteredDevices,
   searchQuery,
   setSearchQuery,
-  setSelectedFilter
+  setSelectedFilter,
 }: DevicesGridSectionProps) {
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case "online":
-        return <CheckCircle className="w-4 h-4 text-green-500" />;
-      case "offline":
-        return <WifiOff className="w-4 h-4 text-muted-foreground" />;
-      case "warning":
-        return <AlertTriangle className="w-4 h-4 text-yellow-500" />;
-      case "error":
-        return <AlertTriangle className="w-4 h-4 text-destructive" />;
+      case 'online':
+        return <CheckCircle className="w-4 h-4 text-green-500" />
+      case 'offline':
+        return <WifiOff className="w-4 h-4 text-muted-foreground" />
+      case 'warning':
+        return <AlertTriangle className="w-4 h-4 text-yellow-500" />
+      case 'error':
+        return <AlertTriangle className="w-4 h-4 text-destructive" />
       default:
-        return <Clock className="w-4 h-4 text-muted-foreground" />;
+        return <Clock className="w-4 h-4 text-muted-foreground" />
     }
-  };
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -65,16 +65,15 @@ export default function DevicesGridSection({
           </div>
           <h3 className="font-semibold mb-2">No devices found</h3>
           <p className="text-sm text-muted-foreground mb-4">
-            {searchQuery 
+            {searchQuery
               ? `No devices match "${searchQuery}" in the selected category.`
-              : "No devices found in the selected category."
-            }
+              : 'No devices found in the selected category.'}
           </p>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => {
-              setSearchQuery("");
-              setSelectedFilter("all");
+              setSearchQuery('')
+              setSelectedFilter('all')
             }}
           >
             Clear filters
@@ -83,9 +82,12 @@ export default function DevicesGridSection({
       ) : (
         <>
           {filteredDevices.map((device) => {
-            const IconComponent = device.icon;
+            const IconComponent = device.icon
             return (
-              <Card key={device.id} className="group hover:shadow-lg transition-all duration-200 border-0 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm">
+              <Card
+                key={device.id}
+                className="group hover:shadow-lg transition-all duration-200 border-0 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm"
+              >
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
@@ -93,11 +95,19 @@ export default function DevicesGridSection({
                         <IconComponent className="w-6 h-6 text-primary" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-sm truncate">{device.name}</h3>
-                        <p className="text-xs text-muted-foreground">{device.type}</p>
+                        <h3 className="font-semibold text-sm truncate">
+                          {device.name}
+                        </h3>
+                        <p className="text-xs text-muted-foreground">
+                          {device.type}
+                        </p>
                       </div>
                     </div>
-                    <Button variant="ghost" size="icon" className="w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
                       <MoreVertical className="w-4 h-4" />
                     </Button>
                   </div>
@@ -109,9 +119,15 @@ export default function DevicesGridSection({
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         {getStatusIcon(device.status)}
-                        <span className="text-sm font-medium capitalize">{device.status}</span>
+                        <span className="text-sm font-medium capitalize">
+                          {device.status}
+                        </span>
                       </div>
-                      <Badge variant={device.status === "online" ? "default" : "default"}>
+                      <Badge
+                        variant={
+                          device.status === 'online' ? 'default' : 'default'
+                        }
+                      >
                         {device.location}
                       </Badge>
                     </div>
@@ -120,11 +136,15 @@ export default function DevicesGridSection({
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-muted-foreground">Firmware</span>
-                        <span className="font-medium">{device.firmwareVersion}</span>
+                        <span className="font-medium">
+                          {device.firmwareVersion}
+                        </span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-muted-foreground">Chip ID</span>
-                        <span className="font-medium text-xs font-mono">{device.chipId}</span>
+                        <span className="font-medium text-xs font-mono">
+                          {device.chipId}
+                        </span>
                       </div>
                     </div>
 
@@ -140,11 +160,7 @@ export default function DevicesGridSection({
                         <Settings className="w-3 h-3 mr-1" />
                         Settings
                       </Button>
-                      <Button 
-                        variant="default" 
-                        size="sm"
-                        className="flex-1"
-                      >
+                      <Button variant="default" size="sm" className="flex-1">
                         <BarChart3 className="w-3 h-3 mr-1" />
                         Insights
                       </Button>
@@ -152,7 +168,7 @@ export default function DevicesGridSection({
                   </div>
                 </CardContent>
               </Card>
-            );
+            )
           })}
 
           {/* Add New Device Card */}
@@ -165,7 +181,10 @@ export default function DevicesGridSection({
               <p className="text-sm text-muted-foreground mb-4">
                 Connect a new IoT device to your network
               </p>
-              <Button variant="outline" className="group-hover:bg-primary transition-colors">
+              <Button
+                variant="outline"
+                className="group-hover:bg-primary transition-colors"
+              >
                 Get Started
               </Button>
             </CardContent>
@@ -173,5 +192,5 @@ export default function DevicesGridSection({
         </>
       )}
     </div>
-  );
+  )
 }

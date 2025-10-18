@@ -1,10 +1,10 @@
-"use client";
+'use client'
 
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import React from 'react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Badge } from '@/components/ui/badge'
 import {
   Plus,
   Zap,
@@ -13,31 +13,31 @@ import {
   Activity,
   Search,
   Filter,
-} from "lucide-react";
+} from 'lucide-react'
 
 const automationTypeFilters = [
-  { label: "All Triggers", value: "all", count: 12 },
-  { label: "Time-based", value: "time", count: 4 },
-  { label: "Sensor-based", value: "sensor", count: 5 },
-  { label: "Event-based", value: "event", count: 3 }
-];
+  { label: 'All Triggers', value: 'all', count: 12 },
+  { label: 'Time-based', value: 'time', count: 4 },
+  { label: 'Sensor-based', value: 'sensor', count: 5 },
+  { label: 'Event-based', value: 'event', count: 3 },
+]
 
 interface Automation {
-  id: number;
-  status: string;
+  id: number
+  status: string
 }
 
 interface AutomationsOverviewSectionProps {
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-  selectedFilter: string;
-  setSelectedFilter: (filter: string) => void;
-  filteredAutomations: Automation[];
-  totalAutomations: number;
-  activeAutomations: number;
-  pausedAutomations: number;
-  triggeredToday: number;
-  getFilteredCount: (filterType: string) => number;
+  searchQuery: string
+  setSearchQuery: (query: string) => void
+  selectedFilter: string
+  setSelectedFilter: (filter: string) => void
+  filteredAutomations: Automation[]
+  totalAutomations: number
+  activeAutomations: number
+  pausedAutomations: number
+  triggeredToday: number
+  getFilteredCount: (filterType: string) => number
 }
 
 export default function AutomationsOverviewSection({
@@ -47,7 +47,7 @@ export default function AutomationsOverviewSection({
   setSelectedFilter,
   filteredAutomations,
   triggeredToday,
-  getFilteredCount
+  getFilteredCount,
 }: AutomationsOverviewSectionProps) {
   return (
     <div className="flex flex-col gap-4">
@@ -73,9 +73,13 @@ export default function AutomationsOverviewSection({
                 <Zap className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{filteredAutomations.length}</p>
+                <p className="text-2xl font-bold">
+                  {filteredAutomations.length}
+                </p>
                 <p className="text-sm text-muted-foreground">
-                  {selectedFilter === "all" ? "Total Triggers" : "Filtered Triggers"}
+                  {selectedFilter === 'all'
+                    ? 'Total Triggers'
+                    : 'Filtered Triggers'}
                 </p>
               </div>
             </div>
@@ -90,7 +94,11 @@ export default function AutomationsOverviewSection({
               </div>
               <div>
                 <p className="text-2xl font-bold">
-                  {filteredAutomations.filter(auto => auto.status === "active").length}
+                  {
+                    filteredAutomations.filter(
+                      (auto) => auto.status === 'active'
+                    ).length
+                  }
                 </p>
                 <p className="text-sm text-muted-foreground">Active</p>
               </div>
@@ -106,7 +114,11 @@ export default function AutomationsOverviewSection({
               </div>
               <div>
                 <p className="text-2xl font-bold">
-                  {filteredAutomations.filter(auto => auto.status === "paused").length}
+                  {
+                    filteredAutomations.filter(
+                      (auto) => auto.status === 'paused'
+                    ).length
+                  }
                 </p>
                 <p className="text-sm text-muted-foreground">Paused</p>
               </div>
@@ -151,7 +163,7 @@ export default function AutomationsOverviewSection({
           {automationTypeFilters.map((filter) => (
             <Badge
               key={filter.value}
-              variant={selectedFilter === filter.value ? "default" : "outline"}
+              variant={selectedFilter === filter.value ? 'default' : 'outline'}
               className="cursor-pointer px-3 py-1 hover:bg-primary/80"
               onClick={() => setSelectedFilter(filter.value)}
             >
@@ -164,5 +176,5 @@ export default function AutomationsOverviewSection({
         </div>
       </div>
     </div>
-  );
+  )
 }

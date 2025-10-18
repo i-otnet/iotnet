@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import React from 'react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import {
   MoreVertical,
   PlayCircle,
@@ -17,56 +17,56 @@ import {
   LucideIcon,
   Cpu,
   BrainCircuit,
-} from "lucide-react";
+} from 'lucide-react'
 
 interface Automation {
-  id: number;
-  name: string;
-  type: string;
-  status: string;
-  trigger: string;
-  action: string;
-  lastTriggered: string;
-  icon: LucideIcon;
-  description: string;
-  createdDate: string;
-  source: string;
-  sourceDevice?: string;
-  sourceModel?: string;
+  id: number
+  name: string
+  type: string
+  status: string
+  trigger: string
+  action: string
+  lastTriggered: string
+  icon: LucideIcon
+  description: string
+  createdDate: string
+  source: string
+  sourceDevice?: string
+  sourceModel?: string
 }
 
 interface AutomationsListSectionProps {
-  automations: Automation[];
+  automations: Automation[]
 }
 
 export default function AutomationsListSection({
-  automations
+  automations,
 }: AutomationsListSectionProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "active":
-        return "bg-green-500/10 text-green-500 border-green-500/20";
-      case "paused":
-        return "bg-muted text-muted-foreground border-muted";
-      case "inactive":
-        return "bg-gray-500/10 text-gray-500 border-gray-500/20";
+      case 'active':
+        return 'bg-green-500/10 text-green-500 border-green-500/20'
+      case 'paused':
+        return 'bg-muted text-muted-foreground border-muted'
+      case 'inactive':
+        return 'bg-gray-500/10 text-gray-500 border-gray-500/20'
       default:
-        return "bg-muted text-muted-foreground";
+        return 'bg-muted text-muted-foreground'
     }
-  };
+  }
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case "Time-based":
-        return "bg-blue-500/10 text-blue-500 border-blue-500/20";
-      case "Sensor-based":
-        return "bg-purple-500/10 text-purple-500 border-purple-500/20";
-      case "Event-based":
-        return "bg-pink-500/10 text-pink-500 border-pink-500/20";
+      case 'Time-based':
+        return 'bg-blue-500/10 text-blue-500 border-blue-500/20'
+      case 'Sensor-based':
+        return 'bg-purple-500/10 text-purple-500 border-purple-500/20'
+      case 'Event-based':
+        return 'bg-pink-500/10 text-pink-500 border-pink-500/20'
       default:
-        return "bg-muted text-muted-foreground";
+        return 'bg-muted text-muted-foreground'
     }
-  };
+  }
 
   return (
     <div className="space-y-4">
@@ -80,7 +80,7 @@ export default function AutomationsListSection({
       {/* Automations Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {automations.map((automation) => {
-          const Icon = automation.icon;
+          const Icon = automation.icon
           return (
             <Card
               key={automation.id}
@@ -116,7 +116,9 @@ export default function AutomationsListSection({
                 <div className="flex gap-2">
                   <Badge
                     variant="outline"
-                    className={`capitalize ${getStatusColor(automation.status)}`}
+                    className={`capitalize ${getStatusColor(
+                      automation.status
+                    )}`}
                   >
                     {automation.status}
                   </Badge>
@@ -130,18 +132,18 @@ export default function AutomationsListSection({
 
                 {/* Source Information */}
                 <div className="flex items-center gap-2 p-2.5 bg-muted/50 rounded-lg">
-                  {automation.source === "devices" ? (
+                  {automation.source === 'devices' ? (
                     <Cpu className="w-4 h-4 text-blue-500 flex-shrink-0" />
                   ) : (
                     <BrainCircuit className="w-4 h-4 text-purple-500 flex-shrink-0" />
                   )}
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-muted-foreground">
-                      {automation.source === "devices" ? "Device" : "ML Model"}
+                      {automation.source === 'devices' ? 'Device' : 'ML Model'}
                     </p>
                     <p className="text-sm font-medium truncate">
-                      {automation.source === "devices" 
-                        ? automation.sourceDevice 
+                      {automation.source === 'devices'
+                        ? automation.sourceDevice
                         : automation.sourceModel}
                     </p>
                   </div>
@@ -168,13 +170,16 @@ export default function AutomationsListSection({
                 {/* Last Triggered */}
                 <div className="pt-3 border-t">
                   <p className="text-xs text-muted-foreground">
-                    Last triggered: <span className="font-medium">{automation.lastTriggered}</span>
+                    Last triggered:{' '}
+                    <span className="font-medium">
+                      {automation.lastTriggered}
+                    </span>
                   </p>
                 </div>
 
                 {/* Action Buttons */}
                 <div className="flex gap-2 pt-2">
-                  {automation.status === "active" ? (
+                  {automation.status === 'active' ? (
                     <Button
                       variant="outline"
                       size="sm"
@@ -206,7 +211,7 @@ export default function AutomationsListSection({
                 </div>
               </CardContent>
             </Card>
-          );
+          )
         })}
       </div>
 
@@ -221,7 +226,8 @@ export default function AutomationsListSection({
             </div>
             <h3 className="text-lg font-semibold">No automations found</h3>
             <p className="text-muted-foreground max-w-md mx-auto">
-              Try adjusting your search or filter criteria, or create a new automation trigger.
+              Try adjusting your search or filter criteria, or create a new
+              automation trigger.
             </p>
             <Button className="mt-4 gap-2">
               <PlayCircle className="w-4 h-4" />
@@ -231,5 +237,5 @@ export default function AutomationsListSection({
         </Card>
       )}
     </div>
-  );
+  )
 }

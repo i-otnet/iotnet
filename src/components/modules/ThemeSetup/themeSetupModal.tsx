@@ -1,25 +1,29 @@
-"use client";
+'use client'
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { ThemeOptions } from "./themeOptions";
+} from '@/components/ui/dialog'
+import { ThemeOptions } from './themeOptions'
 
 interface ThemeSetupModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onContinue: () => void;
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  onContinue: () => void
 }
 
-export function ThemeSetupModal({ open, onOpenChange, onContinue }: ThemeSetupModalProps) {
+export function ThemeSetupModal({
+  open,
+  onOpenChange,
+  onContinue,
+}: ThemeSetupModalProps) {
   const handleContinueClick = () => {
-    onContinue();
-  };
+    onContinue()
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -38,5 +42,5 @@ export function ThemeSetupModal({ open, onOpenChange, onContinue }: ThemeSetupMo
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

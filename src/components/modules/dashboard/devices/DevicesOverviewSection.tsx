@@ -1,10 +1,10 @@
-"use client";
+'use client'
 
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import React from 'react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Badge } from '@/components/ui/badge'
 import {
   Plus,
   Cpu,
@@ -13,33 +13,33 @@ import {
   CalendarPlus,
   Search,
   Filter,
-} from "lucide-react";
+} from 'lucide-react'
 
 const deviceTypeFilters = [
-  { label: "All Devices", value: "all", count: 10 },
-  { label: "ESP32", value: "esp32", count: 3 },
-  { label: "ESP8266", value: "esp8266", count: 1 },
-  { label: "Raspberry Pi", value: "raspberry", count: 2 },
-  { label: "Orange Pi", value: "orange", count: 2 },
-  { label: "Wemos", value: "wemos", count: 2 }
-];
+  { label: 'All Devices', value: 'all', count: 10 },
+  { label: 'ESP32', value: 'esp32', count: 3 },
+  { label: 'ESP8266', value: 'esp8266', count: 1 },
+  { label: 'Raspberry Pi', value: 'raspberry', count: 2 },
+  { label: 'Orange Pi', value: 'orange', count: 2 },
+  { label: 'Wemos', value: 'wemos', count: 2 },
+]
 
 interface Device {
-  id: number;
-  status: string;
+  id: number
+  status: string
 }
 
 interface DevicesOverviewSectionProps {
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-  selectedFilter: string;
-  setSelectedFilter: (filter: string) => void;
-  filteredDevices: Device[];
-  totalDevices: number;
-  activeDevices: number;
-  offlineDevices: number;
-  newDevicesThisWeek: number;
-  getFilteredCount: (filterType: string) => number;
+  searchQuery: string
+  setSearchQuery: (query: string) => void
+  selectedFilter: string
+  setSelectedFilter: (filter: string) => void
+  filteredDevices: Device[]
+  totalDevices: number
+  activeDevices: number
+  offlineDevices: number
+  newDevicesThisWeek: number
+  getFilteredCount: (filterType: string) => number
 }
 
 export default function DevicesOverviewSection({
@@ -49,7 +49,7 @@ export default function DevicesOverviewSection({
   setSelectedFilter,
   filteredDevices,
   newDevicesThisWeek,
-  getFilteredCount
+  getFilteredCount,
 }: DevicesOverviewSectionProps) {
   return (
     <div className="flex flex-col gap-4">
@@ -77,7 +77,9 @@ export default function DevicesOverviewSection({
               <div>
                 <p className="text-2xl font-bold">{filteredDevices.length}</p>
                 <p className="text-sm text-muted-foreground">
-                  {selectedFilter === "all" ? "Total Devices" : "Filtered Devices"}
+                  {selectedFilter === 'all'
+                    ? 'Total Devices'
+                    : 'Filtered Devices'}
                 </p>
               </div>
             </div>
@@ -92,7 +94,11 @@ export default function DevicesOverviewSection({
               </div>
               <div>
                 <p className="text-2xl font-bold">
-                  {filteredDevices.filter(device => device.status === "online").length}
+                  {
+                    filteredDevices.filter(
+                      (device) => device.status === 'online'
+                    ).length
+                  }
                 </p>
                 <p className="text-sm text-muted-foreground">Online</p>
               </div>
@@ -108,7 +114,11 @@ export default function DevicesOverviewSection({
               </div>
               <div>
                 <p className="text-2xl font-bold">
-                  {filteredDevices.filter(device => device.status === "offline").length}
+                  {
+                    filteredDevices.filter(
+                      (device) => device.status === 'offline'
+                    ).length
+                  }
                 </p>
                 <p className="text-sm text-muted-foreground">Offline</p>
               </div>
@@ -153,18 +163,20 @@ export default function DevicesOverviewSection({
           {deviceTypeFilters.map((filter) => (
             <Button
               key={filter.value}
-              variant={selectedFilter === filter.value ? "default" : "outline"}
+              variant={selectedFilter === filter.value ? 'default' : 'outline'}
               size="sm"
               onClick={() => setSelectedFilter(filter.value)}
               className="whitespace-nowrap"
             >
               {filter.label}
-              <Badge 
-                variant={selectedFilter === filter.value ? "secondary" : "outline"}
+              <Badge
+                variant={
+                  selectedFilter === filter.value ? 'secondary' : 'outline'
+                }
                 className={`ml-2 ${
-                  selectedFilter === filter.value 
-                    ? "bg-primary-foreground text-primary border-primary-foreground" 
-                    : "text-primary border-primary"
+                  selectedFilter === filter.value
+                    ? 'bg-primary-foreground text-primary border-primary-foreground'
+                    : 'text-primary border-primary'
                 }`}
               >
                 {getFilteredCount(filter.value)}
@@ -174,5 +186,5 @@ export default function DevicesOverviewSection({
         </div>
       </div>
     </div>
-  );
+  )
 }

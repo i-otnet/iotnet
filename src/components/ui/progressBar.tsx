@@ -1,61 +1,62 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "@/lib/utils"
+import * as React from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
+import { cn } from '@/lib/utils'
 
 const progressBarVariants = cva(
-  "relative overflow-hidden rounded-full transition-all duration-300",
+  'relative overflow-hidden rounded-full transition-all duration-300',
   {
     variants: {
       variant: {
-        default: "bg-gray-200 dark:bg-gray-800",
-        primary: "bg-primary/10 dark:bg-primary/20",
-        secondary: "bg-gray-100 dark:bg-gray-700",
-        success: "bg-green-100 dark:bg-green-900/20",
-        warning: "bg-yellow-100 dark:bg-yellow-900/20",
-        error: "bg-red-100 dark:bg-red-900/20",
+        default: 'bg-gray-200 dark:bg-gray-800',
+        primary: 'bg-primary/10 dark:bg-primary/20',
+        secondary: 'bg-gray-100 dark:bg-gray-700',
+        success: 'bg-green-100 dark:bg-green-900/20',
+        warning: 'bg-yellow-100 dark:bg-yellow-900/20',
+        error: 'bg-red-100 dark:bg-red-900/20',
       },
       size: {
-        sm: "h-1",
-        default: "h-2",
-        lg: "h-3",
-        xl: "h-4",
+        sm: 'h-1',
+        default: 'h-2',
+        lg: 'h-3',
+        xl: 'h-4',
       },
     },
     defaultVariants: {
-      variant: "default",
-      size: "default",
+      variant: 'default',
+      size: 'default',
     },
   }
 )
 
 const progressFillVariants = cva(
-  "h-full transition-all duration-500 ease-out relative overflow-hidden",
+  'h-full transition-all duration-500 ease-out relative overflow-hidden',
   {
     variants: {
       variant: {
-        default: "bg-gradient-to-r from-blue-500 to-blue-600",
-        primary: "bg-gradient-to-r from-primary to-primary/80",
-        secondary: "bg-gradient-to-r from-gray-500 to-gray-600",
-        success: "bg-gradient-to-r from-green-500 to-green-600",
-        warning: "bg-gradient-to-r from-yellow-500 to-yellow-600",
-        error: "bg-gradient-to-r from-red-500 to-red-600",
+        default: 'bg-gradient-to-r from-blue-500 to-blue-600',
+        primary: 'bg-gradient-to-r from-primary to-primary/80',
+        secondary: 'bg-gradient-to-r from-gray-500 to-gray-600',
+        success: 'bg-gradient-to-r from-green-500 to-green-600',
+        warning: 'bg-gradient-to-r from-yellow-500 to-yellow-600',
+        error: 'bg-gradient-to-r from-red-500 to-red-600',
       },
       animated: {
-        true: "after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-white/20 after:to-transparent after:animate-shimmer",
-        false: "",
+        true: 'after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-white/20 after:to-transparent after:animate-shimmer',
+        false: '',
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: 'default',
       animated: true,
     },
   }
 )
 
-interface ProgressBarProps extends React.HTMLAttributes<HTMLDivElement>, 
-  VariantProps<typeof progressBarVariants> {
+interface ProgressBarProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof progressBarVariants> {
   value?: number
   max?: number
   loadingText?: string
@@ -64,19 +65,22 @@ interface ProgressBarProps extends React.HTMLAttributes<HTMLDivElement>,
 }
 
 const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
-  ({ 
-    className, 
-    variant, 
-    size, 
-    value = 0, 
-    max = 100, 
-    loadingText = "Loading...", 
-    showLabel = true,
-    animated = true,
-    ...props 
-  }, ref) => {
+  (
+    {
+      className,
+      variant,
+      size,
+      value = 0,
+      max = 100,
+      loadingText = 'Loading...',
+      showLabel = true,
+      animated = true,
+      ...props
+    },
+    ref
+  ) => {
     const percentage = Math.min(Math.max((value / max) * 100, 0), 100)
-    
+
     return (
       <div className="w-full space-y-2">
         {showLabel && (
@@ -89,7 +93,7 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
             </span>
           </div>
         )}
-        
+
         <div
           ref={ref}
           className={cn(progressBarVariants({ variant, size, className }))}
@@ -102,14 +106,14 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
         >
           <div
             className={cn(
-              progressFillVariants({ 
-                variant, 
-                animated: animated && percentage > 0 && percentage < 100 
+              progressFillVariants({
+                variant,
+                animated: animated && percentage > 0 && percentage < 100,
               })
             )}
-            style={{ 
+            style={{
               width: `${percentage}%`,
-              borderRadius: 'inherit'
+              borderRadius: 'inherit',
             }}
           >
             {animated && percentage > 0 && percentage < 100 && (
@@ -122,7 +126,7 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
   }
 )
 
-ProgressBar.displayName = "ProgressBar"
+ProgressBar.displayName = 'ProgressBar'
 
 // Hook untuk simulasi progress (opsional)
 export const useProgress = (duration: number = 3000) => {
@@ -132,9 +136,9 @@ export const useProgress = (duration: number = 3000) => {
   const startProgress = React.useCallback(() => {
     setIsLoading(true)
     setProgress(0)
-    
+
     const interval = setInterval(() => {
-      setProgress(prev => {
+      setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval)
           setIsLoading(false)

@@ -1,37 +1,45 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
 
 export default function DangerZoneSection() {
-  const [confirmText, setConfirmText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [confirmText, setConfirmText] = useState('')
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const handleDeleteAccount = () => {
-    if (confirmText !== "DELETE MY ACCOUNT") {
-      alert("Please type 'DELETE MY ACCOUNT' to confirm");
-      return;
+    if (confirmText !== 'DELETE MY ACCOUNT') {
+      alert("Please type 'DELETE MY ACCOUNT' to confirm")
+      return
     }
 
-    setIsDeleting(true);
-    
+    setIsDeleting(true)
+
     // TODO: Implement API call to delete account
-    console.log("Deleting account...");
-    
+    console.log('Deleting account...')
+
     setTimeout(() => {
-      alert("Account deletion initiated. You will be logged out shortly.");
-      setIsDeleting(false);
+      alert('Account deletion initiated. You will be logged out shortly.')
+      setIsDeleting(false)
       // Redirect to login or home page
-    }, 2000);
-  };
+    }, 2000)
+  }
 
   return (
     <Card className="border-red-500 dark:border-red-400">
       <CardHeader>
-        <CardTitle className="text-red-600 dark:text-red-400">Danger Zone</CardTitle>
+        <CardTitle className="text-red-600 dark:text-red-400">
+          Danger Zone
+        </CardTitle>
         <CardDescription>Irreversible and destructive actions</CardDescription>
       </CardHeader>
       <CardContent>
@@ -39,9 +47,12 @@ export default function DangerZoneSection() {
           {/* Delete Account Section */}
           <div className="space-y-4">
             <div className="space-y-2">
-              <h4 className="font-semibold text-red-600 dark:text-red-400">Delete Account</h4>
+              <h4 className="font-semibold text-red-600 dark:text-red-400">
+                Delete Account
+              </h4>
               <p className="text-sm text-muted-foreground">
-                Once you delete your account, there is no going back. Please be certain.
+                Once you delete your account, there is no going back. Please be
+                certain.
               </p>
             </div>
 
@@ -61,7 +72,11 @@ export default function DangerZoneSection() {
 
                   <div className="space-y-2">
                     <Label htmlFor="confirm-delete">
-                      Type <span className="font-mono font-bold">DELETE MY ACCOUNT</span> to confirm
+                      Type{' '}
+                      <span className="font-mono font-bold">
+                        DELETE MY ACCOUNT
+                      </span>{' '}
+                      to confirm
                     </Label>
                     <Input
                       id="confirm-delete"
@@ -75,10 +90,10 @@ export default function DangerZoneSection() {
                   <Button
                     variant="destructive"
                     onClick={handleDeleteAccount}
-                    disabled={confirmText !== "DELETE MY ACCOUNT" || isDeleting}
+                    disabled={confirmText !== 'DELETE MY ACCOUNT' || isDeleting}
                     className="w-full"
                   >
-                    {isDeleting ? "Deleting Account..." : "Delete My Account"}
+                    {isDeleting ? 'Deleting Account...' : 'Delete My Account'}
                   </Button>
                 </div>
               </CardContent>
@@ -95,19 +110,25 @@ export default function DangerZoneSection() {
             </div>
 
             <div className="flex gap-2">
-              <Button variant="outline" onClick={() => {
-                // TODO: Implement data export
-                console.log("Exporting user data...");
-                alert("Data export will be sent to your email");
-              }}>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  // TODO: Implement data export
+                  console.log('Exporting user data...')
+                  alert('Data export will be sent to your email')
+                }}
+              >
                 Export All Data
               </Button>
-              
-              <Button variant="outline" onClick={() => {
-                // TODO: Implement device data export
-                console.log("Exporting device data...");
-                alert("Device data export will be sent to your email");
-              }}>
+
+              <Button
+                variant="outline"
+                onClick={() => {
+                  // TODO: Implement device data export
+                  console.log('Exporting device data...')
+                  alert('Device data export will be sent to your email')
+                }}
+              >
                 Export Device Data
               </Button>
             </div>
@@ -115,5 +136,5 @@ export default function DangerZoneSection() {
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }
