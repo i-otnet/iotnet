@@ -42,38 +42,51 @@ export default function DangerZoneSection() {
         </CardTitle>
         <CardDescription>Irreversible and destructive actions</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-4 sm:p-6">
         <div className="space-y-6">
           {/* Delete Account Section */}
           <div className="space-y-4">
             <div className="space-y-2">
-              <h4 className="font-semibold text-red-600 dark:text-red-400">
+              <h4 className="font-semibold text-red-600 dark:text-red-400 text-sm sm:text-base">
                 Delete Account
               </h4>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 Once you delete your account, there is no going back. Please be
                 certain.
               </p>
             </div>
 
             <Card className="bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800">
-              <CardContent className="pt-6">
+              <CardContent className="p-4 sm:p-6">
                 <div className="space-y-4">
-                  <div className="text-sm space-y-2">
+                  <div className="text-xs sm:text-sm space-y-2">
                     <p className="font-medium">This will permanently delete:</p>
-                    <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                      <li>Your account and profile information</li>
-                      <li>All connected devices and their data</li>
-                      <li>All automation rules and models</li>
-                      <li>MQTT broker configurations</li>
-                      <li>API keys and access tokens</li>
+                    <ul className="list-disc list-inside space-y-1 text-muted-foreground pl-1">
+                      <li className="break-words">
+                        Your account and profile information
+                      </li>
+                      <li className="break-words">
+                        All connected devices and their data
+                      </li>
+                      <li className="break-words">
+                        All automation rules and models
+                      </li>
+                      <li className="break-words">
+                        MQTT broker configurations
+                      </li>
+                      <li className="break-words">
+                        API keys and access tokens
+                      </li>
                     </ul>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="confirm-delete">
+                    <Label
+                      htmlFor="confirm-delete"
+                      className="text-xs sm:text-sm"
+                    >
                       Type{' '}
-                      <span className="font-mono font-bold">
+                      <span className="font-mono font-bold text-xs sm:text-sm break-all">
                         DELETE MY ACCOUNT
                       </span>{' '}
                       to confirm
@@ -83,7 +96,7 @@ export default function DangerZoneSection() {
                       value={confirmText}
                       onChange={(e) => setConfirmText(e.target.value)}
                       placeholder="DELETE MY ACCOUNT"
-                      className="border-red-300 dark:border-red-700 focus-visible:ring-red-500"
+                      className="border-red-300 dark:border-red-700 focus-visible:ring-red-500 text-xs sm:text-sm"
                     />
                   </div>
 
@@ -91,7 +104,7 @@ export default function DangerZoneSection() {
                     variant="destructive"
                     onClick={handleDeleteAccount}
                     disabled={confirmText !== 'DELETE MY ACCOUNT' || isDeleting}
-                    className="w-full"
+                    className="w-full text-xs sm:text-sm"
                   >
                     {isDeleting ? 'Deleting Account...' : 'Delete My Account'}
                   </Button>
@@ -103,13 +116,15 @@ export default function DangerZoneSection() {
           {/* Export Data Section */}
           <div className="space-y-4 pt-4 border-t">
             <div className="space-y-2">
-              <h4 className="font-semibold">Export Your Data</h4>
-              <p className="text-sm text-muted-foreground">
+              <h4 className="font-semibold text-sm sm:text-base">
+                Export Your Data
+              </h4>
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 Download a copy of your data before deleting your account
               </p>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <Button
                 variant="outline"
                 onClick={() => {
@@ -117,6 +132,7 @@ export default function DangerZoneSection() {
                   console.log('Exporting user data...')
                   alert('Data export will be sent to your email')
                 }}
+                className="w-full sm:w-auto text-xs sm:text-sm"
               >
                 Export All Data
               </Button>
@@ -128,6 +144,7 @@ export default function DangerZoneSection() {
                   console.log('Exporting device data...')
                   alert('Device data export will be sent to your email')
                 }}
+                className="w-full sm:w-auto text-xs sm:text-sm"
               >
                 Export Device Data
               </Button>

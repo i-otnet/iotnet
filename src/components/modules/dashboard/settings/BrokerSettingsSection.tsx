@@ -13,6 +13,13 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { FileUpload } from '@/components/ui/fileUpload'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdownMenu'
+import { ChevronDown } from 'lucide-react'
 
 interface BrokerConfig {
   name: string
@@ -85,7 +92,7 @@ export default function BrokerSettingsSection() {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
           <div>
             <CardTitle className="flex items-center gap-3 pb-2">
               MQTT Broker Configuration
@@ -96,7 +103,10 @@ export default function BrokerSettingsSection() {
             </CardDescription>
           </div>
           {!isEditing && (
-            <Button onClick={() => setIsEditing(true)}>
+            <Button
+              onClick={() => setIsEditing(true)}
+              className="w-full sm:w-auto"
+            >
               Edit Configuration
             </Button>
           )}
@@ -180,22 +190,49 @@ export default function BrokerSettingsSection() {
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="ssl-option">SSL Certificate Option</Label>
-                  <select
-                    id="ssl-option"
-                    value={brokerConfig.sslOption}
-                    onChange={(e) => handleChange('sslOption', e.target.value)}
-                    className="w-full h-9 rounded-md border border-input bg-background dark:bg-popover text-foreground px-3 py-1 text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                  >
-                    <option value="new-certificate">
-                      Generate New Certificate (Let&apos;s Encrypt)
-                    </option>
-                    <option value="own-certificate">
-                      Upload Own Certificate
-                    </option>
-                    <option value="existing-domain">
-                      Use Existing Domain Certificate
-                    </option>
-                  </select>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full justify-between"
+                      >
+                        <span className="text-sm">
+                          {brokerConfig.sslOption === 'new-certificate'
+                            ? "Generate New Certificate (Let's Encrypt)"
+                            : brokerConfig.sslOption === 'own-certificate'
+                            ? 'Upload Own Certificate'
+                            : 'Use Existing Domain Certificate'}
+                        </span>
+                        <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                      align="start"
+                    >
+                      <DropdownMenuItem
+                        onClick={() =>
+                          handleChange('sslOption', 'new-certificate')
+                        }
+                      >
+                        Generate New Certificate (Let&apos;s Encrypt)
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() =>
+                          handleChange('sslOption', 'own-certificate')
+                        }
+                      >
+                        Upload Own Certificate
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() =>
+                          handleChange('sslOption', 'existing-domain')
+                        }
+                      >
+                        Use Existing Domain Certificate
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
 
                 {brokerConfig.sslOption === 'own-certificate' && (
@@ -254,17 +291,27 @@ export default function BrokerSettingsSection() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex justify-between pt-4 border-t">
-            <Button variant="outline" onClick={handleTestConnection}>
+          <div className="flex flex-col sm:flex-row justify-between gap-3 pt-4 border-t">
+            <Button
+              variant="outline"
+              onClick={handleTestConnection}
+              className="w-full sm:w-auto"
+            >
               Test Connection
             </Button>
 
             {isEditing && (
-              <div className="flex gap-2">
-                <Button variant="outline" onClick={handleCancel}>
+              <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                <Button
+                  variant="outline"
+                  onClick={handleCancel}
+                  className="w-full sm:w-auto"
+                >
                   Cancel
                 </Button>
-                <Button onClick={handleSave}>Save Configuration</Button>
+                <Button onClick={handleSave} className="w-full sm:w-auto">
+                  Save Configuration
+                </Button>
               </div>
             )}
           </div>

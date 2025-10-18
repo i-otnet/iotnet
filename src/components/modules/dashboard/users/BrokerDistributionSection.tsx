@@ -9,19 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Network, ServerCog, Zap, Globe } from 'lucide-react'
-
-const mockUsersData = {
-  users: [
-    { id: 1, brokerType: 'iotnet' },
-    { id: 2, brokerType: 'create' },
-    { id: 3, brokerType: 'external' },
-    { id: 4, brokerType: 'iotnet' },
-    { id: 5, brokerType: 'create' },
-    { id: 6, brokerType: 'external' },
-    { id: 7, brokerType: 'iotnet' },
-    { id: 8, brokerType: 'create' },
-  ],
-}
+import { mockUsersData } from '@/lib/json/usersData'
 
 const getBrokerInfo = (type: string) => {
   switch (type) {
@@ -33,7 +21,7 @@ const getBrokerInfo = (type: string) => {
         color: 'bg-primary text-primary-foreground',
         badgeVariant: 'default' as const,
       }
-    case 'create':
+    case 'personal':
       return {
         icon: ServerCog,
         label: 'Private',
@@ -71,14 +59,14 @@ export default function BrokerDistributionSection() {
       </CardHeader>
       <CardContent>
         <div className="grid gap-4 md:grid-cols-3">
-          {['iotnet', 'create', 'external'].map((type) => {
+          {['iotnet', 'personal', 'external'].map((type) => {
             const brokerInfo = getBrokerInfo(type)
             const BrokerIcon = brokerInfo.icon
-            const count = mockUsersData.users.filter(
+            const count = mockUsersData.data.users.filter(
               (user) => user.brokerType === type
             ).length
             const percentage = (
-              (count / mockUsersData.users.length) *
+              (count / mockUsersData.data.users.length) *
               100
             ).toFixed(1)
 

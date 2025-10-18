@@ -6,121 +6,14 @@ import DashboardHeader from '@/components/modules/dashboard/header'
 import DashboardModelsLayout from '@/components/layout/dashboard/dashboardModelsLayout'
 import ModelsOverviewSection from '@/components/modules/dashboard/models/ModelsOverviewSection'
 import ModelsGridSection from '@/components/modules/dashboard/models/ModelsGridSection'
-import {
-  BrainCircuit,
-  Network,
-  Layers,
-  Zap,
-  TrendingUp,
-  GitBranch,
-  Brain,
-  Boxes,
-} from 'lucide-react'
-
-// Mock ML models data
-const mockModelsData = {
-  totalModels: 8,
-  deployedModels: 6,
-  inactiveModels: 2,
-  newModelsThisWeek: 2,
-  models: [
-    {
-      id: 1,
-      name: 'IoT Anomaly Detector',
-      type: 'Classification',
-      status: 'deployed',
-      framework: 'TensorFlow',
-      lastUpdated: '2 hours ago',
-      icon: BrainCircuit,
-      version: 'v1.2.0',
-      accuracy: '94.5%',
-    },
-    {
-      id: 2,
-      name: 'Sensor Data Predictor',
-      type: 'Regression',
-      status: 'deployed',
-      framework: 'PyTorch',
-      lastUpdated: '5 hours ago',
-      icon: TrendingUp,
-      version: 'v2.0.1',
-      accuracy: '89.2%',
-    },
-    {
-      id: 3,
-      name: 'Device Clustering Model',
-      type: 'Clustering',
-      status: 'deployed',
-      framework: 'Scikit-learn',
-      lastUpdated: '1 day ago',
-      icon: Network,
-      version: 'v1.5.3',
-      accuracy: '92.8%',
-    },
-    {
-      id: 4,
-      name: 'Network Traffic Classifier',
-      type: 'Classification',
-      status: 'inactive',
-      framework: 'TensorFlow',
-      lastUpdated: '3 days ago',
-      icon: Layers,
-      version: 'v1.0.0',
-      accuracy: '87.1%',
-    },
-    {
-      id: 5,
-      name: 'Power Consumption Forecast',
-      type: 'Time Series',
-      status: 'deployed',
-      framework: 'Prophet',
-      lastUpdated: '6 hours ago',
-      icon: Zap,
-      version: 'v3.1.0',
-      accuracy: '91.3%',
-    },
-    {
-      id: 6,
-      name: 'Device Status Predictor',
-      type: 'Classification',
-      status: 'deployed',
-      framework: 'XGBoost',
-      lastUpdated: '12 hours ago',
-      icon: Brain,
-      version: 'v2.2.1',
-      accuracy: '95.7%',
-    },
-    {
-      id: 7,
-      name: 'Temperature Time Series',
-      type: 'Time Series',
-      status: 'deployed',
-      framework: 'LSTM',
-      lastUpdated: '1 day ago',
-      icon: GitBranch,
-      version: 'v1.8.2',
-      accuracy: '88.9%',
-    },
-    {
-      id: 8,
-      name: 'Multi-Sensor Fusion',
-      type: 'Regression',
-      status: 'inactive',
-      framework: 'PyTorch',
-      lastUpdated: '4 days ago',
-      icon: Boxes,
-      version: 'v1.1.0',
-      accuracy: '86.4%',
-    },
-  ],
-}
+import { mockModelsData } from '@/lib/json/modelsData'
 
 export default function ModelsPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedFilter, setSelectedFilter] = useState('all')
 
   // Filter models based on selected filter and search query
-  const filteredModels = mockModelsData.models.filter((model) => {
+  const filteredModels = mockModelsData.data.models.filter((model) => {
     const matchesSearch =
       model.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       model.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -144,7 +37,7 @@ export default function ModelsPage() {
   const getFilteredCount = (filterType: string) => {
     if (filterType === 'all') return filteredModels.length
 
-    return mockModelsData.models.filter((model) => {
+    return mockModelsData.data.models.filter((model) => {
       const matchesSearch =
         model.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         model.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -170,8 +63,8 @@ export default function ModelsPage() {
       <DashboardHeader />
 
       {/* Main Content */}
-      <main className="flex-1 p-6 overflow-y-auto bg-muted/30">
-        <div className="w-full mx-auto">
+      <main className="flex-1 p-4 md:p-6 overflow-y-auto bg-muted/30">
+        <div className="w-full mx-auto max-w-7xl">
           <DashboardModelsLayout
             modelsOverview={
               <ModelsOverviewSection
@@ -180,10 +73,12 @@ export default function ModelsPage() {
                 selectedFilter={selectedFilter}
                 setSelectedFilter={setSelectedFilter}
                 filteredModels={filteredModels}
-                totalModels={mockModelsData.totalModels}
-                deployedModels={mockModelsData.deployedModels}
-                inactiveModels={mockModelsData.inactiveModels}
-                newModelsThisWeek={mockModelsData.newModelsThisWeek}
+                totalModels={mockModelsData.data.statistics.totalModels}
+                deployedModels={mockModelsData.data.statistics.deployedModels}
+                inactiveModels={mockModelsData.data.statistics.inactiveModels}
+                newModelsThisWeek={
+                  mockModelsData.data.statistics.newModelsThisWeek
+                }
                 getFilteredCount={getFilteredCount}
               />
             }

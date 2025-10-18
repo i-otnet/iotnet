@@ -183,7 +183,7 @@ export default function DevicesGridSection({
               </p>
               <Button
                 variant="outline"
-                className="group-hover:bg-primary transition-colors"
+                className="text-muted-foreground hover:text-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
               >
                 Get Started
               </Button>

@@ -12,6 +12,12 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdownMenu'
+import {
   Users,
   Search,
   Network,
@@ -21,115 +27,10 @@ import {
   Mail,
   Edit3,
   Trash2,
+  ChevronDown,
 } from 'lucide-react'
-
-// Mock user data with broker information
-const mockUsersData = [
-  {
-    id: 1,
-    name: 'John Smith',
-    email: 'john.smith@company.com',
-    role: 'Admin',
-    brokerType: 'iotnet',
-    brokerName: 'IoTNet Default',
-    status: 'active',
-    lastActive: '2 minutes ago',
-    joinDate: '2024-01-15',
-    deviceCount: 12,
-    avatar: 'JS',
-  },
-  {
-    id: 2,
-    name: 'Sarah Johnson',
-    email: 'sarah.j@techcorp.com',
-    role: 'User',
-    brokerType: 'create',
-    brokerName: 'TechCorp Private Broker',
-    status: 'active',
-    lastActive: '15 minutes ago',
-    joinDate: '2024-02-20',
-    deviceCount: 8,
-    avatar: 'SJ',
-  },
-  {
-    id: 3,
-    name: 'Michael Chen',
-    email: 'm.chen@startup.io',
-    role: 'User',
-    brokerType: 'external',
-    brokerName: 'AWS IoT Core',
-    status: 'active',
-    lastActive: '1 hour ago',
-    joinDate: '2024-03-10',
-    deviceCount: 24,
-    avatar: 'MC',
-  },
-  {
-    id: 4,
-    name: 'Emily Davis',
-    email: 'emily.davis@industrial.com',
-    role: 'Admin',
-    brokerType: 'iotnet',
-    brokerName: 'IoTNet Default',
-    status: 'inactive',
-    lastActive: '2 days ago',
-    joinDate: '2023-12-05',
-    deviceCount: 45,
-    avatar: 'ED',
-  },
-  {
-    id: 5,
-    name: 'Robert Wilson',
-    email: 'r.wilson@manufacturing.com',
-    role: 'User',
-    brokerType: 'create',
-    brokerName: 'Manufacturing Hub Broker',
-    status: 'active',
-    lastActive: '30 minutes ago',
-    joinDate: '2024-01-28',
-    deviceCount: 67,
-    avatar: 'RW',
-  },
-  {
-    id: 6,
-    name: 'Lisa Rodriguez',
-    email: 'lisa.r@smartcity.gov',
-    role: 'User',
-    brokerType: 'external',
-    brokerName: 'Azure IoT Hub',
-    status: 'active',
-    lastActive: '5 minutes ago',
-    joinDate: '2024-02-14',
-    deviceCount: 156,
-    avatar: 'LR',
-  },
-  {
-    id: 7,
-    name: 'David Kim',
-    email: 'david.kim@research.edu',
-    role: 'User',
-    brokerType: 'iotnet',
-    brokerName: 'IoTNet Default',
-    status: 'active',
-    lastActive: '45 minutes ago',
-    joinDate: '2024-03-22',
-    deviceCount: 3,
-    avatar: 'DK',
-  },
-  {
-    id: 8,
-    name: 'Anna Thompson',
-    email: 'anna.t@agritech.com',
-    role: 'User',
-    brokerType: 'create',
-    brokerName: 'AgriTech Custom Broker',
-    status: 'active',
-    lastActive: '1 hour ago',
-    joinDate: '2024-01-08',
-    deviceCount: 89,
-    avatar: 'AT',
-  },
-]
+import { EditUserModal } from './editMqttUser/editUserModal'
+import { mockUsersData } from '@/lib/json/usersData'
 
 const getBrokerInfo = (type: string) => {
   switch (type) {
@@ -141,7 +42,7 @@ const getBrokerInfo = (type: string) => {
         color: 'bg-primary text-primary-foreground',
         badgeVariant: 'default' as const,
       }
-    case 'create':
+    case 'personal':
       return {
         icon: ServerCog,
         label: 'Private',
@@ -184,8 +85,17 @@ export default function UsersTableSection() {
   const [filterRole, setFilterRole] = useState('all')
   const [filterBroker, setFilterBroker] = useState('all')
   const [filterStatus, setFilterStatus] = useState('all')
+  const [editModalOpen, setEditModalOpen] = useState(false)
+  const [selectedUser, setSelectedUser] = useState<
+    (typeof mockUsersData.data.users)[0] | null
+  >(null)
 
-  const filteredUsers = mockUsersData.filter((user) => {
+  const handleEditUser = (user: (typeof mockUsersData.data.users)[0]) => {
+    setSelectedUser(user)
+    setEditModalOpen(true)
+  }
+
+  const filteredUsers = mockUsersData.data.users.filter((user) => {
     const matchesSearch =
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -221,37 +131,110 @@ export default function UsersTableSection() {
             </div>
           </div>
 
-          <div className="flex gap-2">
-            <select
-              className="px-3 py-2 border border-input bg-background rounded-md text-sm"
-              value={filterRole}
-              onChange={(e) => setFilterRole(e.target.value)}
-            >
-              <option value="all">All Roles</option>
-              <option value="admin">Admin</option>
-              <option value="user">User</option>
-            </select>
+          <div className="flex flex-wrap gap-2">
+            {/* Role Filter */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="justify-between min-w-[120px]"
+                >
+                  <span className="text-sm">
+                    {filterRole === 'all'
+                      ? 'All Roles'
+                      : filterRole === 'admin'
+                      ? 'Admin'
+                      : 'User'}
+                  </span>
+                  <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                align="start"
+              >
+                <DropdownMenuItem onClick={() => setFilterRole('all')}>
+                  All Roles
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterRole('admin')}>
+                  Admin
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterRole('user')}>
+                  User
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-            <select
-              className="px-3 py-2 border border-input bg-background rounded-md text-sm"
-              value={filterBroker}
-              onChange={(e) => setFilterBroker(e.target.value)}
-            >
-              <option value="all">All Brokers</option>
-              <option value="iotnet">IoTNet</option>
-              <option value="create">Private</option>
-              <option value="external">External</option>
-            </select>
+            {/* Broker Filter */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="justify-between min-w-[130px]"
+                >
+                  <span className="text-sm">
+                    {filterBroker === 'all'
+                      ? 'All Brokers'
+                      : filterBroker === 'iotnet'
+                      ? 'IoTNet'
+                      : filterBroker === 'personal'
+                      ? 'Private'
+                      : 'External'}
+                  </span>
+                  <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                align="start"
+              >
+                <DropdownMenuItem onClick={() => setFilterBroker('all')}>
+                  All Brokers
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterBroker('iotnet')}>
+                  IoTNet
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterBroker('personal')}>
+                  Private
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterBroker('external')}>
+                  External
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-            <select
-              className="px-3 py-2 border border-input bg-background rounded-md text-sm"
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-            >
-              <option value="all">All Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
+            {/* Status Filter */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="justify-between min-w-[120px]"
+                >
+                  <span className="text-sm">
+                    {filterStatus === 'all'
+                      ? 'All Status'
+                      : filterStatus === 'active'
+                      ? 'Active'
+                      : 'Inactive'}
+                  </span>
+                  <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                align="start"
+              >
+                <DropdownMenuItem onClick={() => setFilterStatus('all')}>
+                  All Status
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterStatus('active')}>
+                  Active
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterStatus('inactive')}>
+                  Inactive
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
@@ -363,6 +346,7 @@ export default function UsersTableSection() {
                             variant="ghost"
                             size="sm"
                             className="h-8 w-8 p-0"
+                            onClick={() => handleEditUser(user)}
                           >
                             <Edit3 className="h-4 w-4" />
                           </Button>
@@ -393,6 +377,12 @@ export default function UsersTableSection() {
           </div>
         )}
       </CardContent>
+
+      <EditUserModal
+        open={editModalOpen}
+        onOpenChange={setEditModalOpen}
+        user={selectedUser}
+      />
     </Card>
   )
 }

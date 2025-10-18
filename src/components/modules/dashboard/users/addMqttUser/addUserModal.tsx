@@ -77,11 +77,11 @@ export function BrokerSetupModal({
   const getContinueButtonText = () => {
     switch (currentView) {
       case 'iotnet':
-        return 'Connect to IoTNet'
+        return 'Use IoTNet'
       case 'personal':
         return 'Use Personal Broker'
       case 'external':
-        return 'Test Connection'
+        return 'Use Broker'
       default:
         return 'Continue'
     }

@@ -23,6 +23,18 @@ export default function DashboardSettingsLayout({
 }: DashboardSettingsLayoutProps) {
   return (
     <div className="space-y-6">
+      {/* Header Section - Responsive */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
+            Settings
+          </h1>
+          <p className="text-sm md:text-base text-muted-foreground">
+            Manage your account settings and preferences
+          </p>
+        </div>
+      </div>
+
       {/* Profile Settings Section */}
       {profileSettings}
 

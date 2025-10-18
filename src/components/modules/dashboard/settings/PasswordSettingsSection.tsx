@@ -54,7 +54,7 @@ export default function PasswordSettingsSection() {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
           <div>
             <CardTitle className="pb-2">Change Password</CardTitle>
             <CardDescription>
@@ -62,7 +62,12 @@ export default function PasswordSettingsSection() {
             </CardDescription>
           </div>
           {!isEditing && (
-            <Button onClick={() => setIsEditing(true)}>Change Password</Button>
+            <Button
+              onClick={() => setIsEditing(true)}
+              className="w-full sm:w-auto"
+            >
+              Change Password
+            </Button>
           )}
         </div>
       </CardHeader>
@@ -105,11 +110,17 @@ export default function PasswordSettingsSection() {
           </div>
 
           {isEditing && (
-            <div className="flex justify-end gap-2 pt-4">
-              <Button variant="outline" onClick={handleCancel}>
+            <div className="flex flex-col sm:flex-row justify-end gap-2 pt-4">
+              <Button
+                variant="outline"
+                onClick={handleCancel}
+                className="w-full sm:w-auto"
+              >
                 Cancel
               </Button>
-              <Button onClick={handleSave}>Update Password</Button>
+              <Button onClick={handleSave} className="w-full sm:w-auto">
+                Update Password
+              </Button>
             </div>
           )}
         </div>

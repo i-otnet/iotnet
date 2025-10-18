@@ -11,16 +11,11 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
+import { mockProfileData } from '@/lib/json/settingsData'
 
 export default function ProfileSettingsSection() {
   const [isEditing, setIsEditing] = useState(false)
-  const [formData, setFormData] = useState({
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    username: 'johndoe',
-    phone: '+62 812 3456 7890',
-    organization: 'IoTNet Inc.',
-  })
+  const [formData, setFormData] = useState(mockProfileData.data)
 
   const [savedData, setSavedData] = useState(formData)
 
@@ -43,7 +38,7 @@ export default function ProfileSettingsSection() {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
           <div>
             <CardTitle className="pb-2">Profile Information</CardTitle>
             <CardDescription>
@@ -51,7 +46,12 @@ export default function ProfileSettingsSection() {
             </CardDescription>
           </div>
           {!isEditing && (
-            <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
+            <Button
+              onClick={() => setIsEditing(true)}
+              className="w-full sm:w-auto"
+            >
+              Edit Profile
+            </Button>
           )}
         </div>
       </CardHeader>
@@ -119,11 +119,17 @@ export default function ProfileSettingsSection() {
           </div>
 
           {isEditing && (
-            <div className="flex justify-end gap-2 pt-4">
-              <Button variant="outline" onClick={handleCancel}>
+            <div className="flex flex-col sm:flex-row justify-end gap-2 pt-4">
+              <Button
+                variant="outline"
+                onClick={handleCancel}
+                className="w-full sm:w-auto"
+              >
                 Cancel
               </Button>
-              <Button onClick={handleSave}>Save Changes</Button>
+              <Button onClick={handleSave} className="w-full sm:w-auto">
+                Save Changes
+              </Button>
             </div>
           )}
         </div>

@@ -5,7 +5,14 @@ import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Info, Copy, CheckCircle, ChevronDown } from 'lucide-react'
+import {
+  Info,
+  Copy,
+  CheckCircle,
+  ChevronDown,
+  Loader2,
+  Wifi,
+} from 'lucide-react'
 import { generateCredentials } from '@/lib/credentials'
 import React, { useState } from 'react'
 import {
@@ -31,6 +38,10 @@ export default function BrokerIonetSetup({
   } | null>(null)
   const [copiedField, setCopiedField] = useState<string | null>(null)
   const [generatedOnce, setGeneratedOnce] = useState(false)
+  const [isTestingConnection, setIsTestingConnection] = useState(false)
+  const [connectionStatus, setConnectionStatus] = useState<
+    'idle' | 'success' | 'error'
+  >('idle')
 
   const handleGenerateCredentials = () => {
     const newCredentials = generateCredentials()
@@ -43,6 +54,23 @@ export default function BrokerIonetSetup({
     navigator.clipboard.writeText(text)
     setCopiedField(field)
     setTimeout(() => setCopiedField(null), 2000)
+  }
+
+  const handleTestConnection = async () => {
+    setIsTestingConnection(true)
+    setConnectionStatus('idle')
+
+    // Simulate connection test
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+      // Simulate successful connection
+      setConnectionStatus('success')
+    } catch (error) {
+      setConnectionStatus('error')
+      console.error('Connection test failed:', error)
+    } finally {
+      setIsTestingConnection(false)
+    }
   }
 
   return (
@@ -201,6 +229,46 @@ export default function BrokerIonetSetup({
                   ⚠️ <span className="font-semibold">Important:</span> Save
                   these credentials securely. They cannot be retrieved again.
                 </p>
+              </div>
+
+              <div className="flex flex-col gap-2 pt-2">
+                <Button
+                  onClick={handleTestConnection}
+                  disabled={isTestingConnection}
+                  variant="outline"
+                  className="w-full"
+                >
+                  {isTestingConnection ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Testing Connection...
+                    </>
+                  ) : (
+                    <>
+                      <Wifi className="mr-2 h-4 w-4" />
+                      Test Connection
+                    </>
+                  )}
+                </Button>
+
+                {connectionStatus === 'success' && (
+                  <div className="p-3 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900/50 rounded-md">
+                    <p className="text-xs text-green-700 dark:text-green-400 font-medium flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4" />
+                      Connection successful! Broker is reachable.
+                    </p>
+                  </div>
+                )}
+
+                {connectionStatus === 'error' && (
+                  <div className="p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 rounded-md">
+                    <p className="text-xs text-red-700 dark:text-red-400 font-medium flex items-center gap-2">
+                      <Info className="h-4 w-4" />
+                      Connection failed. Please check your credentials and try
+                      again.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           )}

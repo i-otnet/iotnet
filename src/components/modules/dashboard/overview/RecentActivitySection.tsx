@@ -9,44 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Activity } from 'lucide-react'
-
-const recentActivity = [
-  {
-    id: 1,
-    action: 'New device registered',
-    details: 'Temperature Sensor #47',
-    time: '2 minutes ago',
-    type: 'device',
-  },
-  {
-    id: 2,
-    action: 'Model deployed',
-    details: 'Temperature Prediction Model',
-    time: '15 minutes ago',
-    type: 'model',
-  },
-  {
-    id: 3,
-    action: 'User invited',
-    details: 'john.doe@company.com',
-    time: '1 hour ago',
-    type: 'user',
-  },
-  {
-    id: 4,
-    action: 'Automation triggered',
-    details: 'Temperature Alert Rule',
-    time: '2 hours ago',
-    type: 'automation',
-  },
-  {
-    id: 5,
-    action: 'Data backup completed',
-    details: 'Weekly System Backup',
-    time: '3 hours ago',
-    type: 'system',
-  },
-]
+import { mockRecentActivityData } from '@/lib/json/dashboardData'
 
 export default function RecentActivitySection() {
   const getActivityTypeColor = (type: string) => {
@@ -68,30 +31,32 @@ export default function RecentActivitySection() {
 
   return (
     <Card className="h-full">
-      <CardHeader>
-        <CardTitle className="text-lg flex items-center gap-2">
-          <Activity className="w-5 h-5 text-primary" />
+      <CardHeader className="p-4 sm:p-6">
+        <CardTitle className="text-base sm:text-lg flex items-center gap-2">
+          <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
           Recent Activity
         </CardTitle>
-        <CardDescription>Latest platform events and updates</CardDescription>
+        <CardDescription className="text-xs sm:text-sm">
+          Latest platform events and updates
+        </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {recentActivity.map((activity) => (
+      <CardContent className="p-4 sm:p-6 pt-0">
+        <div className="space-y-3 sm:space-y-4">
+          {mockRecentActivityData.data.activities.map((activity) => (
             <div
               key={activity.id}
-              className="flex items-start gap-3 p-3 rounded-lg border border-border/50 bg-card/50"
+              className="flex items-start gap-2 sm:gap-3 p-3 sm:p-3 rounded-lg border border-border/50 bg-card/50 hover:bg-accent/50 transition-colors"
             >
               <div
-                className={`w-2 h-2 rounded-full mt-2 ${getActivityTypeColor(
+                className={`w-2 h-2 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 ${getActivityTypeColor(
                   activity.type
                 )}`}
               />
               <div className="flex-1 min-w-0">
-                <div className="font-medium text-foreground text-sm">
+                <div className="font-medium text-foreground text-xs sm:text-sm break-words">
                   {activity.action}
                 </div>
-                <div className="text-muted-foreground text-sm">
+                <div className="text-muted-foreground text-xs sm:text-sm break-words">
                   {activity.details}
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">

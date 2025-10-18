@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { mockApiKeysData } from '@/lib/json/settingsData'
 
 interface ApiKey {
   id: string
@@ -23,24 +24,7 @@ interface ApiKey {
 }
 
 export default function ApiKeysSection() {
-  const [apiKeys, setApiKeys] = useState<ApiKey[]>([
-    {
-      id: '1',
-      name: 'Production API Key',
-      key: 'iotnet_pk_1234567890abcdefghijklmnopqrstuvwxyz',
-      createdAt: '2024-01-15',
-      lastUsed: '2024-10-15',
-      status: 'active',
-    },
-    {
-      id: '2',
-      name: 'Development API Key',
-      key: 'iotnet_pk_abcdefghijklmnopqrstuvwxyz1234567890',
-      createdAt: '2024-02-20',
-      lastUsed: '2024-10-10',
-      status: 'active',
-    },
-  ])
+  const [apiKeys, setApiKeys] = useState<ApiKey[]>(mockApiKeysData.data.apiKeys)
 
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [newKeyName, setNewKeyName] = useState('')
@@ -102,7 +86,7 @@ export default function ApiKeysSection() {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
           <div>
             <CardTitle className="pb-2">API Keys</CardTitle>
             <CardDescription>
@@ -110,7 +94,10 @@ export default function ApiKeysSection() {
             </CardDescription>
           </div>
           {!showCreateForm && (
-            <Button onClick={() => setShowCreateForm(true)}>
+            <Button
+              onClick={() => setShowCreateForm(true)}
+              className="w-full sm:w-auto"
+            >
               Create New Key
             </Button>
           )}
@@ -135,17 +122,21 @@ export default function ApiKeysSection() {
                       Choose a descriptive name to help you identify this key
                     </p>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <Button
                       variant="outline"
                       onClick={() => {
                         setShowCreateForm(false)
                         setNewKeyName('')
                       }}
+                      className="w-full sm:w-auto"
                     >
                       Cancel
                     </Button>
-                    <Button onClick={handleCreateApiKey}>
+                    <Button
+                      onClick={handleCreateApiKey}
+                      className="w-full sm:w-auto"
+                    >
                       Generate API Key
                     </Button>
                   </div>
@@ -168,7 +159,7 @@ export default function ApiKeysSection() {
                 >
                   <CardContent className="pt-6">
                     <div className="space-y-4">
-                      <div className="flex items-start justify-between">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
                             <h4 className="font-semibold">{apiKey.name}</h4>
@@ -188,12 +179,13 @@ export default function ApiKeysSection() {
                               ` • Last used: ${apiKey.lastUsed}`}
                           </p>
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 w-full sm:w-auto">
                           {apiKey.status === 'active' && (
                             <Button
                               variant="outline"
                               size="sm"
                               onClick={() => handleRevokeKey(apiKey.id)}
+                              className="flex-1 sm:flex-initial"
                             >
                               Revoke
                             </Button>
@@ -202,40 +194,45 @@ export default function ApiKeysSection() {
                             variant="outline"
                             size="sm"
                             onClick={() => handleDeleteKey(apiKey.id)}
+                            className="flex-1 sm:flex-initial"
                           >
                             Delete
                           </Button>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                         <Input
                           value={apiKey.key}
                           readOnly
-                          className="font-mono text-sm"
+                          className="font-mono text-sm flex-1"
                           type="password"
                           id={`key-${apiKey.id}`}
                         />
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            const input = document.getElementById(
-                              `key-${apiKey.id}`
-                            ) as HTMLInputElement
-                            input.type =
-                              input.type === 'password' ? 'text' : 'password'
-                          }}
-                        >
-                          Show
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => copyToClipboard(apiKey.key)}
-                        >
-                          Copy
-                        </Button>
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              const input = document.getElementById(
+                                `key-${apiKey.id}`
+                              ) as HTMLInputElement
+                              input.type =
+                                input.type === 'password' ? 'text' : 'password'
+                            }}
+                            className="flex-1 sm:flex-initial"
+                          >
+                            Show
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => copyToClipboard(apiKey.key)}
+                            className="flex-1 sm:flex-initial"
+                          >
+                            Copy
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </CardContent>

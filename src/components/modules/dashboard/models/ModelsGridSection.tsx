@@ -6,13 +6,11 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import {
   Sparkles,
-  PauseCircle,
   AlertTriangle,
   Clock,
   MoreVertical,
   Settings,
   BarChart3,
-  Play,
   Download,
   Upload,
   Trash2,
@@ -59,7 +57,7 @@ export default function ModelsGridSection({
       case 'deployed':
         return <Sparkles className="w-4 h-4 text-green-500" />
       case 'inactive':
-        return <PauseCircle className="w-4 h-4 text-muted-foreground" />
+        return <Clock className="w-4 h-4 text-muted-foreground" />
       case 'error':
         return <AlertTriangle className="w-4 h-4 text-destructive" />
       default:
@@ -222,23 +220,13 @@ export default function ModelsGridSection({
                   </div>
 
                   <div className="pt-2 flex gap-2">
-                    {model.status === 'deployed' ? (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex-1 gap-2"
-                      >
-                        <PauseCircle className="w-4 h-4" />
-                        Pause
-                      </Button>
-                    ) : (
-                      <Button size="sm" className="flex-1 gap-2">
-                        <Play className="w-4 h-4" />
-                        Deploy
-                      </Button>
-                    )}
-                    <Button variant="outline" size="sm" className="gap-2">
-                      <BarChart3 className="w-4 h-4" />
+                    <Button variant="outline" size="sm" className="flex-1">
+                      <Settings className="w-3 h-3 mr-1" />
+                      Settings
+                    </Button>
+                    <Button variant="default" size="sm" className="flex-1">
+                      <BarChart3 className="w-3 h-3 mr-1" />
+                      Metrics
                     </Button>
                   </div>
                 </CardContent>
@@ -258,7 +246,7 @@ export default function ModelsGridSection({
               </p>
               <Button
                 variant="outline"
-                className="group-hover:bg-primary transition-colors"
+                className="text-muted-foreground hover:text-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
               >
                 Get Started
               </Button>
