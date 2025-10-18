@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { useTheme } from 'next-themes'
-import { ThemeOptionButton } from '@/components/ui/themeOptionButton'
+import { ThemeOptionButton } from '@/components/modules/shared/themeOptionButton'
 import { ThemeStorage } from '@/lib/storage/ThemeStorage'
 
 type Theme =

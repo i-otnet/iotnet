@@ -13,7 +13,7 @@ import {
   Loader2,
   Wifi,
 } from 'lucide-react'
-import { generateCredentials } from '@/lib/credentials'
+import { generateCredentials } from '@/lib/utils/credentialsUtils'
 import React, { useState } from 'react'
 import {
   DropdownMenu,

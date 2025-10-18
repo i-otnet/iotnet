@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Copy, CheckCircle, ChevronDown, AlertTriangle } from 'lucide-react'
-import { generateCredentials } from '@/lib/credentials'
+import { generateCredentials } from '@/lib/utils/credentialsUtils'
 import {
   DropdownMenu,
   DropdownMenuContent,

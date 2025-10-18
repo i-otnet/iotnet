@@ -1,24 +1,18 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { Plus, Cpu, Wifi, WifiOff, Zap, Search, Filter } from 'lucide-react'
-
-const deviceTypeFilters = [
-  { label: 'All Devices', value: 'all', count: 10 },
-  { label: 'ESP32', value: 'esp32', count: 3 },
-  { label: 'ESP8266', value: 'esp8266', count: 1 },
-  { label: 'Raspberry Pi', value: 'raspberry', count: 2 },
-  { label: 'Orange Pi', value: 'orange', count: 2 },
-  { label: 'Wemos', value: 'wemos', count: 2 },
-]
+import { Plus, Cpu, Wifi, WifiOff, Zap, Filter } from 'lucide-react'
+import { mockDevicesData } from '@/lib/json/devicesData'
+import { FilterDeviceModal } from './filterDevice/filterDeviceModal'
+import SearchDeviceDefault from './searchDevice/searchDeviceDefault'
 
 interface Device {
   id: number
   status: string
+  type: string
 }
 
 interface DevicesOverviewSectionProps {
@@ -32,6 +26,7 @@ interface DevicesOverviewSectionProps {
   offlineDevices: number
   newDevicesThisWeek: number
   getFilteredCount: (filterType: string) => number
+  onAddDeviceClick?: () => void
 }
 
 export default function DevicesOverviewSection({
@@ -42,7 +37,34 @@ export default function DevicesOverviewSection({
   filteredDevices,
   newDevicesThisWeek,
   getFilteredCount,
+  onAddDeviceClick,
 }: DevicesOverviewSectionProps) {
+  const [selectedDeviceTypes, setSelectedDeviceTypes] = useState<string[]>([])
+  const [showFilterModal, setShowFilterModal] = useState(false)
+
+  // Generate device type filters from actual data for displaying badges
+  const generateDeviceFilters = useMemo(() => {
+    const devices = mockDevicesData.data.devices
+
+    // Count device types
+    const typeCount: Record<string, number> = {}
+    devices.forEach((device) => {
+      const type = device.type
+      typeCount[type] = (typeCount[type] || 0) + 1
+    })
+
+    // Convert to array and sort by count (descending)
+    const sortedTypes = Object.entries(typeCount)
+      .map(([type, count]) => ({
+        label: type,
+        value: type.toLowerCase().replace(/\s+/g, '-'),
+        count,
+        fullType: type,
+      }))
+      .sort((a, b) => b.count - a.count)
+
+    return sortedTypes
+  }, [])
   return (
     <div className="flex flex-col gap-4">
       {/* Header - Responsive */}
@@ -55,7 +77,11 @@ export default function DevicesOverviewSection({
             Manage and monitor all your IoT devices
           </p>
         </div>
-        <Button size="default" className="gap-2 w-full sm:w-auto">
+        <Button
+          size="default"
+          className="gap-2 w-full sm:w-auto"
+          onClick={onAddDeviceClick}
+        >
           <Plus className="w-4 h-4 md:w-5 md:h-5" />
           <span className="hidden sm:inline">Add Device</span>
           <span className="sm:hidden">Add</span>
@@ -147,52 +173,161 @@ export default function DevicesOverviewSection({
 
       {/* Search and Filter Bar - Responsive */}
       <div className="flex flex-col gap-4">
+        {/* Mobile Layout: Search + All Devices Badge in one line */}
+        <div className="flex sm:hidden items-center gap-2 w-full">
+          <div className="flex-1 min-w-0">
+            <SearchDeviceDefault
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+            />
+          </div>
+          {/* All Devices Badge Button - Mobile */}
+          <Button
+            variant={selectedFilter === 'all' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setSelectedFilter('all')}
+            className="whitespace-nowrap flex-shrink-0 text-xs"
+          >
+            <span>All</span>
+            <Badge
+              variant={selectedFilter === 'all' ? 'secondary' : 'outline'}
+              className={`ml-1 text-xs ${
+                selectedFilter === 'all'
+                  ? 'bg-primary-foreground text-primary border-primary-foreground'
+                  : 'text-primary border-primary'
+              }`}
+            >
+              {mockDevicesData.data.devices.length}
+            </Badge>
+          </Button>
+        </div>
+
         <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-          <div className="flex items-center gap-2 flex-1 w-full sm:max-w-md">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-              <Input
-                placeholder="Search devices..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
+          {/* Desktop Search Input with Filter (visible on sm and above) */}
+          <div className="hidden sm:flex items-center gap-2 flex-1">
+            <div className="flex-1">
+              <SearchDeviceDefault
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
               />
             </div>
-            <Button variant="outline" size="icon" className="flex-shrink-0">
+            <Button
+              variant="outline"
+              size="icon"
+              className="flex-shrink-0"
+              onClick={() => setShowFilterModal(true)}
+            >
               <Filter className="w-4 h-4" />
             </Button>
           </div>
 
-          {/* Device Type Filters - Horizontal Scroll on Mobile */}
-          <div className="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0 scrollbar-thin">
-            {deviceTypeFilters.map((filter) => (
+          {/* Device Type Filters - Horizontal Scroll (Desktop) */}
+          <div className="hidden sm:flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-thin">
+            {/* All Devices Filter - Desktop */}
+            <Button
+              variant={selectedFilter === 'all' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setSelectedFilter('all')}
+              className="whitespace-nowrap flex-shrink-0"
+            >
+              <span className="text-xs md:text-sm">All Devices</span>
+              <Badge
+                variant={selectedFilter === 'all' ? 'secondary' : 'outline'}
+                className={`ml-2 ${
+                  selectedFilter === 'all'
+                    ? 'bg-primary-foreground text-primary border-primary-foreground'
+                    : 'text-primary border-primary'
+                }`}
+              >
+                {mockDevicesData.data.devices.length}
+              </Badge>
+            </Button>
+
+            {/* Selected Device Type Filters from Filter Modal */}
+            {selectedDeviceTypes.map((deviceType) => {
+              const filterData = generateDeviceFilters.find(
+                (f) => f.value === deviceType
+              )
+              if (!filterData) return null
+
+              return (
+                <Button
+                  key={filterData.value}
+                  variant={
+                    selectedFilter === filterData.value ? 'default' : 'outline'
+                  }
+                  size="sm"
+                  onClick={() => setSelectedFilter(filterData.value)}
+                  className="whitespace-nowrap flex-shrink-0"
+                >
+                  <span className="text-xs md:text-sm">{filterData.label}</span>
+                  <Badge
+                    variant={
+                      selectedFilter === filterData.value
+                        ? 'secondary'
+                        : 'outline'
+                    }
+                    className={`ml-2 ${
+                      selectedFilter === filterData.value
+                        ? 'bg-primary-foreground text-primary border-primary-foreground'
+                        : 'text-primary border-primary'
+                    }`}
+                  >
+                    {filterData.count}
+                  </Badge>
+                </Button>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Mobile Filter Buttons - Only device types from modal (horizontal scroll) */}
+        <div className="flex sm:hidden items-center gap-2 overflow-x-auto pb-2 scrollbar-thin">
+          {/* Selected Device Type Filters from Filter Modal */}
+          {selectedDeviceTypes.map((deviceType) => {
+            const filterData = generateDeviceFilters.find(
+              (f) => f.value === deviceType
+            )
+            if (!filterData) return null
+
+            return (
               <Button
-                key={filter.value}
+                key={filterData.value}
                 variant={
-                  selectedFilter === filter.value ? 'default' : 'outline'
+                  selectedFilter === filterData.value ? 'default' : 'outline'
                 }
                 size="sm"
-                onClick={() => setSelectedFilter(filter.value)}
-                className="whitespace-nowrap flex-shrink-0"
+                onClick={() => setSelectedFilter(filterData.value)}
+                className="whitespace-nowrap flex-shrink-0 text-xs"
               >
-                <span className="text-xs md:text-sm">{filter.label}</span>
+                <span>{filterData.label}</span>
                 <Badge
                   variant={
-                    selectedFilter === filter.value ? 'secondary' : 'outline'
+                    selectedFilter === filterData.value
+                      ? 'secondary'
+                      : 'outline'
                   }
-                  className={`ml-2 ${
-                    selectedFilter === filter.value
+                  className={`ml-1 text-xs ${
+                    selectedFilter === filterData.value
                       ? 'bg-primary-foreground text-primary border-primary-foreground'
                       : 'text-primary border-primary'
                   }`}
                 >
-                  {getFilteredCount(filter.value)}
+                  {filterData.count}
                 </Badge>
               </Button>
-            ))}
-          </div>
+            )
+          })}
         </div>
       </div>
+
+      {/* Filter Modal */}
+      <FilterDeviceModal
+        open={showFilterModal}
+        onOpenChange={setShowFilterModal}
+        selectedDeviceTypes={selectedDeviceTypes}
+        setSelectedDeviceTypes={setSelectedDeviceTypes}
+      />
     </div>
   )
 }

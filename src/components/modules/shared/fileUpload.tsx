@@ -4,9 +4,9 @@ import * as React from 'react'
 import Image from 'next/image'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
-import { Button } from './button'
-import { Card, CardContent } from './card'
-import { Badge } from './badge'
+import { Button } from '../../ui/button'
+import { Card, CardContent } from '../../ui/card'
+import { Badge } from '../../ui/badge'
 import { Upload, File, Image as ImageIcon, Trash2, Loader } from 'lucide-react'
 
 // File upload variants - simplified since we're using Card component

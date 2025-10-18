@@ -15,6 +15,7 @@ import {
   LucideIcon,
   Cpu,
   BrainCircuit,
+  Plus,
 } from 'lucide-react'
 
 interface Automation {
@@ -211,6 +212,25 @@ export default function AutomationsListSection({
             </Card>
           )
         })}
+
+        {/* Add New Automation Card */}
+        <Card className="group hover:shadow-lg transition-all duration-200 border-2 border-dashed border-muted-foreground/25 hover:border-primary/50 bg-muted/20 hover:bg-muted/30 cursor-pointer">
+          <CardContent className="flex flex-col items-center justify-center h-full p-6 text-center min-h-[300px]">
+            <div className="p-4 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors mb-4">
+              <Plus className="w-8 h-8 text-primary" />
+            </div>
+            <h3 className="font-semibold mb-2">Add New Automation</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Create a new automation trigger for your devices or models
+            </p>
+            <Button
+              variant="outline"
+              className="text-muted-foreground hover:text-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+            >
+              Get Started
+            </Button>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Empty State */}

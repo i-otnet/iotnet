@@ -10,7 +10,11 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
-import { Zap, ServerCog, Network } from 'lucide-react'
+import {
+  getBrokerIcon,
+  getBrokerLabel,
+  getBrokerBadgeVariant,
+} from '@/lib/utils/brokerUtils'
 import EditUserIotnetBroker from './editUserByIotnetBroker'
 import EditUserPersonalBroker from './editUserByPersonalBroker'
 import EditUserExternalBroker from './editUserByExternalBroker'
@@ -51,45 +55,6 @@ export function EditUserModal({
   const handleClose = () => {
     setCredentialsRevoked(false)
     onOpenChange(false)
-  }
-
-  const getBrokerIcon = (brokerType: string) => {
-    switch (brokerType) {
-      case 'iotnet':
-        return Zap
-      case 'personal':
-        return ServerCog
-      case 'external':
-        return Network
-      default:
-        return Network
-    }
-  }
-
-  const getBrokerLabel = (brokerType: string) => {
-    switch (brokerType) {
-      case 'iotnet':
-        return 'IoTNet Broker'
-      case 'personal':
-        return 'Personal Broker'
-      case 'external':
-        return 'External Broker'
-      default:
-        return 'Unknown Broker'
-    }
-  }
-
-  const getBrokerBadgeVariant = (brokerType: string) => {
-    switch (brokerType) {
-      case 'iotnet':
-        return 'default'
-      case 'personal':
-        return 'secondary'
-      case 'external':
-        return 'outline'
-      default:
-        return 'outline'
-    }
   }
 
   const renderContent = () => {

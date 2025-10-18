@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { ProgressBar } from '@/components/ui/progressBar'
+import { ProgressBar } from '@/components/modules/shared/progressBar'
 
 interface ProgressBarContextType {
   showProgress: (

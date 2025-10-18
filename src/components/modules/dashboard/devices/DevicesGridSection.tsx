@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -15,6 +15,8 @@ import {
   Plus,
   Search,
 } from 'lucide-react'
+import { AddDeviceModal } from './addDevice/addDeviceModal'
+import { EditDeviceModal } from './editDevice/editDeviceModal'
 
 interface Device {
   id: number
@@ -33,6 +35,9 @@ interface DevicesGridSectionProps {
   searchQuery: string
   setSearchQuery: (query: string) => void
   setSelectedFilter: (filter: string) => void
+  onDeviceAdded?: (newDevice: Device) => void
+  isAddDeviceModalOpen?: boolean
+  setIsAddDeviceModalOpen?: (open: boolean) => void
 }
 
 export default function DevicesGridSection({
@@ -40,7 +45,18 @@ export default function DevicesGridSection({
   searchQuery,
   setSearchQuery,
   setSelectedFilter,
+  onDeviceAdded,
+  isAddDeviceModalOpen = false,
+  setIsAddDeviceModalOpen = () => {},
 }: DevicesGridSectionProps) {
+  const [editDeviceModalOpen, setEditDeviceModalOpen] = useState(false)
+  const [selectedDevice, setSelectedDevice] = useState<Device | null>(null)
+
+  const handleEditDevice = (device: Device) => {
+    setSelectedDevice(device)
+    setEditDeviceModalOpen(true)
+  }
+
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'online':
@@ -156,7 +172,12 @@ export default function DevicesGridSection({
 
                     {/* Quick actions */}
                     <div className="flex gap-2 pt-2">
-                      <Button variant="outline" size="sm" className="flex-1">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex-1"
+                        onClick={() => handleEditDevice(device)}
+                      >
                         <Settings className="w-3 h-3 mr-1" />
                         Settings
                       </Button>
@@ -172,7 +193,10 @@ export default function DevicesGridSection({
           })}
 
           {/* Add New Device Card */}
-          <Card className="group hover:shadow-lg transition-all duration-200 border-2 border-dashed border-muted-foreground/25 hover:border-primary/50 bg-muted/20 hover:bg-muted/30 cursor-pointer">
+          <Card
+            className="group hover:shadow-lg transition-all duration-200 border-2 border-dashed border-muted-foreground/25 hover:border-primary/50 bg-muted/20 hover:bg-muted/30 cursor-pointer"
+            onClick={() => setIsAddDeviceModalOpen(true)}
+          >
             <CardContent className="flex flex-col items-center justify-center h-full p-6 text-center min-h-[300px]">
               <div className="p-4 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors mb-4">
                 <Plus className="w-8 h-8 text-primary" />
@@ -183,6 +207,10 @@ export default function DevicesGridSection({
               </p>
               <Button
                 variant="outline"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setIsAddDeviceModalOpen(true)
+                }}
                 className="text-muted-foreground hover:text-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
               >
                 Get Started
@@ -191,6 +219,33 @@ export default function DevicesGridSection({
           </Card>
         </>
       )}
+
+      {/* Add Device Modal */}
+      <AddDeviceModal
+        open={isAddDeviceModalOpen}
+        onOpenChange={setIsAddDeviceModalOpen}
+        onDeviceAdded={(deviceData) => {
+          onDeviceAdded?.({
+            id: Math.random(),
+            name: deviceData.name,
+            type: deviceData.type,
+            status: deviceData.status,
+            location: deviceData.location,
+            lastSeen: 'just now',
+            icon: deviceData.icon || (() => <></>),
+            firmwareVersion: 'v1.0.0',
+            chipId: deviceData.chipId,
+          })
+          setIsAddDeviceModalOpen(false)
+        }}
+      />
+
+      {/* Edit Device Modal */}
+      <EditDeviceModal
+        open={editDeviceModalOpen}
+        onOpenChange={setEditDeviceModalOpen}
+        device={selectedDevice}
+      />
     </div>
   )
 }

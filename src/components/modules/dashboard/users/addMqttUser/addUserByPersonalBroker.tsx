@@ -14,7 +14,7 @@ import {
   CheckCircle,
   Info,
 } from 'lucide-react'
-import { generateHashPassword } from '@/lib/credentials'
+import { generateHashPassword } from '@/lib/utils/credentialsUtils'
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Eye, EyeOff, RotateCw, ChevronDown } from 'lucide-react'
-import { generateHashPassword } from '@/lib/credentials'
+import { generateHashPassword } from '@/lib/utils/credentialsUtils'
 import {
   DropdownMenu,
   DropdownMenuContent,
