@@ -21,6 +21,7 @@ interface ModelData {
   status: string
   icon?: string
   accuracy?: string
+  mqttUser?: string
 }
 
 interface AddModelModalProps {

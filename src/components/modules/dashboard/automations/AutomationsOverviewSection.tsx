@@ -1,9 +1,8 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import {
   Plus,
@@ -11,16 +10,11 @@ import {
   PlayCircle,
   PauseCircle,
   Activity,
-  Search,
   Filter,
 } from 'lucide-react'
-
-const automationTypeFilters = [
-  { label: 'All Triggers', value: 'all', count: 12 },
-  { label: 'Time-based', value: 'time', count: 4 },
-  { label: 'Sensor-based', value: 'sensor', count: 5 },
-  { label: 'Event-based', value: 'event', count: 3 },
-]
+import { mockAutomationsData } from '@/lib/json/automationsData'
+import { FilterAutomationModal } from './filterAutomation/filterAutomationModal'
+import SearchAutomationDefault from './searchAutomation/searchAutomationDefault'
 
 interface Automation {
   id: number
@@ -38,6 +32,7 @@ interface AutomationsOverviewSectionProps {
   pausedAutomations: number
   triggeredToday: number
   getFilteredCount: (filterType: string) => number
+  onAddAutomationClick?: () => void
 }
 
 export default function AutomationsOverviewSection({
@@ -47,8 +42,37 @@ export default function AutomationsOverviewSection({
   setSelectedFilter,
   filteredAutomations,
   triggeredToday,
-  getFilteredCount,
+  onAddAutomationClick,
 }: AutomationsOverviewSectionProps) {
+  const [selectedAutomationTypes, setSelectedAutomationTypes] = useState<
+    string[]
+  >([])
+  const [showFilterModal, setShowFilterModal] = useState(false)
+
+  // Generate automation type filters from actual data for displaying badges
+  const generateAutomationFilters = useMemo(() => {
+    const automations = mockAutomationsData.data.automations
+
+    // Count automation types
+    const typeCount: Record<string, number> = {}
+    automations.forEach((automation) => {
+      const type = automation.type
+      typeCount[type] = (typeCount[type] || 0) + 1
+    })
+
+    // Convert to array and sort by count (descending)
+    const sortedTypes = Object.entries(typeCount)
+      .map(([type, count]) => ({
+        label: type,
+        value: type.toLowerCase().replace(/\s+/g, '-'),
+        count,
+        fullType: type,
+      }))
+      .sort((a, b) => b.count - a.count)
+
+    return sortedTypes
+  }, [])
+
   return (
     <div className="flex flex-col gap-4">
       {/* Header - Responsive */}
@@ -61,7 +85,11 @@ export default function AutomationsOverviewSection({
             Create and manage automated triggers for your IoT devices
           </p>
         </div>
-        <Button size="default" className="gap-2 w-full sm:w-auto">
+        <Button
+          size="default"
+          className="gap-2 w-full sm:w-auto"
+          onClick={onAddAutomationClick}
+        >
           <Plus className="w-4 h-4 md:w-5 md:h-5" />
           <span className="hidden sm:inline">Add Trigger</span>
           <span className="sm:hidden">Add</span>
@@ -155,52 +183,151 @@ export default function AutomationsOverviewSection({
 
       {/* Search and Filter Bar - Responsive */}
       <div className="flex flex-col gap-4">
+        {/* Mobile Layout: Search + Filter in one line */}
+        <div className="flex sm:hidden items-center gap-2 w-full">
+          <div className="flex-1 min-w-0">
+            <SearchAutomationDefault
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+            />
+          </div>
+          {/* Filter Button - Mobile */}
+          <Button
+            variant="outline"
+            size="icon"
+            className="flex-shrink-0"
+            onClick={() => setShowFilterModal(true)}
+          >
+            <Filter className="w-4 h-4" />
+          </Button>
+        </div>
+
         <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-          <div className="flex items-center gap-2 flex-1 w-full sm:max-w-md">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-              <Input
-                placeholder="Search automations..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
+          {/* Desktop Search Input with Filter Button */}
+          <div className="hidden sm:flex items-center gap-2 flex-1">
+            <div className="flex-1">
+              <SearchAutomationDefault
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
               />
             </div>
-            <Button variant="outline" size="icon" className="flex-shrink-0">
+            <Button
+              variant="outline"
+              size="icon"
+              className="flex-shrink-0"
+              onClick={() => setShowFilterModal(true)}
+            >
               <Filter className="w-4 h-4" />
             </Button>
           </div>
 
-          {/* Automation Type Filters - Horizontal Scroll on Mobile */}
-          <div className="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0 scrollbar-thin">
-            {automationTypeFilters.map((filter) => (
+          {/* Automation Type Filters - Horizontal Scroll (Desktop) */}
+          <div className="hidden sm:flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-thin">
+            {/* All Automations Filter - Desktop */}
+            <Button
+              variant={selectedFilter === 'all' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setSelectedFilter('all')}
+              className="whitespace-nowrap flex-shrink-0"
+            >
+              <span className="text-xs md:text-sm">All Triggers</span>
+              <Badge
+                variant={selectedFilter === 'all' ? 'secondary' : 'outline'}
+                className={`ml-2 ${
+                  selectedFilter === 'all'
+                    ? 'bg-primary-foreground text-primary border-primary-foreground'
+                    : 'text-primary border-primary'
+                }`}
+              >
+                {mockAutomationsData.data.automations.length}
+              </Badge>
+            </Button>
+
+            {/* Selected Automation Type Filters from Filter Modal */}
+            {selectedAutomationTypes.map((automationType) => {
+              const filterData = generateAutomationFilters.find(
+                (f) => f.value === automationType
+              )
+              if (!filterData) return null
+
+              return (
+                <Button
+                  key={filterData.value}
+                  variant={
+                    selectedFilter === filterData.value ? 'default' : 'outline'
+                  }
+                  size="sm"
+                  onClick={() => setSelectedFilter(filterData.value)}
+                  className="whitespace-nowrap flex-shrink-0"
+                >
+                  <span className="text-xs md:text-sm">{filterData.label}</span>
+                  <Badge
+                    variant={
+                      selectedFilter === filterData.value
+                        ? 'secondary'
+                        : 'outline'
+                    }
+                    className={`ml-2 ${
+                      selectedFilter === filterData.value
+                        ? 'bg-primary-foreground text-primary border-primary-foreground'
+                        : 'text-primary border-primary'
+                    }`}
+                  >
+                    {filterData.count}
+                  </Badge>
+                </Button>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Mobile Filter Buttons - Only automation types from modal (horizontal scroll) */}
+        <div className="flex sm:hidden items-center gap-2 overflow-x-auto pb-2 scrollbar-thin">
+          {/* Selected Automation Type Filters from Filter Modal */}
+          {selectedAutomationTypes.map((automationType) => {
+            const filterData = generateAutomationFilters.find(
+              (f) => f.value === automationType
+            )
+            if (!filterData) return null
+
+            return (
               <Button
-                key={filter.value}
+                key={filterData.value}
                 variant={
-                  selectedFilter === filter.value ? 'default' : 'outline'
+                  selectedFilter === filterData.value ? 'default' : 'outline'
                 }
                 size="sm"
-                onClick={() => setSelectedFilter(filter.value)}
-                className="whitespace-nowrap flex-shrink-0"
+                onClick={() => setSelectedFilter(filterData.value)}
+                className="whitespace-nowrap flex-shrink-0 text-xs"
               >
-                <span className="text-xs md:text-sm">{filter.label}</span>
+                <span>{filterData.label}</span>
                 <Badge
                   variant={
-                    selectedFilter === filter.value ? 'secondary' : 'outline'
+                    selectedFilter === filterData.value
+                      ? 'secondary'
+                      : 'outline'
                   }
-                  className={`ml-2 ${
-                    selectedFilter === filter.value
+                  className={`ml-1 text-xs ${
+                    selectedFilter === filterData.value
                       ? 'bg-primary-foreground text-primary border-primary-foreground'
                       : 'text-primary border-primary'
                   }`}
                 >
-                  {getFilteredCount(filter.value)}
+                  {filterData.count}
                 </Badge>
               </Button>
-            ))}
-          </div>
+            )
+          })}
         </div>
       </div>
+
+      {/* Filter Modal */}
+      <FilterAutomationModal
+        open={showFilterModal}
+        onOpenChange={setShowFilterModal}
+        selectedAutomationTypes={selectedAutomationTypes}
+        setSelectedAutomationTypes={setSelectedAutomationTypes}
+      />
     </div>
   )
 }

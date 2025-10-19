@@ -18,6 +18,7 @@ interface DeviceData {
   chipId: string
   status: string
   icon?: string
+  mqttUser?: string
 }
 
 interface AddDeviceModalProps {

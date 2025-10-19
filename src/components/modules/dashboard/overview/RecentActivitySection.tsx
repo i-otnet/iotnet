@@ -30,7 +30,7 @@ export default function RecentActivitySection() {
   }
 
   return (
-    <Card className="h-full">
+    <Card className="h-full gap-2">
       <CardHeader className="p-4 sm:p-6">
         <CardTitle className="text-base sm:text-lg flex items-center gap-2">
           <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
@@ -40,7 +40,7 @@ export default function RecentActivitySection() {
           Latest platform events and updates
         </CardDescription>
       </CardHeader>
-      <CardContent className="p-4 sm:p-6 pt-0">
+      <CardContent className="p-4 sm:p-6 pt-0 -mt-6 sm:-mt-8">
         <div className="space-y-3 sm:space-y-4">
           {mockRecentActivityData.data.activities.map((activity) => (
             <div

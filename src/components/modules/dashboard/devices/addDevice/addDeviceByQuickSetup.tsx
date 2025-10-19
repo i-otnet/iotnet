@@ -13,6 +13,7 @@ import {
 import { Info, ChevronDown } from 'lucide-react'
 import { mockDeviceTypesData } from '@/lib/json/deviceTypesData'
 import { iconsData, iconMap } from '@/lib/json/iconsData'
+import { mockUsersData } from '@/lib/json/usersData'
 
 interface QuickSetupProps {
   onDeviceAdded?: (deviceData: DeviceData) => void
@@ -26,6 +27,7 @@ interface DeviceData {
   chipId: string
   status: string
   icon?: string
+  mqttUser?: string
 }
 
 export interface QuickSetupRef {
@@ -54,6 +56,7 @@ const QuickSetup = forwardRef<QuickSetupRef, QuickSetupProps>(
     const [deviceIcon, setDeviceIcon] = useState<string | undefined>()
     const [deviceLocation, setDeviceLocation] = useState('')
     const [deviceChipId, setDeviceChipId] = useState('')
+    const [mqttUser, setMqttUser] = useState('')
     const [searchQuery, setSearchQuery] = useState('')
 
     const filteredDeviceTypes = deviceTypeOptions.filter((option) =>
@@ -61,7 +64,7 @@ const QuickSetup = forwardRef<QuickSetupRef, QuickSetupProps>(
     )
 
     const handleAddDevice = () => {
-      if (!deviceName || !deviceType) return
+      if (!deviceName || !deviceType || !mqttUser) return
 
       const newDevice: DeviceData = {
         name: deviceName,
@@ -70,6 +73,7 @@ const QuickSetup = forwardRef<QuickSetupRef, QuickSetupProps>(
         chipId: deviceChipId || 'Unknown',
         status: 'online',
         icon: deviceIcon,
+        mqttUser: mqttUser,
       }
 
       onDeviceAdded?.(newDevice)
@@ -79,6 +83,7 @@ const QuickSetup = forwardRef<QuickSetupRef, QuickSetupProps>(
       setDeviceIcon(undefined)
       setDeviceLocation('')
       setDeviceChipId('')
+      setMqttUser('')
     }
 
     useImperativeHandle(ref, () => ({
@@ -207,6 +212,55 @@ const QuickSetup = forwardRef<QuickSetupRef, QuickSetupProps>(
               value={deviceChipId}
               onChange={(e) => setDeviceChipId(e.target.value)}
             />
+          </div>
+
+          {/* MQTT User - Required Dropdown */}
+          <div className="space-y-2">
+            <Label htmlFor="mqtt-user" className="text-sm font-medium">
+              MQTT User <span className="text-destructive">*</span>
+            </Label>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={`w-full justify-between ${
+                    !mqttUser ? 'text-muted-foreground' : ''
+                  }`}
+                >
+                  <span className="truncate">
+                    {mqttUser || 'Select MQTT user (required)'}
+                  </span>
+                  <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-[var(--radix-dropdown-menu-trigger-width)] p-2"
+                align="start"
+              >
+                <div className="max-h-60 overflow-y-auto space-y-1">
+                  {mockUsersData.data.users.length > 0 ? (
+                    mockUsersData.data.users.map((user) => (
+                      <DropdownMenuItem
+                        key={user.id}
+                        onClick={() => setMqttUser(user.name)}
+                        className="cursor-pointer"
+                      >
+                        <div className="flex flex-col">
+                          <span className="font-medium">{user.name}</span>
+                          <span className="text-xs text-muted-foreground">
+                            {user.email}
+                          </span>
+                        </div>
+                      </DropdownMenuItem>
+                    ))
+                  ) : (
+                    <div className="text-sm text-muted-foreground text-center py-2">
+                      No users available
+                    </div>
+                  )}
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 rounded-lg">

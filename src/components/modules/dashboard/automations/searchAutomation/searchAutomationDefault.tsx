@@ -1,0 +1,27 @@
+'use client'
+
+import React from 'react'
+import { Input } from '@/components/ui/input'
+import { Search } from 'lucide-react'
+
+interface SearchAutomationDefaultProps {
+  searchQuery: string
+  setSearchQuery: (query: string) => void
+}
+
+export default function SearchAutomationDefault({
+  searchQuery,
+  setSearchQuery,
+}: SearchAutomationDefaultProps) {
+  return (
+    <div className="relative">
+      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+      <Input
+        placeholder="Search automations..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="pl-10"
+      />
+    </div>
+  )
+}
