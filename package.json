@@ -7,7 +7,12 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "lint:fix": "eslint --fix"
+    "lint:fix": "eslint --fix",
+    "pm2:start": "pm2 start ecosystem.config.cjs",
+    "pm2:reload": "pm2 reload iotnet-web || pm2 start ecosystem.config.cjs",
+    "pm2:stop": "pm2 stop iotnet-web || true",
+    "pm2:logs": "pm2 logs iotnet-web",
+    "docker:autobuild": "sh ./autobuild.sh"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
