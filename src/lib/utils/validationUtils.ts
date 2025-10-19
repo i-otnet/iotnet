@@ -57,7 +57,7 @@ export const isValidUrl = (url: string): boolean => {
  * Validate required fields
  */
 export const validateRequiredFields = (
-  data: Record<string, any>,
+  data: Record<string, string>,
   requiredFields: string[]
 ): { isValid: boolean; missingFields: string[] } => {
   const missingFields = requiredFields.filter(

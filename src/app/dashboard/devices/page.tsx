@@ -60,7 +60,7 @@ export default function DevicesPage() {
   }
 
   const handleDeviceAdded = (newDevice: Device) => {
-    setDevices([...devices, newDevice as any])
+    setDevices([...devices, newDevice])
   }
 
   return (

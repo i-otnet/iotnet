@@ -4,14 +4,7 @@ import React, { useState, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import {
-  Plus,
-  BrainCircuit,
-  Sparkles,
-  Search,
-  Filter,
-  PauseCircle,
-} from 'lucide-react'
+import { Plus, BrainCircuit, Sparkles, Filter, PauseCircle } from 'lucide-react'
 import { mockModelsData } from '@/lib/json/modelsData'
 import { FilterModelModal } from './filterModel/filterModelModal'
 import SearchModelDefault from './searchModel/searchModelDefault'
@@ -43,7 +36,6 @@ export default function ModelsOverviewSection({
   totalModels,
   deployedModels,
   inactiveModels,
-  getFilteredCount,
   onAddModelClick,
 }: ModelsOverviewSectionProps) {
   const [selectedModelTypes, setSelectedModelTypes] = useState<string[]>([])

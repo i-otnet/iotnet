@@ -36,7 +36,6 @@ export default function DevicesOverviewSection({
   setSelectedFilter,
   filteredDevices,
   newDevicesThisWeek,
-  getFilteredCount,
   onAddDeviceClick,
 }: DevicesOverviewSectionProps) {
   const [selectedDeviceTypes, setSelectedDeviceTypes] = useState<string[]>([])

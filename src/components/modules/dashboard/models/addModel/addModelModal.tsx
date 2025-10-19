@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -27,14 +27,12 @@ interface AddModelModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onModelAdded?: (modelData: ModelData) => void
-  onBack?: () => void
 }
 
 export function AddModelModal({
   open,
   onOpenChange,
   onModelAdded,
-  onBack,
 }: AddModelModalProps) {
   const quickSetupRef = useRef<AddModelByQuickSetupRef>(null)
 

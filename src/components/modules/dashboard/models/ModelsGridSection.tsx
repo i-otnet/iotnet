@@ -11,18 +11,14 @@ import {
   MoreVertical,
   Settings,
   BarChart3,
-  Download,
-  Upload,
   Trash2,
   Eye,
   Plus,
-  Search,
 } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdownMenu'
 import { AddModelModal } from './addModel/addModelModal'

@@ -8,10 +8,22 @@ import ModelsOverviewSection from '@/components/modules/dashboard/models/ModelsO
 import ModelsGridSection from '@/components/modules/dashboard/models/ModelsGridSection'
 import { mockModelsData } from '@/lib/json/modelsData'
 
+interface Model {
+  id: number
+  name: string
+  type: string
+  status: string
+  framework: string
+  lastUpdated: string
+  icon: string
+  version: string
+  accuracy?: string
+}
+
 export default function ModelsPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedFilter, setSelectedFilter] = useState('all')
-  const [models, setModels] = useState(mockModelsData.data.models)
+  const [models, setModels] = useState<Model[]>(mockModelsData.data.models)
   const [isAddModelModalOpen, setIsAddModelModalOpen] = useState(false)
 
   // Filter models based on selected filter and search query
@@ -92,7 +104,7 @@ export default function ModelsPage() {
                 setSearchQuery={setSearchQuery}
                 selectedFilter={selectedFilter}
                 setSelectedFilter={setSelectedFilter}
-                onModelAdded={(newModel: any) =>
+                onModelAdded={(newModel: Model) =>
                   setModels([...models, newModel])
                 }
                 isAddModelModalOpen={isAddModelModalOpen}

@@ -161,7 +161,7 @@ export default function EditUserPersonalBroker({
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">
-            Leave password empty if you don't want to change it
+            Leave password empty if you don&apos;t want to change it
           </p>
         </div>
       </div>

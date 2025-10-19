@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -12,7 +11,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { FileUpload } from '@/components/modules/shared/fileUpload'
-import { Upload, AlertCircle } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
 import { iconsData, iconMap } from '@/lib/json/iconsData'
 
 interface Device {
@@ -50,7 +49,6 @@ export default function EditDeviceDefault({ device }: EditDeviceDefaultProps) {
   const [chipId, setChipId] = useState(device.chipId)
   const [useOTA, setUseOTA] = useState(false)
   const [firmwareVersion, setFirmwareVersion] = useState(device.firmwareVersion)
-  const [otaFiles, setOtaFiles] = useState<File[]>([])
   const [selectedIcon, setSelectedIcon] = useState<string>(device.icon)
 
   return (
@@ -202,7 +200,7 @@ export default function EditDeviceDefault({ device }: EditDeviceDefaultProps) {
                       maxFiles={1}
                       maxSize={10 * 1024 * 1024} // 10MB
                       acceptedFileTypes={['.bin', '.hex']}
-                      onFilesChange={setOtaFiles}
+                      onFilesChange={() => {}}
                       dropzoneText="Drag and drop your firmware file here"
                       buttonText="Choose Firmware File"
                       helperText="Upload your firmware file (.bin or .hex)"

@@ -9,7 +9,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Badge } from '@/components/ui/badge'
 import EditModelDefault from './editModelDefault'
 
 interface Model {
@@ -35,13 +34,9 @@ export function EditModelModal({
   onOpenChange,
   model,
 }: EditModelModalProps) {
-  const [currentView, setCurrentView] = useState<'default'>('default')
+  const [currentView] = useState<'default'>('default')
 
   if (!model) return null
-
-  const handleBackToOptions = () => {
-    setCurrentView('default')
-  }
 
   const renderContent = () => {
     switch (currentView) {

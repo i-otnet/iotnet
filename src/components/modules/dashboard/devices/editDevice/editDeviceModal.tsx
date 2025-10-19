@@ -9,8 +9,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Badge } from '@/components/ui/badge'
-import { Zap, ServerCog, Network } from 'lucide-react'
 import EditDeviceDefault from './editDeviceDefault'
 
 interface Device {
@@ -36,13 +34,9 @@ export function EditDeviceModal({
   onOpenChange,
   device,
 }: EditDeviceModalProps) {
-  const [currentView, setCurrentView] = useState<'default'>('default')
+  const [currentView] = useState<'default'>('default')
 
   if (!device) return null
-
-  const handleBackToOptions = () => {
-    setCurrentView('default')
-  }
 
   const renderContent = () => {
     switch (currentView) {
