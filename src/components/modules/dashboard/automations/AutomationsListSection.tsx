@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -12,10 +12,20 @@ import {
   Trash2,
   Zap,
   Bell,
-  LucideIcon,
   Cpu,
   BrainCircuit,
+  Plus,
 } from 'lucide-react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdownMenu'
+import { iconMap } from '@/lib/json/iconsData'
+import { AddAutomationModal } from './addAutomation/addAutomationModal'
+import { EditAutomationModal } from './editAutomation/editAutomationModal'
 
 interface Automation {
   id: number
@@ -25,7 +35,7 @@ interface Automation {
   trigger: string
   action: string
   lastTriggered: string
-  icon: LucideIcon
+  icon: string
   description: string
   createdDate: string
   source: string
@@ -40,6 +50,22 @@ interface AutomationsListSectionProps {
 export default function AutomationsListSection({
   automations,
 }: AutomationsListSectionProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [automationsList, setAutomationsList] =
+    useState<Automation[]>(automations)
+  const [selectedEditAutomation, setSelectedEditAutomation] =
+    useState<Automation | null>(null)
+  const [openDropdownId, setOpenDropdownId] = useState<number | null>(null)
+
+  // Sync local state with props when automations change
+  useEffect(() => {
+    setAutomationsList(automations)
+  }, [automations])
+
+  // Filter and search automations
+  const filteredAutomations = automationsList
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'active':
@@ -66,19 +92,33 @@ export default function AutomationsListSection({
     }
   }
 
+  const handleEditAutomation = (automation: Automation) => {
+    setSelectedEditAutomation(automation)
+    setIsEditModalOpen(true)
+  }
+
+  const handleAutomationUpdated = (updatedAutomation: Automation) => {
+    setAutomationsList(
+      automationsList.map((a) =>
+        a.id === updatedAutomation.id ? updatedAutomation : a
+      )
+    )
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">All Triggers</h2>
         <p className="text-sm text-muted-foreground">
-          {automations.length} automation{automations.length !== 1 ? 's' : ''}
+          {filteredAutomations.length} automation
+          {filteredAutomations.length !== 1 ? 's' : ''}
         </p>
       </div>
 
       {/* Automations Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {automations.map((automation) => {
-          const Icon = automation.icon
+        {filteredAutomations.map((automation) => {
+          const Icon = iconMap[automation.icon]
           return (
             <Card
               key={automation.id}
@@ -88,7 +128,11 @@ export default function AutomationsListSection({
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
                     <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                      <Icon className="w-6 h-6 text-primary" />
+                      {Icon ? (
+                        <Icon className="w-6 h-6 text-primary" />
+                      ) : (
+                        <Zap className="w-6 h-6 text-primary" />
+                      )}
                     </div>
                     <div>
                       <CardTitle className="text-base font-semibold">
@@ -99,13 +143,38 @@ export default function AutomationsListSection({
                       </p>
                     </div>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                  <DropdownMenu
+                    open={openDropdownId === automation.id}
+                    onOpenChange={(open) =>
+                      setOpenDropdownId(open ? automation.id : null)
+                    }
                   >
-                    <MoreVertical className="w-4 h-4" />
-                  </Button>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <MoreVertical className="w-4 h-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem
+                        onClick={() => {
+                          handleEditAutomation(automation)
+                          setOpenDropdownId(null)
+                        }}
+                      >
+                        <Pencil className="w-4 h-4 mr-2" />
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem className="text-destructive hover:bg-destructive/10">
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </CardHeader>
 
@@ -196,7 +265,12 @@ export default function AutomationsListSection({
                       Activate
                     </Button>
                   )}
-                  <Button variant="outline" size="sm" className="gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2"
+                    onClick={() => handleEditAutomation(automation)}
+                  >
                     <Pencil className="w-4 h-4" />
                   </Button>
                   <Button
@@ -211,10 +285,50 @@ export default function AutomationsListSection({
             </Card>
           )
         })}
+
+        {/* Add New Automation Card */}
+        <Card
+          className="group hover:shadow-lg transition-all duration-200 border-2 border-dashed border-muted-foreground/25 hover:border-primary/50 bg-muted/20 hover:bg-muted/30 cursor-pointer"
+          onClick={() => setIsModalOpen(true)}
+        >
+          <CardContent className="flex flex-col items-center justify-center h-full p-6 text-center min-h-[300px]">
+            <div className="p-4 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors mb-4">
+              <Plus className="w-8 h-8 text-primary" />
+            </div>
+            <h3 className="font-semibold mb-2">Add New Automation</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Create a new automation trigger for your devices or models
+            </p>
+            <Button
+              variant="outline"
+              className="text-muted-foreground hover:text-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+              onClick={() => setIsModalOpen(true)}
+            >
+              Get Started
+            </Button>
+          </CardContent>
+        </Card>
       </div>
 
+      {/* Add Automation Modal */}
+      <AddAutomationModal
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        onAutomationAdded={(automation) => {
+          setAutomationsList([...automationsList, automation])
+        }}
+      />
+
+      {/* Edit Automation Modal */}
+      <EditAutomationModal
+        open={isEditModalOpen}
+        onOpenChange={setIsEditModalOpen}
+        automation={selectedEditAutomation}
+        onAutomationUpdated={handleAutomationUpdated}
+      />
+
       {/* Empty State */}
-      {automations.length === 0 && (
+      {filteredAutomations.length === 0 && (
         <Card className="p-12">
           <div className="text-center space-y-3">
             <div className="flex justify-center">
@@ -224,10 +338,9 @@ export default function AutomationsListSection({
             </div>
             <h3 className="text-lg font-semibold">No automations found</h3>
             <p className="text-muted-foreground max-w-md mx-auto">
-              Try adjusting your search or filter criteria, or create a new
-              automation trigger.
+              Create a new automation trigger to get started.
             </p>
-            <Button className="mt-4 gap-2">
+            <Button className="mt-4 gap-2" onClick={() => setIsModalOpen(true)}>
               <PlayCircle className="w-4 h-4" />
               Create Your First Automation
             </Button>

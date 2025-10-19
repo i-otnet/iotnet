@@ -19,9 +19,16 @@ export default function DashboardLayout({
       <div className="flex-1 flex flex-col min-w-0 w-full lg:w-auto">
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
-            return React.cloneElement(child as React.ReactElement<any>, {
-              onMenuClick: () => setSidebarOpen(true),
-            })
+            // Only pass onMenuClick to DashboardHeader component
+            const childType = child.type as React.ComponentType
+            if (childType && childType.name === 'DashboardHeader') {
+              return React.cloneElement(
+                child as React.ReactElement<Record<string, unknown>>,
+                {
+                  onMenuClick: () => setSidebarOpen(true),
+                }
+              )
+            }
           }
           return child
         })}

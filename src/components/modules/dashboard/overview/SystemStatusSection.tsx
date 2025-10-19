@@ -34,7 +34,7 @@ export default function SystemStatusSection() {
   }
 
   return (
-    <Card className="h-full">
+    <Card className="h-full gap-2">
       <CardHeader className="p-4 sm:p-6">
         <CardTitle className="text-base sm:text-lg flex items-center gap-2">
           <MonitorCheck className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
@@ -44,7 +44,7 @@ export default function SystemStatusSection() {
           Platform health and availability
         </CardDescription>
       </CardHeader>
-      <CardContent className="p-4 sm:p-6 pt-0">
+      <CardContent className="p-4 sm:p-6 pt-0 -mt-6 sm:-mt-8">
         <div className="space-y-3 sm:space-y-4">
           <div className="flex items-center justify-between p-3 rounded-lg border border-border/50 bg-card/50 hover:bg-accent/50 transition-colors">
             <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">

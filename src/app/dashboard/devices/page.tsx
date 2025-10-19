@@ -8,12 +8,26 @@ import DevicesOverviewSection from '@/components/modules/dashboard/devices/Devic
 import DevicesGridSection from '@/components/modules/dashboard/devices/DevicesGridSection'
 import { mockDevicesData } from '@/lib/json/devicesData'
 
+interface Device {
+  id: number
+  name: string
+  type: string
+  status: string
+  location: string
+  lastSeen: string
+  icon: string
+  firmwareVersion: string
+  chipId: string
+}
+
 export default function DevicesPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedFilter, setSelectedFilter] = useState('all')
+  const [devices, setDevices] = useState(mockDevicesData.data.devices)
+  const [isAddDeviceModalOpen, setIsAddDeviceModalOpen] = useState(false)
 
   // Filter devices based on selected filter and search query
-  const filteredDevices = mockDevicesData.data.devices.filter((device) => {
+  const filteredDevices = devices.filter((device) => {
     const matchesSearch =
       device.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       device.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -21,16 +35,8 @@ export default function DevicesPage() {
 
     const matchesFilter =
       selectedFilter === 'all' ||
-      (selectedFilter === 'esp32' &&
-        device.type.toLowerCase().includes('esp32')) ||
-      (selectedFilter === 'esp8266' &&
-        device.type.toLowerCase().includes('esp8266')) ||
-      (selectedFilter === 'raspberry' &&
-        device.type.toLowerCase().includes('raspberry')) ||
-      (selectedFilter === 'orange' &&
-        device.type.toLowerCase().includes('orange')) ||
-      (selectedFilter === 'wemos' &&
-        device.type.toLowerCase().includes('wemos'))
+      device.type.toLowerCase().replace(/\s+/g, '-') ===
+        selectedFilter.toLowerCase()
 
     return matchesSearch && matchesFilter
   })
@@ -39,25 +45,22 @@ export default function DevicesPage() {
   const getFilteredCount = (filterType: string) => {
     if (filterType === 'all') return filteredDevices.length
 
-    return mockDevicesData.data.devices.filter((device) => {
+    return devices.filter((device) => {
       const matchesSearch =
         device.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         device.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
         device.location.toLowerCase().includes(searchQuery.toLowerCase())
 
       const matchesType =
-        (filterType === 'esp32' &&
-          device.type.toLowerCase().includes('esp32')) ||
-        (filterType === 'esp8266' &&
-          device.type.toLowerCase().includes('esp8266')) ||
-        (filterType === 'raspberry' &&
-          device.type.toLowerCase().includes('raspberry')) ||
-        (filterType === 'orange' &&
-          device.type.toLowerCase().includes('orange')) ||
-        (filterType === 'wemos' && device.type.toLowerCase().includes('wemos'))
+        device.type.toLowerCase().replace(/\s+/g, '-') ===
+        filterType.toLowerCase()
 
       return matchesSearch && matchesType
     }).length
+  }
+
+  const handleDeviceAdded = (newDevice: Device) => {
+    setDevices([...devices, newDevice])
   }
 
   return (
@@ -76,13 +79,18 @@ export default function DevicesPage() {
                 selectedFilter={selectedFilter}
                 setSelectedFilter={setSelectedFilter}
                 filteredDevices={filteredDevices}
-                totalDevices={mockDevicesData.data.statistics.totalDevices}
-                activeDevices={mockDevicesData.data.statistics.activeDevices}
-                offlineDevices={mockDevicesData.data.statistics.offlineDevices}
+                totalDevices={devices.length}
+                activeDevices={
+                  devices.filter((d) => d.status === 'online').length
+                }
+                offlineDevices={
+                  devices.filter((d) => d.status === 'offline').length
+                }
                 newDevicesThisWeek={
                   mockDevicesData.data.statistics.newDevicesThisWeek
                 }
                 getFilteredCount={getFilteredCount}
+                onAddDeviceClick={() => setIsAddDeviceModalOpen(true)}
               />
             }
             devicesGrid={
@@ -91,6 +99,9 @@ export default function DevicesPage() {
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
                 setSelectedFilter={setSelectedFilter}
+                onDeviceAdded={handleDeviceAdded}
+                isAddDeviceModalOpen={isAddDeviceModalOpen}
+                setIsAddDeviceModalOpen={setIsAddDeviceModalOpen}
               />
             }
           />

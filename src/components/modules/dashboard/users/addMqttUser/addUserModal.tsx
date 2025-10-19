@@ -9,10 +9,25 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { getBrokerTitle, getBrokerDescription } from '@/lib/utils/brokerUtils'
 import BrokerOptions from './addUserOptions'
 import BrokerIonetSetup from './addUserByIotnetBroker'
 import BrokerPersonalSetup from './addUserByPersonalBroker'
 import BrokerExternalSetup from './addUserByExternalBroker'
+  
+function useMultiViewModal<T extends string>(initialView: T) {
+  const [currentView, setCurrentView] = useState<T>(initialView)
+
+  const resetView = () => {
+    setCurrentView(initialView)
+  }
+
+  return {
+    currentView,
+    setCurrentView,
+    resetView,
+  }
+}
 
 interface BrokerSetupModalProps {
   open: boolean
@@ -20,12 +35,15 @@ interface BrokerSetupModalProps {
   onBack?: () => void
 }
 
+type ViewType = 'options' | 'iotnet' | 'personal' | 'external'
+
 export function BrokerSetupModal({
   open,
   onOpenChange,
   onBack,
 }: BrokerSetupModalProps) {
-  const [currentView, setCurrentView] = useState<string>('options')
+  const { currentView, setCurrentView, resetView } =
+    useMultiViewModal<ViewType>('options')
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [credentialsGenerated, setCredentialsGenerated] = useState(false)
 
@@ -35,18 +53,18 @@ export function BrokerSetupModal({
 
   const handleContinue = () => {
     if (selectedOption) {
-      setCurrentView(selectedOption)
+      setCurrentView(selectedOption as ViewType)
     }
   }
 
   const handleBackToOptions = () => {
-    setCurrentView('options')
+    resetView()
     setSelectedOption(null)
     setCredentialsGenerated(false)
   }
 
   const handleClose = () => {
-    setCurrentView('options')
+    resetView()
     setSelectedOption(null)
     setCredentialsGenerated(false)
     onOpenChange(false)
@@ -88,29 +106,14 @@ export function BrokerSetupModal({
   }
 
   const getTitle = () => {
-    switch (currentView) {
-      case 'iotnet':
-        return 'Use IoTNet Broker'
-      case 'personal':
-        return 'Use Personal Broker'
-      case 'external':
-        return 'Use Your Broker'
-      default:
-        return 'Setup Your MQTT Broker'
-    }
+    if (currentView === 'options') return 'Setup Your MQTT Broker'
+    return getBrokerTitle(currentView)
   }
 
   const getDescription = () => {
-    switch (currentView) {
-      case 'iotnet':
-        return 'Connect to the default IoTNet broker with automatic configuration.'
-      case 'personal':
-        return 'Configure and use your personal MQTT broker.'
-      case 'external':
-        return 'Connect to your existing MQTT broker.'
-      default:
-        return 'Choose how you want to connect to an MQTT broker.'
-    }
+    if (currentView === 'options')
+      return 'Choose how you want to connect to an MQTT broker.'
+    return getBrokerDescription(currentView)
   }
 
   return (

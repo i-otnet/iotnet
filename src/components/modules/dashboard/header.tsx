@@ -1,9 +1,10 @@
 import React from 'react'
 import Profile from '@/components/modules/dashboard/profile'
 import { ThemeDropdown } from '@/components/modules/ThemeSetup/themeDropdown'
+import NotificationDropdown from '@/components/modules/dashboard/notifications/NotificationDropdown'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Search, Bell, Menu } from 'lucide-react'
+import { Search, Menu } from 'lucide-react'
 
 interface DashboardHeaderProps {
   onMenuClick?: () => void
@@ -49,18 +50,8 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
           {/* Theme Selector */}
           <ThemeDropdown />
 
-          {/* Notification Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative text-muted-foreground hover:text-foreground hover:bg-accent"
-            title="Notifications"
-          >
-            <Bell className="w-5 h-5" />
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
-              3
-            </span>
-          </Button>
+          {/* Notification Dropdown */}
+          <NotificationDropdown />
 
           {/* Profile */}
           <Profile

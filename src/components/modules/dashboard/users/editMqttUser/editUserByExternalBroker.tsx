@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { FileUpload } from '@/components/ui/fileUpload'
+import { FileUpload } from '@/components/modules/shared/fileUpload'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -270,7 +270,7 @@ export default function EditUserExternalBroker({
             onChange={(e) => setBrokerPassword(e.target.value)}
           />
           <p className="text-xs text-muted-foreground">
-            Leave password empty if you don't want to change it
+            Leave password empty if you don&apos;t want to change it
           </p>
         </div>
       </div>

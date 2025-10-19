@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Eye, EyeOff, RotateCw, ChevronDown } from 'lucide-react'
-import { generateHashPassword } from '@/lib/credentials'
+import { generateHashPassword } from '@/lib/utils/credentialsUtils'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -161,7 +161,7 @@ export default function EditUserPersonalBroker({
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">
-            Leave password empty if you don't want to change it
+            Leave password empty if you don&apos;t want to change it
           </p>
         </div>
       </div>

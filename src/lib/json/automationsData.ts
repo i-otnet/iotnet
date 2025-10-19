@@ -1,16 +1,46 @@
-import {
-  Thermometer,
-  Zap,
-  Sun,
-  CloudRain,
-  Activity,
-  Bell,
-  Timer,
-  Lightbulb,
-  Fan,
-  Lock,
-  Camera,
-} from 'lucide-react'
+// Import real data from other files
+import { mockDevicesData } from './devicesData'
+import { mockModelsData } from './modelsData'
+
+// Import dropdown data from separate response files
+import { AUTOMATION_BUILDER_TRIGGER_TYPES } from './triggerTypesResponse'
+import { AUTOMATION_BUILDER_OPERATORS } from './operatorsResponse'
+import { AUTOMATION_BUILDER_ACTION_TYPES } from './actionTypesResponse'
+import { AUTOMATION_BUILDER_EVENT_TYPES } from './eventTypesResponse'
+import { AUTOMATION_BUILDER_TIMEZONES } from './timezonesResponse'
+import { AUTOMATION_BUILDER_ICONS } from './automationIconsResponse'
+import { VIRTUAL_PINS } from './virtualPinsData'
+
+// Extract devices from mockDevicesData and transform for automation builder
+export const AUTOMATION_BUILDER_DEVICES = mockDevicesData.data.devices.map(
+  (device: { id: number; name: string; location: string; type: string }) => ({
+    id: String(device.id),
+    name: device.name,
+    location: device.location,
+    type: device.type,
+    dataPoints: ['state', 'status', 'value', 'signal'],
+  })
+)
+
+// Extract models from mockModelsData and transform for automation builder
+export const AUTOMATION_BUILDER_MODELS = mockModelsData.data.models.map(
+  (model: { id: number; name: string }) => ({
+    id: String(model.id),
+    name: model.name,
+    outputs: ['result', 'confidence', 'prediction'],
+  })
+)
+
+// Re-export dropdown data from separate response files
+export {
+  AUTOMATION_BUILDER_TRIGGER_TYPES,
+  AUTOMATION_BUILDER_OPERATORS,
+  AUTOMATION_BUILDER_ACTION_TYPES,
+  AUTOMATION_BUILDER_EVENT_TYPES,
+  AUTOMATION_BUILDER_TIMEZONES,
+  AUTOMATION_BUILDER_ICONS,
+  VIRTUAL_PINS,
+}
 
 export const mockAutomationsData = {
   success: true,
@@ -26,7 +56,7 @@ export const mockAutomationsData = {
         trigger: 'Every day at 6:00 AM',
         action: 'Turn on living room lights',
         lastTriggered: 'Today, 6:00 AM',
-        icon: Sun,
+        icon: 'Sun',
         description: 'Automatic morning lighting',
         createdDate: '2024-10-01',
         source: 'devices',
@@ -40,7 +70,7 @@ export const mockAutomationsData = {
         trigger: 'When temperature > 30°C',
         action: 'Send notification & turn on AC',
         lastTriggered: 'Yesterday, 2:30 PM',
-        icon: Thermometer,
+        icon: 'Thermometer',
         description: 'High temperature monitoring',
         createdDate: '2024-09-28',
         source: 'devices',
@@ -54,7 +84,7 @@ export const mockAutomationsData = {
         trigger: 'Every day at 10:00 PM',
         action: 'Lock all doors & arm cameras',
         lastTriggered: 'Yesterday, 10:00 PM',
-        icon: Lock,
+        icon: 'Lock',
         description: 'Nightly security routine',
         createdDate: '2024-09-25',
         source: 'devices',
@@ -68,7 +98,7 @@ export const mockAutomationsData = {
         trigger: 'When humidity > 70%',
         action: 'Turn on dehumidifier',
         lastTriggered: '3 days ago',
-        icon: CloudRain,
+        icon: 'CloudRain',
         description: 'Maintain optimal humidity',
         createdDate: '2024-09-20',
         source: 'devices',
@@ -82,7 +112,7 @@ export const mockAutomationsData = {
         trigger: 'Weekdays at 8:00 AM',
         action: 'Turn off all unnecessary devices',
         lastTriggered: 'Today, 8:00 AM',
-        icon: Zap,
+        icon: 'Zap',
         description: 'Workday energy optimization',
         createdDate: '2024-09-15',
         source: 'model',
@@ -96,7 +126,7 @@ export const mockAutomationsData = {
         trigger: 'When motion sensor triggered',
         action: 'Turn on lights & start recording',
         lastTriggered: '2 hours ago',
-        icon: Camera,
+        icon: 'Camera',
         description: 'Motion-activated security',
         createdDate: '2024-09-10',
         source: 'devices',
@@ -110,7 +140,7 @@ export const mockAutomationsData = {
         trigger: 'Every day at 11:00 PM',
         action: 'Dim all lights to 20%',
         lastTriggered: 'Yesterday, 11:00 PM',
-        icon: Lightbulb,
+        icon: 'Lightbulb',
         description: 'Automatic night lighting',
         createdDate: '2024-09-05',
         source: 'devices',
@@ -124,7 +154,7 @@ export const mockAutomationsData = {
         trigger: 'When CO2 > 1000 ppm',
         action: 'Turn on ventilation fan',
         lastTriggered: '5 hours ago',
-        icon: Fan,
+        icon: 'Fan',
         description: 'Indoor air quality control',
         createdDate: '2024-08-30',
         source: 'devices',
@@ -138,7 +168,7 @@ export const mockAutomationsData = {
         trigger: 'Every 2 hours',
         action: 'Send activity reminder',
         lastTriggered: '1 week ago',
-        icon: Bell,
+        icon: 'Bell',
         description: 'Periodic activity reminders',
         createdDate: '2024-08-25',
         source: 'model',
@@ -152,7 +182,7 @@ export const mockAutomationsData = {
         trigger: 'When device idle for 30 min',
         action: 'Turn off device',
         lastTriggered: '4 hours ago',
-        icon: Timer,
+        icon: 'Timer',
         description: 'Idle device management',
         createdDate: '2024-08-20',
         source: 'model',
@@ -166,7 +196,7 @@ export const mockAutomationsData = {
         trigger: 'When no activity for 1 hour',
         action: 'Enable power saving mode',
         lastTriggered: '2 weeks ago',
-        icon: Activity,
+        icon: 'Activity',
         description: 'Activity-based optimization',
         createdDate: '2024-08-15',
         source: 'model',
@@ -180,7 +210,7 @@ export const mockAutomationsData = {
         trigger: 'Weekends at 8:00 AM',
         action: 'Gradually brighten bedroom lights',
         lastTriggered: 'Never',
-        icon: Sun,
+        icon: 'Sun',
         description: 'Gentle weekend wake-up',
         createdDate: '2024-08-10',
         source: 'devices',

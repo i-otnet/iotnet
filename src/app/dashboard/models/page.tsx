@@ -8,12 +8,26 @@ import ModelsOverviewSection from '@/components/modules/dashboard/models/ModelsO
 import ModelsGridSection from '@/components/modules/dashboard/models/ModelsGridSection'
 import { mockModelsData } from '@/lib/json/modelsData'
 
+interface Model {
+  id: number
+  name: string
+  type: string
+  status: string
+  framework: string
+  lastUpdated: string
+  icon: string
+  version: string
+  accuracy?: string
+}
+
 export default function ModelsPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedFilter, setSelectedFilter] = useState('all')
+  const [models, setModels] = useState<Model[]>(mockModelsData.data.models)
+  const [isAddModelModalOpen, setIsAddModelModalOpen] = useState(false)
 
   // Filter models based on selected filter and search query
-  const filteredModels = mockModelsData.data.models.filter((model) => {
+  const filteredModels = models.filter((model) => {
     const matchesSearch =
       model.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       model.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -27,7 +41,7 @@ export default function ModelsPage() {
         model.type.toLowerCase() === 'regression') ||
       (selectedFilter === 'clustering' &&
         model.type.toLowerCase() === 'clustering') ||
-      (selectedFilter === 'timeseries' &&
+      (selectedFilter === 'time-series' &&
         model.type.toLowerCase() === 'time series')
 
     return matchesSearch && matchesFilter
@@ -37,7 +51,7 @@ export default function ModelsPage() {
   const getFilteredCount = (filterType: string) => {
     if (filterType === 'all') return filteredModels.length
 
-    return mockModelsData.data.models.filter((model) => {
+    return models.filter((model) => {
       const matchesSearch =
         model.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         model.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -50,7 +64,7 @@ export default function ModelsPage() {
           model.type.toLowerCase() === 'regression') ||
         (filterType === 'clustering' &&
           model.type.toLowerCase() === 'clustering') ||
-        (filterType === 'timeseries' &&
+        (filterType === 'time-series' &&
           model.type.toLowerCase() === 'time series')
 
       return matchesSearch && matchesType
@@ -80,6 +94,7 @@ export default function ModelsPage() {
                   mockModelsData.data.statistics.newModelsThisWeek
                 }
                 getFilteredCount={getFilteredCount}
+                onAddModelClick={() => setIsAddModelModalOpen(true)}
               />
             }
             modelsGrid={
@@ -89,6 +104,11 @@ export default function ModelsPage() {
                 setSearchQuery={setSearchQuery}
                 selectedFilter={selectedFilter}
                 setSelectedFilter={setSelectedFilter}
+                onModelAdded={(newModel: Model) =>
+                  setModels([...models, newModel])
+                }
+                isAddModelModalOpen={isAddModelModalOpen}
+                setIsAddModelModalOpen={setIsAddModelModalOpen}
               />
             }
           />
