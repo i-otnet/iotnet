@@ -2,7 +2,10 @@
 
 import React from 'react'
 import { Card } from '@/components/ui/card'
-import { DEVICES, MODELS } from '../../modules/dashboard/automations/addAutomation/automationBuilderConfig'
+import {
+  AUTOMATION_BUILDER_DEVICES as DEVICES,
+  AUTOMATION_BUILDER_MODELS as MODELS,
+} from '@/lib/json/automationsData'
 
 interface Device {
   id: string
@@ -41,11 +44,14 @@ export default function AutomationBuilderFlowPreview({
   actionValue,
   show,
 }: AutomationBuilderFlowPreviewProps) {
-  const triggerSourceData = triggerSource === 'device'
-    ? (DEVICES as Device[]).find((d: Device) => d.id === triggerSourceId)
-    : (MODELS as Model[]).find((m: Model) => m.id === triggerSourceId)
+  const triggerSourceData =
+    triggerSource === 'device'
+      ? (DEVICES as Device[]).find((d: Device) => d.id === triggerSourceId)
+      : (MODELS as Model[]).find((m: Model) => m.id === triggerSourceId)
 
-  const actionTarget = (DEVICES as Device[]).find((d: Device) => d.id === actionTargetId)
+  const actionTarget = (DEVICES as Device[]).find(
+    (d: Device) => d.id === actionTargetId
+  )
 
   if (!show) return null
 

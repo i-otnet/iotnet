@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { FileUpload } from '@/components/modules/shared/fileUpload'
+import { FileUpload } from '@/components/shared/fileUpload'
 import { AlertCircle } from 'lucide-react'
 import { iconsData, iconMap } from '@/lib/json/iconsData'
 
