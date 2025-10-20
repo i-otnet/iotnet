@@ -48,6 +48,7 @@ interface ModelsGridSectionProps {
   onModelAdded?: (newModel: Model) => void
   isAddModelModalOpen?: boolean
   setIsAddModelModalOpen?: (open: boolean) => void
+  onInsightsClick?: (modelId: number) => void
 }
 
 export default function ModelsGridSection({
@@ -59,6 +60,7 @@ export default function ModelsGridSection({
   onModelAdded,
   isAddModelModalOpen = false,
   setIsAddModelModalOpen = () => {},
+  onInsightsClick = () => {},
 }: ModelsGridSectionProps) {
   const [editModelModalOpen, setEditModelModalOpen] = useState(false)
   const [selectedModel, setSelectedModel] = useState<Model | null>(null)
@@ -253,7 +255,12 @@ export default function ModelsGridSection({
                       <Settings className="w-3 h-3 mr-1" />
                       Settings
                     </Button>
-                    <Button variant="default" size="sm" className="flex-1">
+                    <Button
+                      variant="default"
+                      size="sm"
+                      className="flex-1"
+                      onClick={() => onInsightsClick(model.id)}
+                    >
                       <BarChart3 className="w-3 h-3 mr-1" />
                       Metrics
                     </Button>
