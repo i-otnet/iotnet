@@ -1,27 +1,18 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Zap, Settings } from 'lucide-react'
-import { BrokerSetupModal } from '@/components/modules/brokerSetup/brokerSetupModal'
 import { ThemeSetupModal } from '@/components/modules/ThemeSetup/themeSetupModal'
 import { Button } from '@/components/ui/button'
 
 export default function SetupPage() {
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false)
-  const [isBrokerModalOpen, setIsBrokerModalOpen] = useState(false)
+  const router = useRouter()
 
   const handleThemeContinue = () => {
     setIsThemeModalOpen(false)
-    setIsBrokerModalOpen(true)
-  }
-
-  const handleBrokerBack = () => {
-    setIsBrokerModalOpen(false)
-    setIsThemeModalOpen(true)
-  }
-
-  const handleBrokerContinue = () => {
-    setIsBrokerModalOpen(false)
+    router.push('/auth/login')
   }
 
   const handleSetupProject = () => {
@@ -131,13 +122,6 @@ export default function SetupPage() {
         open={isThemeModalOpen}
         onOpenChange={setIsThemeModalOpen}
         onContinue={handleThemeContinue}
-      />
-
-      <BrokerSetupModal
-        open={isBrokerModalOpen}
-        onOpenChange={setIsBrokerModalOpen}
-        onBack={handleBrokerBack}
-        onContinue={handleBrokerContinue}
       />
     </div>
   )

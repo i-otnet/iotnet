@@ -21,7 +21,6 @@ import {
   Users,
   Search,
   Network,
-  ServerCog,
   Zap,
   Globe,
   Mail,
@@ -41,14 +40,6 @@ const getBrokerInfo = (type: string) => {
         description: 'Using IoTNet default broker',
         color: 'bg-primary text-primary-foreground',
         badgeVariant: 'default' as const,
-      }
-    case 'personal':
-      return {
-        icon: ServerCog,
-        label: 'Private',
-        description: 'Using private custom broker',
-        color: 'bg-blue-500 text-white',
-        badgeVariant: 'secondary' as const,
       }
     case 'external':
       return {
@@ -177,8 +168,6 @@ export default function UsersTableSection() {
                       ? 'All Brokers'
                       : filterBroker === 'iotnet'
                       ? 'IoTNet'
-                      : filterBroker === 'personal'
-                      ? 'Private'
                       : 'External'}
                   </span>
                   <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
@@ -193,9 +182,6 @@ export default function UsersTableSection() {
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setFilterBroker('iotnet')}>
                   IoTNet
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setFilterBroker('personal')}>
-                  Private
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setFilterBroker('external')}>
                   External

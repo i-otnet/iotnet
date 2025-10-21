@@ -38,7 +38,7 @@ export function ThemeSetupModal({
           <ThemeOptions />
         </div>
         <div className="flex justify-end gap-2 mt-4 flex-shrink-0">
-          <Button onClick={handleContinueClick}>Continue</Button>
+          <Button onClick={handleContinueClick}>Get Started</Button>
         </div>
       </DialogContent>
     </Dialog>

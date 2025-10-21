@@ -15,12 +15,6 @@ import {
 } from 'lucide-react'
 import { generateCredentials } from '@/lib/utils/credentialsUtils'
 import React, { useState } from 'react'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdownMenu'
 
 interface BrokerIonetSetupProps {
   onCredentialsGenerated?: () => void
@@ -31,7 +25,6 @@ export default function BrokerIonetSetup({
 }: BrokerIonetSetupProps) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const [role, setRole] = useState<'user' | 'admin'>('user')
   const [credentials, setCredentials] = useState<{
     username: string
     password: string
@@ -101,25 +94,13 @@ export default function BrokerIonetSetup({
 
         <div className="space-y-2">
           <Label htmlFor="user-role">Role</Label>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="w-full justify-between">
-                <span>{role === 'user' ? 'User' : 'Admin'}</span>
-                <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className="w-[var(--radix-dropdown-menu-trigger-width)]"
-              align="start"
-            >
-              <DropdownMenuItem onClick={() => setRole('user')}>
-                User
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setRole('admin')}>
-                Admin
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Button variant="outline" className="w-full justify-between" disabled>
+            <span>User</span>
+            <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+          </Button>
+          <p className="text-xs text-muted-foreground">
+            IoTNet broker users are always assigned as "User" role.
+          </p>
         </div>
       </div>
 

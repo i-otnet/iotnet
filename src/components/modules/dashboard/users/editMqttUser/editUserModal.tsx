@@ -16,7 +16,6 @@ import {
   getBrokerBadgeVariant,
 } from '@/lib/utils/brokerUtils'
 import EditUserIotnetBroker from './editUserByIotnetBroker'
-import EditUserPersonalBroker from './editUserByPersonalBroker'
 import EditUserExternalBroker from './editUserByExternalBroker'
 
 interface User {
@@ -24,7 +23,7 @@ interface User {
   name: string
   email: string
   role: string
-  brokerType: 'iotnet' | 'personal' | 'external'
+  brokerType: 'iotnet' | 'external'
   brokerName: string
   status: string
   lastActive: string
@@ -68,8 +67,6 @@ export function EditUserModal({
             onCredentialsRevoked={() => setCredentialsRevoked(true)}
           />
         )
-      case 'personal':
-        return <EditUserPersonalBroker user={user} />
       case 'external':
         return <EditUserExternalBroker user={user} />
       default:
