@@ -5,26 +5,44 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, Pencil, Plus, Check } from 'lucide-react'
 import AddWidgetDeviceModal from './addWidgetDevice/addWidgetDeviceModal'
+import { WidgetOption } from '@/lib/json/widgetOptionsData'
+import { DeviceWidgetConfiguration } from './addWidgetDevice/deviceViews/widgetConfigurationView'
 
 interface DeviceDetailHeaderProps {
   deviceName: string
   deviceType: string
+  onAddWidget?: (
+    widget: WidgetOption,
+    config: DeviceWidgetConfiguration
+  ) => void
+  isEditing?: boolean
+  onEditingChange?: (isEditing: boolean) => void
 }
 
 export default function DeviceDetailHeader({
   deviceName,
   deviceType,
+  onAddWidget,
+  isEditing = false,
+  onEditingChange,
 }: DeviceDetailHeaderProps) {
   const router = useRouter()
-  const [isEditing, setIsEditing] = useState(false)
   const [showAddWidgetModal, setShowAddWidgetModal] = useState(false)
 
   const handleEdit = () => {
-    setIsEditing(true)
+    onEditingChange?.(true)
   }
 
   const handleDone = () => {
-    setIsEditing(false)
+    onEditingChange?.(false)
+  }
+
+  const handleWidgetSelect = (
+    widget: WidgetOption,
+    config: DeviceWidgetConfiguration
+  ) => {
+    onAddWidget?.(widget, config)
+    setShowAddWidgetModal(false)
   }
 
   return (
@@ -74,6 +92,7 @@ export default function DeviceDetailHeader({
       <AddWidgetDeviceModal
         open={showAddWidgetModal}
         onOpenChange={setShowAddWidgetModal}
+        onWidgetSelect={handleWidgetSelect}
       />
     </div>
   )

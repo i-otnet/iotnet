@@ -7,5 +7,5 @@ interface DeviceDetailGridSectionProps {
 export default function DeviceDetailGridSection({
   children,
 }: DeviceDetailGridSectionProps) {
-  return <div className="grid gap-4">{children}</div>
+  return <div className="grid grid-cols-4 gap-4 w-full">{children}</div>
 }

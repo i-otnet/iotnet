@@ -2,22 +2,12 @@
 
 import React from 'react'
 
-interface ROCPoint {
-  fpr: number
-  tpr: number
-}
-
 interface ROCCurveWidgetProps {
   auc?: number
-  points?: ROCPoint[]
   children?: React.ReactNode
 }
 
-export default function ROCCurveWidget({
-  auc,
-  points,
-  children,
-}: ROCCurveWidgetProps) {
+export default function ROCCurveWidget({ auc, children }: ROCCurveWidgetProps) {
   return (
     <div className="w-full h-[200px] flex flex-col gap-2">
       {auc !== undefined && (

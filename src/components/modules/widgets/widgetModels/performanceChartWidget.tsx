@@ -4,14 +4,10 @@ import React from 'react'
 
 interface PerformanceChartWidgetProps {
   children?: React.ReactNode
-  predictions?: number[]
-  actual?: number[]
 }
 
 export default function PerformanceChartWidget({
   children,
-  predictions,
-  actual,
 }: PerformanceChartWidgetProps) {
   return (
     <div className="w-full h-[200px] flex flex-col gap-2">
