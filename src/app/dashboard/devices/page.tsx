@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import DashboardLayout from '@/components/layout/dashboard/dashboardLayout'
 import DashboardHeader from '@/components/modules/dashboard/header'
 import DashboardDevicesLayout from '@/components/layout/dashboard/dashboardDevicesLayout'
@@ -21,6 +22,7 @@ interface Device {
 }
 
 export default function DevicesPage() {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedFilter, setSelectedFilter] = useState('all')
   const [devices, setDevices] = useState(mockDevicesData.data.devices)
@@ -63,6 +65,10 @@ export default function DevicesPage() {
     setDevices([...devices, newDevice])
   }
 
+  const handleInsightsClick = (deviceId: number) => {
+    router.push(`/dashboard/devices/${deviceId}`)
+  }
+
   return (
     <DashboardLayout>
       {/* Header */}
@@ -102,6 +108,7 @@ export default function DevicesPage() {
                 onDeviceAdded={handleDeviceAdded}
                 isAddDeviceModalOpen={isAddDeviceModalOpen}
                 setIsAddDeviceModalOpen={setIsAddDeviceModalOpen}
+                onInsightsClick={handleInsightsClick}
               />
             }
           />

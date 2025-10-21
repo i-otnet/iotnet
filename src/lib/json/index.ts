@@ -15,3 +15,10 @@ export {
 } from './dashboardData'
 
 export { mockApiKeysData, mockProfileData } from './settingsData'
+
+export {
+  WIDGET_OPTIONS,
+  DEVICE_WIDGET_OPTIONS,
+  MODEL_WIDGET_OPTIONS,
+  type WidgetOption,
+} from './widgetOptionsData'

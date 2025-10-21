@@ -12,9 +12,8 @@ import {
 import { getBrokerTitle, getBrokerDescription } from '@/lib/utils/brokerUtils'
 import BrokerOptions from './addUserOptions'
 import BrokerIonetSetup from './addUserByIotnetBroker'
-import BrokerPersonalSetup from './addUserByPersonalBroker'
 import BrokerExternalSetup from './addUserByExternalBroker'
-  
+
 function useMultiViewModal<T extends string>(initialView: T) {
   const [currentView, setCurrentView] = useState<T>(initialView)
 
@@ -35,7 +34,7 @@ interface BrokerSetupModalProps {
   onBack?: () => void
 }
 
-type ViewType = 'options' | 'iotnet' | 'personal' | 'external'
+type ViewType = 'options' | 'iotnet' | 'external'
 
 export function BrokerSetupModal({
   open,
@@ -78,8 +77,6 @@ export function BrokerSetupModal({
             onCredentialsGenerated={() => setCredentialsGenerated(true)}
           />
         )
-      case 'personal':
-        return <BrokerPersonalSetup />
       case 'external':
         return <BrokerExternalSetup />
       default:
@@ -96,8 +93,6 @@ export function BrokerSetupModal({
     switch (currentView) {
       case 'iotnet':
         return 'Use IoTNet'
-      case 'personal':
-        return 'Use Personal Broker'
       case 'external':
         return 'Use Broker'
       default:
@@ -137,7 +132,7 @@ export function BrokerSetupModal({
               Back
             </Button>
           )}
-          {(currentView === 'personal' || currentView === 'external') && (
+          {currentView === 'external' && (
             <Button variant="outline" onClick={handleBackToOptions}>
               Back
             </Button>

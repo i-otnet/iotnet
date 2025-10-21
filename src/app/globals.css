@@ -379,4 +379,45 @@
   .bg-gradient-radial {
     background: radial-gradient(circle, var(--tw-gradient-stops));
   }
+
+  /* Slider styling */
+  .slider {
+    background-color: #d1d5db;
+    border-radius: 9999px;
+  }
+
+  .slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    border: 3px solid white;
+    margin-top: -6px;
+  }
+
+  .slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    border: 3px solid white;
+    margin-top: -6px;
+  }
+
+  .slider::-webkit-slider-runnable-track {
+    background: transparent;
+    height: 12px;
+    border-radius: 6px;
+  }
+
+  .slider::-moz-range-track {
+    background: transparent;
+    height: 12px;
+    border-radius: 6px;
+  }
 }

@@ -47,6 +47,7 @@ interface DevicesGridSectionProps {
   onDeviceAdded?: (newDevice: Device) => void
   isAddDeviceModalOpen?: boolean
   setIsAddDeviceModalOpen?: (open: boolean) => void
+  onInsightsClick?: (deviceId: number) => void
 }
 
 export default function DevicesGridSection({
@@ -57,6 +58,7 @@ export default function DevicesGridSection({
   onDeviceAdded,
   isAddDeviceModalOpen = false,
   setIsAddDeviceModalOpen = () => {},
+  onInsightsClick = () => {},
 }: DevicesGridSectionProps) {
   const [editDeviceModalOpen, setEditDeviceModalOpen] = useState(false)
   const [selectedDevice, setSelectedDevice] = useState<Device | null>(null)
@@ -227,7 +229,12 @@ export default function DevicesGridSection({
                         <Settings className="w-3 h-3 mr-1" />
                         Settings
                       </Button>
-                      <Button variant="default" size="sm" className="flex-1">
+                      <Button
+                        variant="default"
+                        size="sm"
+                        className="flex-1"
+                        onClick={() => onInsightsClick(device.id)}
+                      >
                         <BarChart3 className="w-3 h-3 mr-1" />
                         Insights
                       </Button>

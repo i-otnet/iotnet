@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import DashboardLayout from '@/components/layout/dashboard/dashboardLayout'
 import DashboardHeader from '@/components/modules/dashboard/header'
 import DashboardModelsLayout from '@/components/layout/dashboard/dashboardModelsLayout'
@@ -21,6 +22,7 @@ interface Model {
 }
 
 export default function ModelsPage() {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedFilter, setSelectedFilter] = useState('all')
   const [models, setModels] = useState<Model[]>(mockModelsData.data.models)
@@ -71,6 +73,10 @@ export default function ModelsPage() {
     }).length
   }
 
+  const handleInsightsClick = (modelId: number) => {
+    router.push(`/dashboard/models/${modelId}`)
+  }
+
   return (
     <DashboardLayout>
       {/* Header */}
@@ -109,6 +115,7 @@ export default function ModelsPage() {
                 }
                 isAddModelModalOpen={isAddModelModalOpen}
                 setIsAddModelModalOpen={setIsAddModelModalOpen}
+                onInsightsClick={handleInsightsClick}
               />
             }
           />

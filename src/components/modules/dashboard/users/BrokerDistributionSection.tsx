@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Network, ServerCog, Zap, Globe } from 'lucide-react'
+import { Network, Zap, Globe } from 'lucide-react'
 import { mockUsersData } from '@/lib/json/usersData'
 
 const getBrokerInfo = (type: string) => {
@@ -20,14 +20,6 @@ const getBrokerInfo = (type: string) => {
         description: 'Using IoTNet default broker',
         color: 'bg-primary text-primary-foreground',
         badgeVariant: 'default' as const,
-      }
-    case 'personal':
-      return {
-        icon: ServerCog,
-        label: 'Private',
-        description: 'Using private custom broker',
-        color: 'bg-blue-500 text-white',
-        badgeVariant: 'secondary' as const,
       }
     case 'external':
       return {
@@ -58,8 +50,8 @@ export default function BrokerDistributionSection() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-4 md:grid-cols-3">
-          {['iotnet', 'personal', 'external'].map((type) => {
+        <div className="grid gap-4 md:grid-cols-2">
+          {['iotnet', 'external'].map((type) => {
             const brokerInfo = getBrokerInfo(type)
             const BrokerIcon = brokerInfo.icon
             const count = mockUsersData.data.users.filter(
