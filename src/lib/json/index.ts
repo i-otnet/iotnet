@@ -16,4 +16,9 @@ export {
 
 export { mockApiKeysData, mockProfileData } from './settingsData'
 
-export { WIDGET_OPTIONS, type WidgetOption } from './widgetOptionsData'
+export {
+  WIDGET_OPTIONS,
+  DEVICE_WIDGET_OPTIONS,
+  MODEL_WIDGET_OPTIONS,
+  type WidgetOption,
+} from './widgetOptionsData'

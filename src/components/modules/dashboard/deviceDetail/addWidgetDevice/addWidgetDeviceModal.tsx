@@ -10,7 +10,10 @@ import {
 import { Button } from '@/components/ui/button'
 import WidgetDeviceSelectionView from './deviceViews/widgetDeviceSelectionView'
 import WidgetDeviceDetailView from './deviceViews/widgetDeviceDetailView'
-import { WIDGET_OPTIONS, WidgetOption } from '@/lib/json/widgetOptionsData'
+import {
+  DEVICE_WIDGET_OPTIONS,
+  WidgetOption,
+} from '@/lib/json/widgetOptionsData'
 
 interface AddWidgetDeviceModalProps {
   open: boolean
@@ -27,7 +30,7 @@ export default function AddWidgetDeviceModal({
 }: AddWidgetDeviceModalProps) {
   const [currentView, setCurrentView] = useState<ViewType>('selection')
   const [selectedWidget, setSelectedWidget] = useState<WidgetOption | null>(
-    WIDGET_OPTIONS[0] || null
+    DEVICE_WIDGET_OPTIONS[0] || null
   )
 
   const handleSelectWidget = (widget: WidgetOption) => {
@@ -47,7 +50,7 @@ export default function AddWidgetDeviceModal({
   }
 
   const handleClose = () => {
-    setSelectedWidget(WIDGET_OPTIONS[0] || null)
+    setSelectedWidget(DEVICE_WIDGET_OPTIONS[0] || null)
     setCurrentView('selection')
     onOpenChange(false)
   }
@@ -73,7 +76,7 @@ export default function AddWidgetDeviceModal({
         <div className="flex-1 overflow-y-auto min-h-0 px-6 py-4">
           {currentView === 'selection' && (
             <WidgetDeviceSelectionView
-              widgets={WIDGET_OPTIONS}
+              widgets={DEVICE_WIDGET_OPTIONS}
               selectedWidgetId={selectedWidget?.id}
               onSelectWidget={handleSelectWidget}
             />
