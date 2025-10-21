@@ -99,7 +99,7 @@ export default function BrokerIonetSetup({
             <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
           </Button>
           <p className="text-xs text-muted-foreground">
-            IoTNet broker users are always assigned as "User" role.
+            IoTNet broker users are always assigned as &quot;User&quot; role.
           </p>
         </div>
       </div>

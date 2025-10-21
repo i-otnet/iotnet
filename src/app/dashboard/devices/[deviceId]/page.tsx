@@ -6,7 +6,7 @@ import DashboardHeader from '@/components/modules/dashboard/header'
 import DeviceDetailOverviewSection from '@/components/modules/dashboard/deviceDetail/deviceDetailOverviewSection'
 import DeviceDetailGridSection from '@/components/modules/dashboard/deviceDetail/deviceDetailGridSection'
 import DeviceDetailHeader from '@/components/modules/dashboard/deviceDetail/deviceDetailHeader'
-import ConnectionStatusCard from '@/components/modules/dashboard/deviceDetail/connectionStatus/connectionStatusCard'
+import ConnectionStatusCard from '@/components/shared/connectionStatusCard'
 import { mockDevicesData } from '@/lib/json/devicesData'
 
 export default function DeviceDetailPage({
@@ -15,8 +15,6 @@ export default function DeviceDetailPage({
   params: Promise<{ deviceId: string }>
 }) {
   const { deviceId } = use(params)
-
-  // Ambil data device dari devicesData berdasarkan ID
   const device = mockDevicesData.data.devices.find(
     (d) => d.id === parseInt(deviceId)
   )
@@ -39,13 +37,13 @@ export default function DeviceDetailPage({
       <DashboardHeader />
       <main className="flex-1 p-4 md:p-6 overflow-y-auto bg-muted/30">
         <div className="w-full mx-auto max-w-7xl">
-          <DeviceDetailOverviewSection deviceId={deviceId}>
+          <DeviceDetailOverviewSection>
             <DeviceDetailHeader
               deviceName={device.name}
               deviceType={device.type}
             />
 
-            <DeviceDetailGridSection deviceId={deviceId}>
+            <DeviceDetailGridSection>
               <ConnectionStatusCard
                 status={device.status as 'online' | 'offline'}
               />

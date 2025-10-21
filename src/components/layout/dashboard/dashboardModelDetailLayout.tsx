@@ -2,20 +2,20 @@
 
 import React, { ReactNode } from 'react'
 
-interface DashboardDeviceDetailLayoutProps {
+interface DashboardModelDetailLayoutProps {
   header?: ReactNode
   connectionStatus?: ReactNode
   content?: ReactNode
 }
 
-export default function DashboardDeviceDetailLayout({
+export default function DashboardModelDetailLayout({
   header,
   connectionStatus,
   content,
-}: DashboardDeviceDetailLayoutProps) {
+}: DashboardModelDetailLayoutProps) {
   return (
     <div className="flex-1 space-y-6">
-      {/* Header Section (Back Button, Device Name, Type, Edit Button) */}
+      {/* Header Section (Back Button, Model Name, Type, Edit Button) */}
       {header}
 
       {/* Connection Status */}

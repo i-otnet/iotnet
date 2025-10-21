@@ -4,17 +4,17 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, Pencil, Plus, Check } from 'lucide-react'
-import AddWidgetDeviceModal from './addWidgetDevice/addWidgetDeviceModal'
+import AddWidgetModelModal from './addWidgetModel/addWidgetModelModal'
 
-interface DeviceDetailHeaderProps {
-  deviceName: string
-  deviceType: string
+interface ModelDetailHeaderProps {
+  modelName: string
+  modelType: string
 }
 
-export default function DeviceDetailHeader({
-  deviceName,
-  deviceType,
-}: DeviceDetailHeaderProps) {
+export default function ModelDetailHeader({
+  modelName,
+  modelType,
+}: ModelDetailHeaderProps) {
   const router = useRouter()
   const [isEditing, setIsEditing] = useState(false)
   const [showAddWidgetModal, setShowAddWidgetModal] = useState(false)
@@ -39,8 +39,8 @@ export default function DeviceDetailHeader({
           <ChevronLeft className="h-5 w-5" />
         </Button>
         <div>
-          <h1 className="text-3xl font-bold">{deviceName}</h1>
-          <p className="text-sm text-muted-foreground mt-1">{deviceType}</p>
+          <h1 className="text-3xl font-bold">{modelName}</h1>
+          <p className="text-sm text-muted-foreground mt-1">{modelType}</p>
         </div>
       </div>
       <div className="flex gap-3">
@@ -71,7 +71,7 @@ export default function DeviceDetailHeader({
           </Button>
         )}
       </div>
-      <AddWidgetDeviceModal
+      <AddWidgetModelModal
         open={showAddWidgetModal}
         onOpenChange={setShowAddWidgetModal}
       />
