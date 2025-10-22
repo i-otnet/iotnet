@@ -1,20 +1,45 @@
+'use client'
+
+import { use, useState, useEffect } from 'react'
 import DashboardLayout from '@/components/layout/dashboard/dashboardLayout'
 import DashboardHeader from '@/components/modules/dashboard/header'
 import ModelDetailOverviewSection from '@/components/modules/dashboard/modelDetail/modelDetailOverviewSection'
 import ModelDetailGridSection from '@/components/modules/dashboard/modelDetail/modelDetailGridSection'
 import ModelDetailHeader from '@/components/modules/dashboard/modelDetail/modelDetailHeader'
 import ConnectionStatusCard from '@/components/shared/connectionStatusCard'
+import RedirectPage from '@/components/shared/redirectPage'
 import { mockModelsData } from '@/lib/json/modelsData'
 
-export default async function ModelDetailPage({
+export default function ModelDetailPage({
   params,
 }: {
   params: Promise<{ modelId: string }>
 }) {
-  const { modelId } = await params
+  const { modelId } = use(params)
   const model = mockModelsData.data.models.find(
     (m) => m.id === parseInt(modelId)
   )
+
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    // Simulate data fetching with delay for redirect effect
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [modelId])
+
+  if (isLoading) {
+    return (
+      <RedirectPage
+        isRedirecting={true}
+        message="Loading Model"
+        subMessage="Please wait a moment..."
+      />
+    )
+  }
 
   if (!model) {
     return (

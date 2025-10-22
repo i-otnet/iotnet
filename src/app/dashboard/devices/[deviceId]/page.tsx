@@ -1,6 +1,6 @@
 'use client'
 
-import { use, useState } from 'react'
+import { use, useState, useEffect } from 'react'
 import DashboardLayout from '@/components/layout/dashboard/dashboardLayout'
 import DashboardHeader from '@/components/modules/dashboard/header'
 import DeviceDetailOverviewSection from '@/components/modules/dashboard/deviceDetail/deviceDetailOverviewSection'
@@ -8,6 +8,7 @@ import DeviceDetailGridSection from '@/components/modules/dashboard/deviceDetail
 import DeviceDetailHeader from '@/components/modules/dashboard/deviceDetail/deviceDetailHeader'
 import ConnectionStatusCard from '@/components/shared/connectionStatusCard'
 import WidgetRenderer from '@/components/modules/dashboard/deviceDetail/deviceDetailWidget'
+import RedirectPage from '@/components/shared/redirectPage'
 import { mockDevicesData } from '@/lib/json/devicesData'
 import { WidgetOption } from '@/lib/json/widgetOptionsData'
 import { DeviceWidgetConfiguration } from '@/components/modules/dashboard/deviceDetail/addWidgetDevice/deviceViews/widgetConfigurationView'
@@ -31,6 +32,48 @@ export default function DeviceDetailPage({
   const [widgets, setWidgets] = useState<SavedDeviceWidget[]>([])
   const [isEditing, setIsEditing] = useState(false)
   const [selectedWidgetId, setSelectedWidgetId] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    // Simulate data fetching with delay for redirect effect
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [deviceId])
+
+  // Handle clicking outside widget to deselect
+  useEffect(() => {
+    if (!isEditing) {
+      setSelectedWidgetId(null)
+      return
+    }
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      // Check if click is on a widget or widget button
+      const isWidgetClick = target.closest('[data-widget-id]')
+      if (!isWidgetClick) {
+        setSelectedWidgetId(null)
+      }
+    }
+
+    document.addEventListener('click', handleClickOutside)
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [isEditing])
+
+  if (isLoading) {
+    return (
+      <RedirectPage
+        isRedirecting={true}
+        message="Loading Device"
+        subMessage="Please wait a moment..."
+      />
+    )
+  }
 
   if (!device) {
     return (
@@ -81,21 +124,22 @@ export default function DeviceDetailPage({
                 status={device.status as 'online' | 'offline'}
               />
               {widgets.map((w) => (
-                <WidgetRenderer
-                  key={w.id}
-                  widget={w.widget}
-                  config={{
-                    name: w.config.widgetName,
-                    virtualPin: w.config.dataPin,
-                    unit: w.config.unit,
-                    minValue: w.config.minValue,
-                    maxValue: w.config.maxValue,
-                  }}
-                  isEditing={isEditing}
-                  isSelected={selectedWidgetId === w.id}
-                  onSelect={() => setSelectedWidgetId(w.id)}
-                  onDelete={() => handleDeleteWidget(w.id)}
-                />
+                <div key={w.id} data-widget-id={w.id}>
+                  <WidgetRenderer
+                    widget={w.widget}
+                    config={{
+                      name: w.config.widgetName,
+                      virtualPin: w.config.dataPin,
+                      unit: w.config.unit,
+                      minValue: w.config.minValue,
+                      maxValue: w.config.maxValue,
+                    }}
+                    isEditing={isEditing}
+                    isSelected={selectedWidgetId === w.id}
+                    onSelect={() => setSelectedWidgetId(w.id)}
+                    onDelete={() => handleDeleteWidget(w.id)}
+                  />
+                </div>
               ))}
             </DeviceDetailGridSection>
           </DeviceDetailOverviewSection>

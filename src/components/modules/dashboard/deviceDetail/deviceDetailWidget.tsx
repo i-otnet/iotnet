@@ -129,15 +129,21 @@ export default function DeviceDetailWidget({
         isEditing ? 'cursor-pointer' : ''
       } transition-all h-full flex flex-col`}
       onClick={handleCardClick}
+      onKeyDown={(e) => {
+        if (isEditing && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault()
+          handleCardClick()
+        }
+      }}
+      role={isEditing ? 'button' : undefined}
+      tabIndex={isEditing ? 0 : -1}
     >
-      {/* Widget Type Label (visible in edit mode) */}
-      {isEditing && (
-        <div className="absolute top-2 left-2 z-10">
-          <span className="text-xs font-medium text-primary">
-            {getWidgetTypeName(widget.id)}
-          </span>
-        </div>
-      )}
+      {/* Widget Type Label (visible in both view and edit mode) */}
+      <div className="absolute top-2 left-2 z-10">
+        <span className="text-xs font-medium text-primary">
+          {getWidgetTypeName(widget.id)}
+        </span>
+      </div>
 
       {/* Edit and Delete buttons (visible when selected in edit mode) */}
       {isEditing && isSelected && (
@@ -172,7 +178,7 @@ export default function DeviceDetailWidget({
       )}
 
       {/* Widget Content */}
-      <div className={`flex flex-col h-full ${isEditing ? 'mt-6' : ''}`}>
+      <div className="flex flex-col h-full mt-6">
         <div className="mb-3">
           <h3 className="text-sm font-medium text-foreground">{config.name}</h3>
           <p className="text-xs text-muted-foreground mt-0.5">

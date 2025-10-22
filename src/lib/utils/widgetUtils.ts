@@ -11,12 +11,12 @@ export function getWidgetBorderStyle(
   }
 
   if (isSelected) {
-    // Edit mode + selected: solid blue border
-    return 'border-2 border-primary'
+    // Edit mode + selected: solid blue border with shadow
+    return 'border-2 border-primary shadow-lg shadow-primary/20'
   }
 
   // Edit mode + not selected: dashed blue border
-  return 'border-2 border-dashed border-primary'
+  return 'border-2 border-dashed border-primary/40'
 }
 
 /**
