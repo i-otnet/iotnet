@@ -105,6 +105,8 @@ export default function DeviceDetailPage({
     setSelectedWidgetId(null)
   }
 
+  const handleEditWidget = (widgetId: string) => {}
+
   return (
     <DashboardLayout>
       <DashboardHeader />
@@ -119,28 +121,47 @@ export default function DeviceDetailPage({
               onEditingChange={setIsEditing}
             />
 
-            <DeviceDetailGridSection>
+            {/* Connection Status - Full Width, Outside Grid */}
+            <div className="mb-6">
               <ConnectionStatusCard
                 status={device.status as 'online' | 'offline'}
               />
-              {widgets.map((w) => (
-                <div key={w.id} data-widget-id={w.id}>
-                  <WidgetRenderer
-                    widget={w.widget}
-                    config={{
-                      name: w.config.widgetName,
-                      virtualPin: w.config.dataPin,
-                      unit: w.config.unit,
-                      minValue: w.config.minValue,
-                      maxValue: w.config.maxValue,
+            </div>
+
+            {/* Widget Grid Section */}
+            <DeviceDetailGridSection isEditing={isEditing}>
+              {widgets.map((w) => {
+                // Get grid column span for this widget
+                const gridColSpan =
+                  w.widget.id === 'chart' || w.widget.id === 'slider' ? 2 : 1
+
+                return (
+                  <div
+                    key={w.id}
+                    data-widget-id={w.id}
+                    className="relative z-10"
+                    style={{
+                      gridColumn: `span ${gridColSpan}`,
                     }}
-                    isEditing={isEditing}
-                    isSelected={selectedWidgetId === w.id}
-                    onSelect={() => setSelectedWidgetId(w.id)}
-                    onDelete={() => handleDeleteWidget(w.id)}
-                  />
-                </div>
-              ))}
+                  >
+                    <WidgetRenderer
+                      widget={w.widget}
+                      config={{
+                        name: w.config.widgetName,
+                        virtualPin: w.config.dataPin,
+                        unit: w.config.unit,
+                        minValue: w.config.minValue,
+                        maxValue: w.config.maxValue,
+                      }}
+                      isEditing={isEditing}
+                      isSelected={selectedWidgetId === w.id}
+                      onSelect={() => setSelectedWidgetId(w.id)}
+                      onEdit={() => handleEditWidget(w.id)}
+                      onDelete={() => handleDeleteWidget(w.id)}
+                    />
+                  </div>
+                )
+              })}
             </DeviceDetailGridSection>
           </DeviceDetailOverviewSection>
         </div>

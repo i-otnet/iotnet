@@ -62,10 +62,16 @@ export default function ModelDetailPage({
           <ModelDetailOverviewSection>
             <ModelDetailHeader modelName={model.name} modelType={model.type} />
 
-            <ModelDetailGridSection>
+            {/* Connection Status - Full Width, Outside Grid */}
+            <div className="mb-6">
               <ConnectionStatusCard
                 status={model.status as 'online' | 'offline'}
               />
+            </div>
+
+            {/* Model Widget Grid Section */}
+            <ModelDetailGridSection>
+              {/* Widgets will be added here */}
             </ModelDetailGridSection>
           </ModelDetailOverviewSection>
         </div>

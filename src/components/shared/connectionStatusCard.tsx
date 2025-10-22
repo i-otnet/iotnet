@@ -10,7 +10,7 @@ export default function ConnectionStatusCard({
   status,
 }: ConnectionStatusCardProps) {
   return (
-    <div className="col-span-4 p-3 bg-white rounded-lg border border-border flex items-center gap-3">
+    <div className="w-full p-3 bg-white rounded-lg border border-border flex items-center gap-3">
       <div
         className={`p-2 rounded-full flex-shrink-0 ${
           status === 'online' ? 'bg-green-100' : 'bg-red-100'

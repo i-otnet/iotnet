@@ -9,12 +9,11 @@ import SliderWidget from '@/components/modules/widgets/widgetDevices/sliderWidge
 import StatWidget from '@/components/modules/widgets/widgetDevices/statWidget'
 import SwitchWidget from '@/components/modules/widgets/widgetDevices/switchWidget'
 import { WidgetOption } from '@/lib/json/widgetOptionsData'
-import { Trash2, Edit2 } from 'lucide-react'
+import { Trash2, Edit2, GripVertical, Maximize2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   getWidgetBorderStyle,
   getWidgetTypeName,
-  getWidgetColSpan,
 } from '@/lib/utils/widgetUtils'
 
 interface WidgetConfig {
@@ -121,11 +120,10 @@ export default function DeviceDetailWidget({
   }
 
   const borderStyle = getWidgetBorderStyle(isEditing, isSelected)
-  const colSpan = getWidgetColSpan(widget.id)
 
   return (
     <Card
-      className={`p-4 relative ${colSpan} ${borderStyle} ${
+      className={`p-4 relative ${borderStyle} ${
         isEditing ? 'cursor-pointer' : ''
       } transition-all h-full flex flex-col`}
       onClick={handleCardClick}
@@ -144,6 +142,24 @@ export default function DeviceDetailWidget({
           {getWidgetTypeName(widget.id)}
         </span>
       </div>
+
+      {/* Drag Handle Icon - Top Center (visible when selected in edit mode) */}
+      {isEditing && isSelected && (
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20 cursor-move group">
+          <div className="p-1 rounded-full transition-all duration-200 group-hover:bg-primary/10">
+            <GripVertical className="h-5 w-5 text-primary" />
+          </div>
+        </div>
+      )}
+
+      {/* Resize Handle Icon - Bottom Right on Border (visible when selected in edit mode) */}
+      {isEditing && isSelected && (
+        <div className="absolute -bottom-2 -right-2 z-20 cursor-nwse-resize group">
+          <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white border-2 border-primary shadow-sm transition-all duration-200 group-hover:bg-primary/10 group-hover:shadow-md">
+            <Maximize2 className="h-3 w-3 text-primary" />
+          </div>
+        </div>
+      )}
 
       {/* Edit and Delete buttons (visible when selected in edit mode) */}
       {isEditing && isSelected && (

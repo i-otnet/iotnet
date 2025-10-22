@@ -70,10 +70,10 @@ export function getDeviceWidgetColSpan(widgetId: string): string {
 
   switch (size) {
     case 2:
-      return 'col-span-1 md:col-span-2 lg:col-span-2' // 1/2
+      return 'col-span-2' // 1/2 (always takes 2 columns on 4-column grid)
     case 1:
     default:
-      return 'col-span-1 md:col-span-1 lg:col-span-1' // 1/4
+      return 'col-span-1' // 1/4 (always takes 1 column on 4-column grid)
   }
 }
 
@@ -85,10 +85,10 @@ export function getModelWidgetColSpan(widgetId: string): string {
 
   switch (size) {
     case 2:
-      return 'col-span-1 md:col-span-2 lg:col-span-2' // 1/2
+      return 'col-span-2' // 1/2 (always takes 2 columns on 4-column grid)
     case 1:
     default:
-      return 'col-span-1 md:col-span-1 lg:col-span-1' // 1/4
+      return 'col-span-1' // 1/4 (always takes 1 column on 4-column grid)
   }
 }
 
