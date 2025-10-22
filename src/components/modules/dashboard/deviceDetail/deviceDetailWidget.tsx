@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Card } from '@/components/ui/card'
 import ButtonWidget from '@/components/modules/widgets/widgetDevices/buttonWidget'
 import ChartWidget from '@/components/modules/widgets/widgetDevices/chartWidget'
@@ -9,12 +9,16 @@ import SliderWidget from '@/components/modules/widgets/widgetDevices/sliderWidge
 import StatWidget from '@/components/modules/widgets/widgetDevices/statWidget'
 import SwitchWidget from '@/components/modules/widgets/widgetDevices/switchWidget'
 import { WidgetOption } from '@/lib/json/widgetOptionsData'
-import { Trash2, Edit2, GripVertical, Maximize2 } from 'lucide-react'
+import { Trash2, Edit2, GripVertical, ArrowLeftRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   getWidgetBorderStyle,
   getWidgetTypeName,
+  getWidgetResizeConstraints,
+  getWidgetDefaultSize,
 } from '@/lib/utils/widgetUtils'
+import { useWidgetResize, type WidgetSize } from '@/lib/hooks/useWidgetResize'
+import ResizeLineIndicator from '@/components/shared/resizeLineIndicator'
 
 interface WidgetConfig {
   name: string
@@ -32,6 +36,7 @@ interface DeviceDetailWidgetProps {
   onSelect?: () => void
   onEdit?: () => void
   onDelete?: () => void
+  onSizeChange?: (size: WidgetSize) => void
 }
 
 export default function DeviceDetailWidget({
@@ -42,10 +47,53 @@ export default function DeviceDetailWidget({
   onSelect,
   onEdit,
   onDelete,
+  onSizeChange,
 }: DeviceDetailWidgetProps) {
   const [buttonState, setButtonState] = useState(false)
   const [switchState, setSwitchState] = useState(false)
   const [sliderValue, setSliderValue] = useState(config.minValue || 0)
+  const [resizeLineX, setResizeLineX] = useState<number | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const constraints = getWidgetResizeConstraints(widget.id, 'device')
+  const defaultSize = getWidgetDefaultSize(widget.id, 'device')
+
+  const {
+    size,
+    dragLinePosition,
+    isResizing,
+    handleResizeStart,
+    attachResizeListeners,
+    detachResizeListeners,
+  } = useWidgetResize({
+    initialSize: { cols: defaultSize, rows: 1 },
+    minSize: { cols: constraints.minCols, rows: constraints.minRows },
+    maxSize: { cols: constraints.maxCols, rows: constraints.maxRows },
+    gridColumns: 4,
+    onResize: (newSize) => {
+      onSizeChange?.(newSize)
+    },
+    onResizeMove: (clientX) => {
+      setResizeLineX(clientX)
+    },
+  })
+
+  useEffect(() => {
+    if (isResizing) {
+      attachResizeListeners()
+      // Disable text selection while resizing
+      document.body.style.userSelect = 'none'
+      document.body.style.webkitUserSelect = 'none'
+      return () => {
+        detachResizeListeners()
+        document.body.style.userSelect = ''
+        document.body.style.webkitUserSelect = ''
+      }
+    } else {
+      // Clear line saat resize selesai
+      setResizeLineX(null)
+    }
+  }, [isResizing, attachResizeListeners, detachResizeListeners])
 
   const handleCardClick = () => {
     if (isEditing && onSelect) {
@@ -58,6 +106,7 @@ export default function DeviceDetailWidget({
       callback()
     }
   }
+
   const renderWidget = () => {
     switch (widget.id) {
       case 'statistics':
@@ -122,87 +171,131 @@ export default function DeviceDetailWidget({
   const borderStyle = getWidgetBorderStyle(isEditing, isSelected)
 
   return (
-    <Card
-      className={`p-4 relative ${borderStyle} ${
-        isEditing ? 'cursor-pointer' : ''
-      } transition-all h-full flex flex-col`}
-      onClick={handleCardClick}
-      onKeyDown={(e) => {
-        if (isEditing && (e.key === 'Enter' || e.key === ' ')) {
-          e.preventDefault()
-          handleCardClick()
-        }
-      }}
-      role={isEditing ? 'button' : undefined}
-      tabIndex={isEditing ? 0 : -1}
-    >
-      {/* Widget Type Label (visible in both view and edit mode) */}
-      <div className="absolute top-2 left-2 z-10">
-        <span className="text-xs font-medium text-primary">
-          {getWidgetTypeName(widget.id)}
-        </span>
+    <>
+      <div
+        ref={containerRef}
+        className="relative transition-all duration-150"
+        style={{
+          gridColumn: `span ${size.cols}`,
+          userSelect: isResizing ? 'none' : 'auto',
+        }}
+        data-widget-container="true"
+      >
+        <Card
+          className={`p-6 relative ${borderStyle} ${
+            isEditing ? 'cursor-pointer' : ''
+          } transition-all h-full flex flex-col`}
+          onClick={handleCardClick}
+          onKeyDown={(e) => {
+            if (isEditing && (e.key === 'Enter' || e.key === ' ')) {
+              e.preventDefault()
+              handleCardClick()
+            }
+          }}
+          role={isEditing ? 'button' : undefined}
+          tabIndex={isEditing ? 0 : -1}
+        >
+          {/* Widget Type Label */}
+          <div className="absolute top-2 left-2 z-10">
+            <span className="text-xs font-medium text-primary">
+              {getWidgetTypeName(widget.id)}
+            </span>
+          </div>
+
+          {/* Drag Handle Icon */}
+          {isEditing && isSelected && (
+            <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20 cursor-move group">
+              <div className="p-1 rounded-full transition-all duration-200 group-hover:bg-primary/10">
+                <GripVertical className="h-5 w-5 text-primary" />
+              </div>
+            </div>
+          )}
+
+          {/* Resize Handle Icon - Right Middle */}
+          {isEditing && isSelected && (
+            <div
+              className="absolute -right-2 top-1/2 -translate-y-1/2 z-50 cursor-ew-resize group select-none"
+              onMouseDown={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                containerRef.current &&
+                  handleResizeStart(e, 'se', containerRef.current)
+              }}
+              onTouchStart={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                containerRef.current &&
+                  handleResizeStart(e, 'se', containerRef.current)
+              }}
+              style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
+            >
+              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white border-2 border-primary shadow-sm transition-all duration-200 group-hover:bg-primary/10 group-hover:shadow-md">
+                <ArrowLeftRight className="h-3 w-3 text-primary pointer-events-none" />
+              </div>
+            </div>
+          )}
+
+          {/* Edit and Delete buttons */}
+          {isEditing && isSelected && (
+            <div className="absolute top-2 right-2 z-10 flex gap-2">
+              {onEdit && (
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 bg-white border-primary hover:bg-primary/10"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onEdit()
+                  }}
+                >
+                  <Edit2 className="h-4 w-4 text-primary" />
+                </Button>
+              )}
+              {onDelete && (
+                <Button
+                  variant="destructive"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onDelete()
+                  }}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+          )}
+
+          {/* Widget Content */}
+          <div className="flex flex-col h-full mt-6">
+            <div className="mb-3">
+              <h3 className="text-sm font-medium text-foreground">
+                {config.name}
+              </h3>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Pin: {config.virtualPin}
+              </p>
+            </div>
+            <div className="flex-1 min-h-[100px]">{renderWidget()}</div>
+          </div>
+
+          {/* Resizing overlay dengan grid lines */}
+          {isResizing && (
+            <>
+              <div className="absolute inset-0 bg-primary/5 border-2 border-primary rounded-lg pointer-events-none z-40 select-none" />
+
+              {/* Current size indicator */}
+              <div className="absolute bottom-2 left-2 z-50 bg-primary/90 text-white text-xs px-2 py-1 rounded font-medium pointer-events-none">
+                {size.cols}col{size.cols > 1 ? 's' : ''}
+              </div>
+            </>
+          )}
+        </Card>
       </div>
 
-      {/* Drag Handle Icon - Top Center (visible when selected in edit mode) */}
-      {isEditing && isSelected && (
-        <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20 cursor-move group">
-          <div className="p-1 rounded-full transition-all duration-200 group-hover:bg-primary/10">
-            <GripVertical className="h-5 w-5 text-primary" />
-          </div>
-        </div>
-      )}
-
-      {/* Resize Handle Icon - Bottom Right on Border (visible when selected in edit mode) */}
-      {isEditing && isSelected && (
-        <div className="absolute -bottom-2 -right-2 z-20 cursor-nwse-resize group">
-          <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white border-2 border-primary shadow-sm transition-all duration-200 group-hover:bg-primary/10 group-hover:shadow-md">
-            <Maximize2 className="h-3 w-3 text-primary" />
-          </div>
-        </div>
-      )}
-
-      {/* Edit and Delete buttons (visible when selected in edit mode) */}
-      {isEditing && isSelected && (
-        <div className="absolute top-2 right-2 z-10 flex gap-2">
-          {onEdit && (
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8 bg-white border-primary hover:bg-primary/10"
-              onClick={(e) => {
-                e.stopPropagation()
-                onEdit()
-              }}
-            >
-              <Edit2 className="h-4 w-4 text-primary" />
-            </Button>
-          )}
-          {onDelete && (
-            <Button
-              variant="destructive"
-              size="icon"
-              className="h-8 w-8"
-              onClick={(e) => {
-                e.stopPropagation()
-                onDelete()
-              }}
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          )}
-        </div>
-      )}
-
-      {/* Widget Content */}
-      <div className="flex flex-col h-full mt-6">
-        <div className="mb-3">
-          <h3 className="text-sm font-medium text-foreground">{config.name}</h3>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            Pin: {config.virtualPin}
-          </p>
-        </div>
-        <div className="flex-1 min-h-[100px]">{renderWidget()}</div>
-      </div>
-    </Card>
+      {/* Global Resize Line Indicator */}
+      <ResizeLineIndicator lineX={resizeLineX} isVisible={isResizing} />
+    </>
   )
 }

@@ -10,13 +10,19 @@ import ConnectionStatusCard from '@/components/shared/connectionStatusCard'
 import WidgetRenderer from '@/components/modules/dashboard/deviceDetail/deviceDetailWidget'
 import RedirectPage from '@/components/shared/redirectPage'
 import { mockDevicesData } from '@/lib/json/devicesData'
-import { WidgetOption } from '@/lib/json/widgetOptionsData'
+import { mockDeviceWidgetsData } from '@/lib/json/deviceWidgetsMockData'
+import {
+  WidgetOption,
+  DEVICE_WIDGET_OPTIONS,
+} from '@/lib/json/widgetOptionsData'
 import { DeviceWidgetConfiguration } from '@/components/modules/dashboard/deviceDetail/addWidgetDevice/deviceViews/widgetConfigurationView'
+import type { WidgetSize } from '@/lib/hooks/useWidgetResize'
 
 interface SavedDeviceWidget {
   id: string
   widget: WidgetOption
   config: DeviceWidgetConfiguration
+  size?: WidgetSize
 }
 
 export default function DeviceDetailPage({
@@ -37,6 +43,38 @@ export default function DeviceDetailPage({
   useEffect(() => {
     // Simulate data fetching with delay for redirect effect
     const timer = setTimeout(() => {
+      // Load widgets from mock data after device is loaded
+      if (
+        mockDeviceWidgetsData.success &&
+        mockDeviceWidgetsData.data.length > 0
+      ) {
+        const loadedWidgets = mockDeviceWidgetsData.data.map((widgetData) => {
+          // Find the widget option from DEVICE_WIDGET_OPTIONS
+          const widgetOption = DEVICE_WIDGET_OPTIONS.find(
+            (w) => w.id === widgetData.widgetType
+          )
+
+          if (!widgetOption) {
+            throw new Error(`Widget type not found: ${widgetData.widgetType}`)
+          }
+
+          return {
+            id: widgetData.id,
+            widget: widgetOption,
+            config: {
+              widgetName: widgetData.name,
+              dataPin: widgetData.config.virtualPin,
+              unit: widgetData.config.unit,
+              minValue: widgetData.config.minValue,
+              maxValue: widgetData.config.maxValue,
+            } as DeviceWidgetConfiguration,
+            size: widgetData.size,
+          } as SavedDeviceWidget
+        })
+
+        setWidgets(loadedWidgets)
+      }
+
       setIsLoading(false)
     }, 1500)
 
@@ -52,8 +90,8 @@ export default function DeviceDetailPage({
 
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement
-      // Check if click is on a widget or widget button
-      const isWidgetClick = target.closest('[data-widget-id]')
+      // Check if click is on a widget container or button
+      const isWidgetClick = target.closest('[data-widget-container]')
       if (!isWidgetClick) {
         setSelectedWidgetId(null)
       }
@@ -107,6 +145,12 @@ export default function DeviceDetailPage({
 
   const handleEditWidget = (widgetId: string) => {}
 
+  const handleWidgetSizeChange = (widgetId: string, size: WidgetSize) => {
+    setWidgets((prevWidgets) =>
+      prevWidgets.map((w) => (w.id === widgetId ? { ...w, size } : w))
+    )
+  }
+
   return (
     <DashboardLayout>
       <DashboardHeader />
@@ -130,38 +174,25 @@ export default function DeviceDetailPage({
 
             {/* Widget Grid Section */}
             <DeviceDetailGridSection isEditing={isEditing}>
-              {widgets.map((w) => {
-                // Get grid column span for this widget
-                const gridColSpan =
-                  w.widget.id === 'chart' || w.widget.id === 'slider' ? 2 : 1
-
-                return (
-                  <div
-                    key={w.id}
-                    data-widget-id={w.id}
-                    className="relative z-10"
-                    style={{
-                      gridColumn: `span ${gridColSpan}`,
-                    }}
-                  >
-                    <WidgetRenderer
-                      widget={w.widget}
-                      config={{
-                        name: w.config.widgetName,
-                        virtualPin: w.config.dataPin,
-                        unit: w.config.unit,
-                        minValue: w.config.minValue,
-                        maxValue: w.config.maxValue,
-                      }}
-                      isEditing={isEditing}
-                      isSelected={selectedWidgetId === w.id}
-                      onSelect={() => setSelectedWidgetId(w.id)}
-                      onEdit={() => handleEditWidget(w.id)}
-                      onDelete={() => handleDeleteWidget(w.id)}
-                    />
-                  </div>
-                )
-              })}
+              {widgets.map((w) => (
+                <WidgetRenderer
+                  key={w.id}
+                  widget={w.widget}
+                  config={{
+                    name: w.config.widgetName,
+                    virtualPin: w.config.dataPin,
+                    unit: w.config.unit,
+                    minValue: w.config.minValue,
+                    maxValue: w.config.maxValue,
+                  }}
+                  isEditing={isEditing}
+                  isSelected={selectedWidgetId === w.id}
+                  onSelect={() => setSelectedWidgetId(w.id)}
+                  onEdit={() => handleEditWidget(w.id)}
+                  onDelete={() => handleDeleteWidget(w.id)}
+                  onSizeChange={(size) => handleWidgetSizeChange(w.id, size)}
+                />
+              ))}
             </DeviceDetailGridSection>
           </DeviceDetailOverviewSection>
         </div>

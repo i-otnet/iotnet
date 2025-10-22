@@ -149,3 +149,88 @@ export function getWidgetDefaultSize(
   }
   return getDeviceWidgetDefaultSize(widgetId)
 }
+
+/**
+ * Convert column span to grid columns
+ */
+export function colSpanToGridCols(colSpan: string): number {
+  const match = colSpan.match(/col-span-(\d+)/)
+  return match ? parseInt(match[1], 10) : 1
+}
+
+/**
+ * Convert grid columns to column span class
+ */
+export function gridColsToColSpan(cols: number): string {
+  return `col-span-${cols}`
+}
+
+/**
+ * Get resize constraints for widget type
+ */
+export function getWidgetResizeConstraints(
+  widgetId: string,
+  widgetType: 'device' | 'model' = 'device'
+): {
+  minCols: number
+  maxCols: number
+  minRows: number
+  maxRows: number
+} {
+  // Define constraints based on widget type (maxCols all set to 4 for full width resize)
+  const constraints: Record<
+    string,
+    { minCols: number; maxCols: number; minRows: number; maxRows: number }
+  > = {
+    // Device widgets
+    statistics: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 2 },
+    chart: { minCols: 2, maxCols: 4, minRows: 1, maxRows: 3 },
+    button: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 1 },
+    slider: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 2 },
+    switch: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 1 },
+    gauge: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 2 },
+    // Model widgets
+    'confusion-matrix': { minCols: 2, maxCols: 4, minRows: 2, maxRows: 4 },
+    'roc-curve': { minCols: 2, maxCols: 4, minRows: 2, maxRows: 3 },
+    'feature-importance': { minCols: 1, maxCols: 4, minRows: 1, maxRows: 3 },
+    'prediction-output': { minCols: 1, maxCols: 4, minRows: 1, maxRows: 2 },
+  }
+
+  return (
+    constraints[widgetId] || {
+      minCols: 1,
+      maxCols: 4,
+      minRows: 1,
+      maxRows: 4,
+    }
+  )
+}
+
+/**
+ * Calculate widget grid area string
+ */
+export function calculateGridArea(
+  row: number,
+  col: number,
+  rowSpan: number,
+  colSpan: number
+): string {
+  return `${row} / ${col} / ${row + rowSpan} / ${col + colSpan}`
+}
+
+/**
+ * Check if widget can be resized
+ */
+export function canResizeWidget(
+  widgetId: string,
+  direction: 'horizontal' | 'vertical' | 'both' = 'both'
+): boolean {
+  const noResizeWidgets = ['button', 'switch'] // Widgets that shouldn't be resized
+
+  if (noResizeWidgets.includes(widgetId)) {
+    return false
+  }
+
+  // You can add more specific logic here based on direction
+  return true
+}
