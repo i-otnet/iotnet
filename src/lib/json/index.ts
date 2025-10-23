@@ -27,4 +27,7 @@ export {
   mockDeviceWidgetsData,
   type DeviceWidgetData,
   type DeviceWidgetsResponse,
+  type ChartPin,
 } from './deviceWidgetsMockData'
+
+export { mockChartData } from './mockChartData'

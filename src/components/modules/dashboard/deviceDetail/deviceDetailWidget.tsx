@@ -9,6 +9,9 @@ import SliderWidget from '@/components/modules/widgets/widgetDevices/sliderWidge
 import StatWidget from '@/components/modules/widgets/widgetDevices/statWidget'
 import SwitchWidget from '@/components/modules/widgets/widgetDevices/switchWidget'
 import { WidgetOption } from '@/lib/json/widgetOptionsData'
+import { mockChartData } from '@/lib/json/mockChartData'
+import type { ChartPin } from '@/lib/json/deviceWidgetsMockData'
+import { generateChartDataFromPins } from '@/lib/utils/chartColorUtils'
 import { Trash2, Edit2, GripVertical, ArrowLeftRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -22,7 +25,7 @@ import ResizeLineIndicator from '@/components/shared/resizeLineIndicator'
 
 interface WidgetConfig {
   name: string
-  virtualPin: string
+  virtualPin: string | ChartPin[]
   unit?: string
   minValue?: number
   maxValue?: number
@@ -52,11 +55,18 @@ export default function DeviceDetailWidget({
   const [buttonState, setButtonState] = useState(false)
   const [switchState, setSwitchState] = useState(false)
   const [sliderValue, setSliderValue] = useState(config.minValue || 0)
+  const [gaugeValue, setGaugeValue] = useState(config.minValue || 0)
   const [resizeLineX, setResizeLineX] = useState<number | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
   const constraints = getWidgetResizeConstraints(widget.id, 'device')
   const defaultSize = getWidgetDefaultSize(widget.id, 'device')
+
+  // For chart widgets, force maxRows to 1 to prevent vertical resizing
+  const chartConstraints =
+    widget.id === 'chart'
+      ? { ...constraints, minRows: 1, maxRows: 1 }
+      : constraints
 
   const {
     size,
@@ -67,8 +77,8 @@ export default function DeviceDetailWidget({
     detachResizeListeners,
   } = useWidgetResize({
     initialSize: { cols: defaultSize, rows: 1 },
-    minSize: { cols: constraints.minCols, rows: constraints.minRows },
-    maxSize: { cols: constraints.maxCols, rows: constraints.maxRows },
+    minSize: { cols: chartConstraints.minCols, rows: chartConstraints.minRows },
+    maxSize: { cols: chartConstraints.maxCols, rows: chartConstraints.maxRows },
     gridColumns: 4,
     onResize: (newSize) => {
       onSizeChange?.(newSize)
@@ -107,18 +117,38 @@ export default function DeviceDetailWidget({
     }
   }
 
+  // Generate chart data from pins configuration
+  const getChartData = () => {
+    if (Array.isArray(config.virtualPin)) {
+      // Multi-pin chart - use utility function
+      return generateChartDataFromPins(config.virtualPin, mockChartData)
+    } else {
+      // Single pin (fallback for old data) - add required borderColor
+      return {
+        labels: mockChartData.labels,
+        datasets: mockChartData.datasets.map((dataset) => ({
+          ...dataset,
+          borderColor: '#3b82f6',
+          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        })),
+      }
+    }
+  }
+
   const renderWidget = () => {
     switch (widget.id) {
       case 'statistics':
-        return <StatWidget value={`0 ${config.unit || ''}`} color="primary" />
-      case 'chart':
         return (
-          <ChartWidget>
-            <div className="flex items-center justify-center h-full text-muted-foreground">
-              No data available
-            </div>
-          </ChartWidget>
+          <div
+            className={`h-full w-full ${
+              isEditing ? 'pointer-events-none' : ''
+            }`}
+          >
+            <StatWidget value={`0 ${config.unit || ''}`} color="primary" />
+          </div>
         )
+      case 'chart':
+        return <ChartWidget data={getChartData()} />
       case 'button':
         return (
           <div className={`h-full ${isEditing ? 'pointer-events-none' : ''}`}>
@@ -132,7 +162,11 @@ export default function DeviceDetailWidget({
         )
       case 'slider':
         return (
-          <div className={`h-full ${isEditing ? 'pointer-events-none' : ''}`}>
+          <div
+            className={`h-full w-full ${
+              isEditing ? 'pointer-events-none' : ''
+            }`}
+          >
             <SliderWidget
               value={sliderValue}
               min={config.minValue || 0}
@@ -155,12 +189,13 @@ export default function DeviceDetailWidget({
       case 'gauge':
         return (
           <GaugeWidget
-            title={config.unit}
-            value={0}
+            value={gaugeValue}
             min={config.minValue || 0}
             max={config.maxValue || 100}
           >
-            <div className="text-3xl font-bold text-primary">0</div>
+            <div className="text-3xl font-bold text-primary">
+              {gaugeValue} {config.unit || ''}
+            </div>
           </GaugeWidget>
         )
       default:
@@ -182,7 +217,7 @@ export default function DeviceDetailWidget({
         data-widget-container="true"
       >
         <Card
-          className={`p-6 relative ${borderStyle} ${
+          className={`p-3 relative ${borderStyle} ${
             isEditing ? 'cursor-pointer' : ''
           } transition-all h-full flex flex-col`}
           onClick={handleCardClick}
@@ -218,14 +253,20 @@ export default function DeviceDetailWidget({
               onMouseDown={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
+                // For chart widgets, only allow horizontal resize (direction 'e')
+                // For other widgets, allow both directions (direction 'se')
+                const direction = widget.id === 'chart' ? 'e' : 'se'
                 containerRef.current &&
-                  handleResizeStart(e, 'se', containerRef.current)
+                  handleResizeStart(e, direction, containerRef.current)
               }}
               onTouchStart={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
+                // For chart widgets, only allow horizontal resize (direction 'e')
+                // For other widgets, allow both directions (direction 'se')
+                const direction = widget.id === 'chart' ? 'e' : 'se'
                 containerRef.current &&
-                  handleResizeStart(e, 'se', containerRef.current)
+                  handleResizeStart(e, direction, containerRef.current)
               }}
               style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
             >
@@ -268,16 +309,19 @@ export default function DeviceDetailWidget({
           )}
 
           {/* Widget Content */}
-          <div className="flex flex-col h-full mt-6">
+          <div className="flex flex-col h-full mt-6 justify-between">
             <div className="mb-3">
               <h3 className="text-sm font-medium text-foreground">
                 {config.name}
               </h3>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Pin: {config.virtualPin}
+                Pin:{' '}
+                {Array.isArray(config.virtualPin)
+                  ? config.virtualPin.map((p) => p.pin).join(', ')
+                  : config.virtualPin}
               </p>
             </div>
-            <div className="flex-1 min-h-[100px]">{renderWidget()}</div>
+            <div className="flex-1">{renderWidget()}</div>
           </div>
 
           {/* Resizing overlay dengan grid lines */}

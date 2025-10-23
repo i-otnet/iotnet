@@ -126,15 +126,6 @@ export function useWidgetResize({
         lastRan: Date.now(),
       }
 
-      console.log('PHASE 1: Resize Start', {
-        startXInGrid: startXInGrid.toFixed(0),
-        widgetLeftEdge: (rect.left - gridContainerLeft).toFixed(0),
-        baseWidth: baseWidth.toFixed(2),
-        currentSize: size,
-        startSize: size,
-        gridContainerWidth: gridContainerWidth.toFixed(0),
-      })
-
       setIsResizing(true)
       onResizeStart?.(size)
 
@@ -209,7 +200,9 @@ export function useWidgetResize({
         let newCols = calculatedSpan
         let newRows = startSize.rows
 
-        // Handle vertical resize
+        // Handle vertical resize only for directions that include vertical component
+        // 's' = south, 'n' = north, 'se'/'sw'/'ne'/'nw' = diagonal
+        // For 'e'/'w' (horizontal only), newRows stays as startSize.rows
         if (direction.includes('s')) {
           const rowHeight = baseWidth * 0.75
           const rowIncrement = deltaY / rowHeight
@@ -231,16 +224,6 @@ export function useWidgetResize({
           setSize(newSize)
           onResize?.(newSize)
         }
-
-        // Debug logging
-        console.log('PHASE 2-5: Resize Loop', {
-          rawDeltaX: rawDeltaX.toFixed(0),
-          smoothedDeltaX: smoothedDeltaX.toFixed(0),
-          proposedWidth: proposedWidth.toFixed(0),
-          calculatedSpan,
-          linePositionRatio: linePositionRatio.toFixed(2),
-          direction,
-        })
 
         resizeRef.current!.lastRan = Date.now()
       }
@@ -270,10 +253,6 @@ export function useWidgetResize({
     if (resizeRef.current.throttleTimer) {
       clearTimeout(resizeRef.current.throttleTimer)
     }
-
-    console.log('PHASE 6-7: Resize End', {
-      finalSize: size,
-    })
 
     resizeRef.current = null
     setIsResizing(false)

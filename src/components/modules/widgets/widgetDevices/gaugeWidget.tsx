@@ -28,9 +28,6 @@ export default function GaugeWidget({
 
   return (
     <div className="flex flex-col justify-center items-center h-full w-full gap-2">
-      {title && (
-        <div className="font-semibold text-sm text-gray-500 mb-1">{title}</div>
-      )}
       <div className="flex flex-col items-center gap-1 w-full px-4">
         <div className="relative w-full max-w-[200px]">
           <svg
@@ -63,12 +60,6 @@ export default function GaugeWidget({
           <div className="absolute inset-0 flex items-end justify-center pb-1">
             {children}
           </div>
-        </div>
-
-        {/* Min and Max Labels */}
-        <div className="w-full max-w-[200px] flex items-center justify-between text-xs font-medium text-gray-500 px-3 mt-1">
-          <span>{min}%</span>
-          <span>{max}%</span>
         </div>
       </div>
     </div>

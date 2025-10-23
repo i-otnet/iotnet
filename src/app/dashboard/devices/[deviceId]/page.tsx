@@ -9,6 +9,7 @@ import DeviceDetailHeader from '@/components/modules/dashboard/deviceDetail/devi
 import ConnectionStatusCard from '@/components/shared/connectionStatusCard'
 import WidgetRenderer from '@/components/modules/dashboard/deviceDetail/deviceDetailWidget'
 import RedirectPage from '@/components/shared/redirectPage'
+import EditWidgetDeviceModal from '@/components/modules/dashboard/deviceDetail/editWidgetDevice/editWidgetDeviceModal'
 import { mockDevicesData } from '@/lib/json/devicesData'
 import { mockDeviceWidgetsData } from '@/lib/json/deviceWidgetsMockData'
 import {
@@ -39,6 +40,10 @@ export default function DeviceDetailPage({
   const [isEditing, setIsEditing] = useState(false)
   const [selectedWidgetId, setSelectedWidgetId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [editingWidget, setEditingWidget] = useState<SavedDeviceWidget | null>(
+    null
+  )
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
   useEffect(() => {
     // Simulate data fetching with delay for redirect effect
@@ -143,7 +148,25 @@ export default function DeviceDetailPage({
     setSelectedWidgetId(null)
   }
 
-  const handleEditWidget = (widgetId: string) => {}
+  const handleEditWidget = (widgetId: string) => {
+    const widgetToEdit = widgets.find((w) => w.id === widgetId)
+    if (widgetToEdit) {
+      setEditingWidget(widgetToEdit)
+      setIsEditModalOpen(true)
+    }
+  }
+
+  const handleEditWidgetSave = (updatedConfig: DeviceWidgetConfiguration) => {
+    if (editingWidget) {
+      setWidgets((prevWidgets) =>
+        prevWidgets.map((w) =>
+          w.id === editingWidget.id ? { ...w, config: updatedConfig } : w
+        )
+      )
+      setEditingWidget(null)
+      setIsEditModalOpen(false)
+    }
+  }
 
   const handleWidgetSizeChange = (widgetId: string, size: WidgetSize) => {
     setWidgets((prevWidgets) =>
@@ -197,6 +220,17 @@ export default function DeviceDetailPage({
           </DeviceDetailOverviewSection>
         </div>
       </main>
+
+      {/* Edit Widget Modal */}
+      {editingWidget && (
+        <EditWidgetDeviceModal
+          open={isEditModalOpen}
+          onOpenChange={setIsEditModalOpen}
+          widget={editingWidget.widget}
+          config={editingWidget.config}
+          onConfigurationSave={handleEditWidgetSave}
+        />
+      )}
     </DashboardLayout>
   )
 }

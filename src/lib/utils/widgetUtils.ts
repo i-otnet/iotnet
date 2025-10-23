@@ -184,7 +184,7 @@ export function getWidgetResizeConstraints(
   > = {
     // Device widgets
     statistics: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 2 },
-    chart: { minCols: 2, maxCols: 4, minRows: 1, maxRows: 3 },
+    chart: { minCols: 2, maxCols: 4, minRows: 1, maxRows: 1 },
     button: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 1 },
     slider: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 2 },
     switch: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 1 },

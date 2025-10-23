@@ -12,8 +12,10 @@ export default function StatWidget({
   color = 'primary',
 }: StatWidgetProps) {
   return (
-    <div className="flex flex-col justify-center items-start h-full w-full">
+    <div className="flex flex-col justify-between items-start h-full w-full">
+      <div />
       <div className={`text-4xl font-bold text-${color}-600`}>{value}</div>
+      <div />
     </div>
   )
 }
