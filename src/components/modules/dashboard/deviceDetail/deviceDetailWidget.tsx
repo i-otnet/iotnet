@@ -58,7 +58,7 @@ export default function DeviceDetailWidget({
   const [resizeLineX, setResizeLineX] = useState<number | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const constraints = getWidgetResizeConstraints(widget.id, 'device')
+  const constraints = getWidgetResizeConstraints(widget.id)
   const defaultSize = getWidgetDefaultSize(widget.id, 'device')
 
   // For chart widgets, force maxRows to 1 to prevent vertical resizing
