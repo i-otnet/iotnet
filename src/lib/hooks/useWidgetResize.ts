@@ -62,7 +62,6 @@ export function useWidgetResize({
     widgetLeftEdge: number
     startSize: WidgetSize
     direction: string
-    gridContainerWidth: number
     containerHeight: number
     resizeDelta: number
     baseWidth: number
@@ -144,14 +143,8 @@ export function useWidgetResize({
       const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
       const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
 
-      const {
-        startX,
-        startY,
-        startSize,
-        direction,
-        gridContainerWidth,
-        baseWidth,
-      } = resizeRef.current
+      const { startX, startY, startSize, direction, baseWidth } =
+        resizeRef.current
 
       // Throttle execution
       const now = Date.now()
@@ -197,7 +190,7 @@ export function useWidgetResize({
 
         setDragLinePosition(linePositionRatio)
 
-        let newCols = calculatedSpan
+        const newCols = calculatedSpan
         let newRows = startSize.rows
 
         // Handle vertical resize only for directions that include vertical component

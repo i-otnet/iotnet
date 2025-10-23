@@ -23,7 +23,6 @@ export default function ProfileSettingsSection() {
     setSavedData(formData)
     setIsEditing(false)
     // TODO: Implement API call to save user data
-    console.log('Saving user data:', formData)
   }
 
   const handleCancel = () => {

@@ -14,10 +14,7 @@ import { ChevronDown, Plus, X } from 'lucide-react'
 import { WidgetOption } from '@/lib/json/widgetOptionsData'
 import { virtualPinsResponse } from '@/lib/json/virtualPinsResponse'
 import { getDeviceWidgetDefaultSize } from '@/lib/utils/widgetUtils'
-import {
-  getRandomChartColor,
-  type ChartColorConfig,
-} from '@/lib/utils/chartColorUtils'
+import { getRandomChartColor } from '@/lib/utils/chartColorUtils'
 
 interface WidgetConfigurationViewProps {
   widget: WidgetOption
@@ -198,7 +195,7 @@ const WidgetConfigurationView = forwardRef<
           {/* Display added pins */}
           {chartPins.length > 0 && (
             <div className="space-y-2 mb-3">
-              {chartPins.map((chartPin, index) => (
+              {chartPins.map((chartPin) => (
                 <div
                   key={chartPin.pin}
                   className="flex items-center gap-3 p-3 border rounded-lg bg-muted/30"

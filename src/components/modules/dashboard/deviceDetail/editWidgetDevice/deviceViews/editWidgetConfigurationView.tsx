@@ -38,7 +38,9 @@ const EditWidgetConfigurationView = forwardRef<
   EditWidgetConfigurationViewProps
 >(({ widget, config, onConfigurationSave, onValidationChange }, ref) => {
   const [widgetName, setWidgetName] = useState(config.widgetName)
-  const [selectedPin, setSelectedPin] = useState<string | null>(config.dataPin)
+  const [selectedPin, setSelectedPin] = useState<string | null>(
+    typeof config.dataPin === 'string' ? config.dataPin : null
+  )
   const [unit, setUnit] = useState(config.unit || '')
   const [minValue, setMinValue] = useState<number | ''>(config.minValue || '')
   const [maxValue, setMaxValue] = useState<number | ''>(config.maxValue || '')

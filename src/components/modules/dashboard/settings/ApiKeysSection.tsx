@@ -51,7 +51,6 @@ export default function ApiKeysSection() {
     setShowCreateForm(false)
 
     // TODO: Implement API call to create new key
-    console.log('Creating new API key:', newKey)
   }
 
   const handleRevokeKey = (id: string) => {
@@ -66,7 +65,6 @@ export default function ApiKeysSection() {
         )
       )
       // TODO: Implement API call to revoke key
-      console.log('Revoking API key:', id)
     }
   }
 
@@ -74,7 +72,6 @@ export default function ApiKeysSection() {
     if (confirm('Are you sure you want to delete this API key permanently?')) {
       setApiKeys(apiKeys.filter((key) => key.id !== id))
       // TODO: Implement API call to delete key
-      console.log('Deleting API key:', id)
     }
   }
 

@@ -3,7 +3,6 @@
 import React from 'react'
 
 interface GaugeWidgetProps {
-  title?: string
   value?: number
   min?: number
   max?: number
@@ -11,7 +10,6 @@ interface GaugeWidgetProps {
 }
 
 export default function GaugeWidget({
-  title,
   value = 0,
   min = 0,
   max = 100,

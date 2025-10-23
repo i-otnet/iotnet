@@ -168,10 +168,7 @@ export function gridColsToColSpan(cols: number): string {
 /**
  * Get resize constraints for widget type
  */
-export function getWidgetResizeConstraints(
-  widgetId: string,
-  widgetType: 'device' | 'model' = 'device'
-): {
+export function getWidgetResizeConstraints(widgetId: string): {
   minCols: number
   maxCols: number
   minRows: number
@@ -221,16 +218,13 @@ export function calculateGridArea(
 /**
  * Check if widget can be resized
  */
-export function canResizeWidget(
-  widgetId: string,
-  direction: 'horizontal' | 'vertical' | 'both' = 'both'
-): boolean {
+export function canResizeWidget(widgetId: string): boolean {
   const noResizeWidgets = ['button', 'switch'] // Widgets that shouldn't be resized
 
   if (noResizeWidgets.includes(widgetId)) {
     return false
   }
 
-  // You can add more specific logic here based on direction
+  // You can add more specific logic here
   return true
 }

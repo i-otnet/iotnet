@@ -55,7 +55,6 @@ export default function DeviceDetailWidget({
   const [buttonState, setButtonState] = useState(false)
   const [switchState, setSwitchState] = useState(false)
   const [sliderValue, setSliderValue] = useState(config.minValue || 0)
-  const [gaugeValue, setGaugeValue] = useState(config.minValue || 0)
   const [resizeLineX, setResizeLineX] = useState<number | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -70,7 +69,6 @@ export default function DeviceDetailWidget({
 
   const {
     size,
-    dragLinePosition,
     isResizing,
     handleResizeStart,
     attachResizeListeners,
@@ -189,12 +187,12 @@ export default function DeviceDetailWidget({
       case 'gauge':
         return (
           <GaugeWidget
-            value={gaugeValue}
+            value={config.minValue || 0}
             min={config.minValue || 0}
             max={config.maxValue || 100}
           >
             <div className="text-3xl font-bold text-primary">
-              {gaugeValue} {config.unit || ''}
+              {config.minValue || 0} {config.unit || ''}
             </div>
           </GaugeWidget>
         )
@@ -256,8 +254,9 @@ export default function DeviceDetailWidget({
                 // For chart widgets, only allow horizontal resize (direction 'e')
                 // For other widgets, allow both directions (direction 'se')
                 const direction = widget.id === 'chart' ? 'e' : 'se'
-                containerRef.current &&
+                if (containerRef.current) {
                   handleResizeStart(e, direction, containerRef.current)
+                }
               }}
               onTouchStart={(e) => {
                 e.preventDefault()
@@ -265,8 +264,9 @@ export default function DeviceDetailWidget({
                 // For chart widgets, only allow horizontal resize (direction 'e')
                 // For other widgets, allow both directions (direction 'se')
                 const direction = widget.id === 'chart' ? 'e' : 'se'
-                containerRef.current &&
+                if (containerRef.current) {
                   handleResizeStart(e, direction, containerRef.current)
+                }
               }}
               style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
             >
@@ -323,18 +323,6 @@ export default function DeviceDetailWidget({
             </div>
             <div className="flex-1">{renderWidget()}</div>
           </div>
-
-          {/* Resizing overlay dengan grid lines */}
-          {isResizing && (
-            <>
-              <div className="absolute inset-0 bg-primary/5 border-2 border-primary rounded-lg pointer-events-none z-40 select-none" />
-
-              {/* Current size indicator */}
-              <div className="absolute bottom-2 left-2 z-50 bg-primary/90 text-white text-xs px-2 py-1 rounded font-medium pointer-events-none">
-                {size.cols}col{size.cols > 1 ? 's' : ''}
-              </div>
-            </>
-          )}
         </Card>
       </div>
 
