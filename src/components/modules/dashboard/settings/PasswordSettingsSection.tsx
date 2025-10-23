@@ -31,7 +31,6 @@ export default function PasswordSettingsSection() {
     }
 
     // TODO: Implement API call to change password
-    console.log('Changing password...')
 
     // Reset form
     setPasswords({

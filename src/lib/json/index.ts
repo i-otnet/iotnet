@@ -22,3 +22,12 @@ export {
   MODEL_WIDGET_OPTIONS,
   type WidgetOption,
 } from './widgetOptionsData'
+
+export {
+  mockDeviceWidgetsData,
+  type DeviceWidgetData,
+  type DeviceWidgetsResponse,
+  type ChartPin,
+} from './deviceWidgetsMockData'
+
+export { mockChartData } from './mockChartData'

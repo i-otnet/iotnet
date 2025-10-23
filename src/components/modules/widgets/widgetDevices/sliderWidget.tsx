@@ -22,22 +22,23 @@ export default function SliderWidget({
   children,
 }: SliderWidgetProps) {
   return (
-    <div className="flex flex-col h-full justify-center items-center px-2 gap-3">
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => onChange?.(parseFloat(e.target.value))}
-        className="w-full h-3 rounded-full appearance-none cursor-pointer slider"
-        style={{
-          background: `linear-gradient(to right, var(--primary) 0%, var(--primary) ${
-            ((value - min) / (max - min)) * 100
-          }%, #d1d5db ${((value - min) / (max - min)) * 100}%, #d1d5db 100%)`,
-        }}
-      />
-      <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col h-full justify-between items-center px-2">
+      <div />
+      <div className="flex flex-col items-center justify-center gap-3 w-full">
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => onChange?.(parseFloat(e.target.value))}
+          className="w-full h-3 rounded-full appearance-none cursor-pointer slider"
+          style={{
+            background: `linear-gradient(to right, var(--primary) 0%, var(--primary) ${
+              ((value - min) / (max - min)) * 100
+            }%, #d1d5db ${((value - min) / (max - min)) * 100}%, #d1d5db 100%)`,
+          }}
+        />
         {label && (
           <label className="text-lg font-medium text-gray-800 block text-center">
             {label}
@@ -45,6 +46,7 @@ export default function SliderWidget({
         )}
         {children}
       </div>
+      <div />
     </div>
   )
 }

@@ -49,7 +49,6 @@ export default function BrokerSettingsSection() {
     setSavedConfig(brokerConfig)
     setIsEditing(false)
     // TODO: Implement API call to save broker configuration
-    console.log('Saving broker configuration:', brokerConfig)
   }
 
   const handleCancel = () => {
@@ -63,7 +62,6 @@ export default function BrokerSettingsSection() {
 
   const handleTestConnection = () => {
     // TODO: Implement actual connection test
-    console.log('Testing broker connection...')
     alert('Connection test successful!')
   }
 
@@ -240,9 +238,9 @@ export default function BrokerSettingsSection() {
                     <div className="space-y-2">
                       <Label>Certificate File (.crt or .pem)</Label>
                       <FileUpload
-                        onFilesChange={(files) =>
-                          console.log('Certificate files:', files)
-                        }
+                        onFilesChange={() => {
+                          // TODO: Handle certificate file upload
+                        }}
                         accept=".crt,.pem"
                         acceptedFileTypes={['.crt', '.pem']}
                         maxFiles={1}
@@ -253,9 +251,9 @@ export default function BrokerSettingsSection() {
                     <div className="space-y-2">
                       <Label>Private Key File (.key)</Label>
                       <FileUpload
-                        onFilesChange={(files) =>
-                          console.log('Key files:', files)
-                        }
+                        onFilesChange={() => {
+                          // TODO: Handle key file upload
+                        }}
                         accept=".key"
                         acceptedFileTypes={['.key']}
                         maxFiles={1}

@@ -37,7 +37,6 @@ export default function NotificationSettingsSection() {
   const handleSave = () => {
     setSavedSettings(settings)
     // TODO: Implement API call to save notification settings
-    console.log('Saving notification settings:', settings)
   }
 
   const handleCancel = () => {

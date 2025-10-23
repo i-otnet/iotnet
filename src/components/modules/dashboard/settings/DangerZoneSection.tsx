@@ -25,7 +25,6 @@ export default function DangerZoneSection() {
     setIsDeleting(true)
 
     // TODO: Implement API call to delete account
-    console.log('Deleting account...')
 
     setTimeout(() => {
       alert('Account deletion initiated. You will be logged out shortly.')
@@ -129,7 +128,6 @@ export default function DangerZoneSection() {
                 variant="outline"
                 onClick={() => {
                   // TODO: Implement data export
-                  console.log('Exporting user data...')
                   alert('Data export will be sent to your email')
                 }}
                 className="w-full sm:w-auto text-xs sm:text-sm"
@@ -141,7 +139,6 @@ export default function DangerZoneSection() {
                 variant="outline"
                 onClick={() => {
                   // TODO: Implement device data export
-                  console.log('Exporting device data...')
                   alert('Device data export will be sent to your email')
                 }}
                 className="w-full sm:w-auto text-xs sm:text-sm"

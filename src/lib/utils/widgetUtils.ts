@@ -11,12 +11,12 @@ export function getWidgetBorderStyle(
   }
 
   if (isSelected) {
-    // Edit mode + selected: solid blue border
-    return 'border-2 border-primary'
+    // Edit mode + selected: solid blue border with shadow
+    return 'border-2 border-primary shadow-lg shadow-primary/20'
   }
 
   // Edit mode + not selected: dashed blue border
-  return 'border-2 border-dashed border-primary'
+  return 'border-2 border-dashed border-primary/40'
 }
 
 /**
@@ -70,10 +70,10 @@ export function getDeviceWidgetColSpan(widgetId: string): string {
 
   switch (size) {
     case 2:
-      return 'col-span-1 md:col-span-2 lg:col-span-2' // 1/2
+      return 'col-span-2' // 1/2 (always takes 2 columns on 4-column grid)
     case 1:
     default:
-      return 'col-span-1 md:col-span-1 lg:col-span-1' // 1/4
+      return 'col-span-1' // 1/4 (always takes 1 column on 4-column grid)
   }
 }
 
@@ -85,10 +85,10 @@ export function getModelWidgetColSpan(widgetId: string): string {
 
   switch (size) {
     case 2:
-      return 'col-span-1 md:col-span-2 lg:col-span-2' // 1/2
+      return 'col-span-2' // 1/2 (always takes 2 columns on 4-column grid)
     case 1:
     default:
-      return 'col-span-1 md:col-span-1 lg:col-span-1' // 1/4
+      return 'col-span-1' // 1/4 (always takes 1 column on 4-column grid)
   }
 }
 
@@ -148,4 +148,83 @@ export function getWidgetDefaultSize(
     return getModelWidgetDefaultSize(widgetId)
   }
   return getDeviceWidgetDefaultSize(widgetId)
+}
+
+/**
+ * Convert column span to grid columns
+ */
+export function colSpanToGridCols(colSpan: string): number {
+  const match = colSpan.match(/col-span-(\d+)/)
+  return match ? parseInt(match[1], 10) : 1
+}
+
+/**
+ * Convert grid columns to column span class
+ */
+export function gridColsToColSpan(cols: number): string {
+  return `col-span-${cols}`
+}
+
+/**
+ * Get resize constraints for widget type
+ */
+export function getWidgetResizeConstraints(widgetId: string): {
+  minCols: number
+  maxCols: number
+  minRows: number
+  maxRows: number
+} {
+  // Define constraints based on widget type (maxCols all set to 4 for full width resize)
+  const constraints: Record<
+    string,
+    { minCols: number; maxCols: number; minRows: number; maxRows: number }
+  > = {
+    // Device widgets
+    statistics: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 2 },
+    chart: { minCols: 2, maxCols: 4, minRows: 1, maxRows: 1 },
+    button: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 1 },
+    slider: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 2 },
+    switch: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 1 },
+    gauge: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 2 },
+    // Model widgets
+    'confusion-matrix': { minCols: 2, maxCols: 4, minRows: 2, maxRows: 4 },
+    'roc-curve': { minCols: 2, maxCols: 4, minRows: 2, maxRows: 3 },
+    'feature-importance': { minCols: 1, maxCols: 4, minRows: 1, maxRows: 3 },
+    'prediction-output': { minCols: 1, maxCols: 4, minRows: 1, maxRows: 2 },
+  }
+
+  return (
+    constraints[widgetId] || {
+      minCols: 1,
+      maxCols: 4,
+      minRows: 1,
+      maxRows: 4,
+    }
+  )
+}
+
+/**
+ * Calculate widget grid area string
+ */
+export function calculateGridArea(
+  row: number,
+  col: number,
+  rowSpan: number,
+  colSpan: number
+): string {
+  return `${row} / ${col} / ${row + rowSpan} / ${col + colSpan}`
+}
+
+/**
+ * Check if widget can be resized
+ */
+export function canResizeWidget(widgetId: string): boolean {
+  const noResizeWidgets = ['button', 'switch'] // Widgets that shouldn't be resized
+
+  if (noResizeWidgets.includes(widgetId)) {
+    return false
+  }
+
+  // You can add more specific logic here
+  return true
 }
