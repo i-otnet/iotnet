@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -44,9 +44,40 @@ interface ChartWidgetProps {
 }
 
 export default function ChartWidget({ data, children }: ChartWidgetProps) {
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    // Detect dark mode
+    const isDark = document.documentElement.classList.contains('dark')
+    setIsDarkMode(isDark)
+
+    // Watch for theme changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          const isDark = document.documentElement.classList.contains('dark')
+          setIsDarkMode(isDark)
+        }
+      })
+    })
+
+    observer.observe(document.documentElement, { attributes: true })
+
+    return () => observer.disconnect()
+  }, [])
+
   if (!data || !data.datasets || data.datasets.length === 0) {
     return <div className="w-full h-full">{children}</div>
   }
+
+  // Colors for dark and light mode
+  const textColor = isDarkMode ? '#cbd5e1' : '#6b7280'
+  const gridColor = isDarkMode
+    ? 'rgba(100, 116, 139, 0.6)'
+    : 'rgba(229, 231, 235, 0.8)'
+  const axisColor = isDarkMode
+    ? 'rgba(100, 116, 139, 0.5)'
+    : 'rgba(209, 213, 219, 0.8)'
 
   // Chart.js configuration
   const chartData = {
@@ -90,7 +121,7 @@ export default function ChartWidget({ data, children }: ChartWidgetProps) {
           font: {
             size: 11,
           },
-          color: '#6b7280',
+          color: textColor,
         },
       },
       tooltip: {
@@ -129,23 +160,29 @@ export default function ChartWidget({ data, children }: ChartWidgetProps) {
           font: {
             size: 11,
           },
-          color: '#6b7280',
+          color: textColor,
+        },
+        border: {
+          color: axisColor,
         },
       },
       y: {
         beginAtZero: true,
         grid: {
-          color: 'rgba(229, 231, 235, 0.8)',
-          lineWidth: 1,
+          color: gridColor,
+          lineWidth: 1.5,
         },
         ticks: {
           font: {
             size: 11,
           },
-          color: '#6b7280',
+          color: textColor,
           callback: function (tickValue) {
             return Number(tickValue).toFixed(1)
           },
+        },
+        border: {
+          color: axisColor,
         },
       },
     },

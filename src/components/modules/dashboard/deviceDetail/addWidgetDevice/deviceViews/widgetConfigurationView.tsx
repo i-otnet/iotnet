@@ -15,7 +15,6 @@ import { WidgetOption } from '@/lib/json/widgetOptionsData'
 import { virtualPinsResponse } from '@/lib/json/virtualPinsResponse'
 import { getDeviceWidgetDefaultSize } from '@/lib/utils/widgetUtils'
 import {
-  getPrimaryChartColor,
   getRandomChartColor,
   type ChartColorConfig,
 } from '@/lib/utils/chartColorUtils'
@@ -83,14 +82,8 @@ const WidgetConfigurationView = forwardRef<
       return // Pin already added
     }
 
-    let color: ChartColorConfig
-    if (chartPins.length === 0) {
-      // First pin always gets primary color
-      color = getPrimaryChartColor()
-    } else {
-      // Subsequent pins get random color
-      color = getRandomChartColor()
-    }
+    // All pins get random colors
+    const color = getRandomChartColor()
 
     setChartPins([
       ...chartPins,
@@ -105,26 +98,7 @@ const WidgetConfigurationView = forwardRef<
   // Remove pin from chart
   const handleRemoveChartPin = (pinToRemove: string) => {
     const updatedPins = chartPins.filter((p) => p.pin !== pinToRemove)
-
-    // Reassign colors to maintain first pin as primary
-    const reassignedPins = updatedPins.map((p, index) => {
-      let color: ChartColorConfig
-      if (index === 0) {
-        // First pin always gets primary
-        color = getPrimaryChartColor()
-      } else {
-        // For other pins, keep their original colors or assign new random
-        // Here we keep the original color to maintain consistency
-        return p
-      }
-      return {
-        ...p,
-        color: color.borderColor,
-        backgroundColor: color.backgroundColor,
-      }
-    })
-
-    setChartPins(reassignedPins)
+    setChartPins(updatedPins)
   }
 
   // Get available pins (not yet added to chart)
@@ -241,11 +215,6 @@ const WidgetConfigurationView = forwardRef<
                       <span className="font-medium text-sm">
                         {chartPin.pin}
                       </span>
-                      {index === 0 && (
-                        <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
-                          Primary
-                        </span>
-                      )}
                     </div>
                   </div>
 
@@ -273,9 +242,7 @@ const WidgetConfigurationView = forwardRef<
               >
                 <span className="flex items-center gap-2">
                   <Plus className="h-4 w-4" />
-                  {chartPins.length === 0
-                    ? 'Add first pin (Primary)'
-                    : 'Add another pin'}
+                  {chartPins.length === 0 ? 'Add first pin' : 'Add another pin'}
                 </span>
                 <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
               </Button>
@@ -297,8 +264,8 @@ const WidgetConfigurationView = forwardRef<
 
           <p className="text-xs text-muted-foreground">
             {chartPins.length === 0
-              ? 'Add your first data pin. It will use the primary color.'
-              : `${chartPins.length} pin(s) added. First pin uses primary color, others use different colors.`}
+              ? 'Add data pins. Each pin will get a random color.'
+              : `${chartPins.length} pin(s) added with random colors.`}
           </p>
         </div>
       )}
