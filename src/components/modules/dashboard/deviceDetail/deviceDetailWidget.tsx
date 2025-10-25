@@ -29,6 +29,7 @@ interface WidgetConfig {
   unit?: string
   minValue?: number
   maxValue?: number
+  currentValue?: boolean | number
 }
 
 interface DeviceDetailWidgetProps {
@@ -41,6 +42,8 @@ interface DeviceDetailWidgetProps {
   onDelete?: () => void
   onSizeChange?: (size: WidgetSize) => void
   onPositionChange?: (position: WidgetPosition) => void
+  initialSize?: WidgetSize
+  initialPosition?: { row: number; col: number }
 }
 
 export default function DeviceDetailWidget({
@@ -53,10 +56,20 @@ export default function DeviceDetailWidget({
   onDelete,
   onSizeChange,
   onPositionChange,
+  initialSize,
+  initialPosition = { row: 1, col: 1 },
 }: DeviceDetailWidgetProps) {
-  const [buttonState, setButtonState] = useState(false)
-  const [switchState, setSwitchState] = useState(false)
-  const [sliderValue, setSliderValue] = useState(config.minValue || 0)
+  const [buttonState, setButtonState] = useState(
+    typeof config.currentValue === 'boolean' ? config.currentValue : false
+  )
+  const [switchState, setSwitchState] = useState(
+    typeof config.currentValue === 'boolean' ? config.currentValue : false
+  )
+  const [sliderValue, setSliderValue] = useState(
+    typeof config.currentValue === 'number'
+      ? config.currentValue
+      : config.minValue || 0
+  )
   const [resizeLineX, setResizeLineX] = useState<number | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -76,7 +89,7 @@ export default function DeviceDetailWidget({
     attachResizeListeners,
     detachResizeListeners,
   } = useWidgetResize({
-    initialSize: { cols: defaultSize, rows: 1 },
+    initialSize: initialSize || { cols: defaultSize, rows: 1 },
     minSize: { cols: chartConstraints.minCols, rows: chartConstraints.minRows },
     maxSize: { cols: chartConstraints.maxCols, rows: chartConstraints.maxRows },
     gridColumns: 4,
@@ -95,7 +108,7 @@ export default function DeviceDetailWidget({
     attachDragListeners,
     detachDragListeners,
   } = useWidgetDrag({
-    initialPosition: { col: 1, row: 1 },
+    initialPosition: { col: initialPosition.col, row: initialPosition.row },
     gridColumns: 4,
     onDrag: (newPosition) => {
       onPositionChange?.(newPosition)

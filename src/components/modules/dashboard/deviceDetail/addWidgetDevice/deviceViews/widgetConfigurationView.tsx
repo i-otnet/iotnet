@@ -35,6 +35,7 @@ export interface DeviceWidgetConfiguration {
   minValue?: number
   maxValue?: number
   size: number // Size ratio (1 = 1/4, 2 = 1/2, etc.)
+  currentValue?: boolean | number
 }
 
 export interface WidgetConfigurationHandle {

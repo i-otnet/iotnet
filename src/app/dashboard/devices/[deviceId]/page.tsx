@@ -18,12 +18,14 @@ import {
 } from '@/lib/json/widgetOptionsData'
 import { DeviceWidgetConfiguration } from '@/components/modules/dashboard/deviceDetail/addWidgetDevice/deviceViews/widgetConfigurationView'
 import type { WidgetSize } from '@/lib/hooks/useWidgetResize'
+import type { DeviceWidgetData } from '@/lib/json/deviceWidgetsMockData'
 
 interface SavedDeviceWidget {
   id: string
   widget: WidgetOption
   config: DeviceWidgetConfiguration
   size?: WidgetSize
+  layout?: DeviceWidgetData['layout']
 }
 
 export default function DeviceDetailPage({
@@ -72,8 +74,12 @@ export default function DeviceDetailPage({
               unit: widgetData.config.unit,
               minValue: widgetData.config.minValue,
               maxValue: widgetData.config.maxValue,
+              currentValue: widgetData.config.currentValue,
             } as DeviceWidgetConfiguration,
-            size: widgetData.size,
+            size: widgetData.size
+              ? { cols: widgetData.size.cols, rows: 1 }
+              : undefined,
+            layout: widgetData.layout,
           } as SavedDeviceWidget
         })
 
@@ -227,6 +233,7 @@ export default function DeviceDetailPage({
                     unit: w.config.unit,
                     minValue: w.config.minValue,
                     maxValue: w.config.maxValue,
+                    currentValue: w.config.currentValue,
                   }}
                   isEditing={isEditing}
                   isSelected={selectedWidgetId === w.id}
@@ -241,6 +248,8 @@ export default function DeviceDetailPage({
                     )
                     handleWidgetPositionChange(w.id, newIndex)
                   }}
+                  initialSize={w.size}
+                  initialPosition={w.layout}
                 />
               ))}
             </DeviceDetailGridSection>

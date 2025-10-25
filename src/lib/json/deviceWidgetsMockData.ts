@@ -21,11 +21,14 @@ export interface DeviceWidgetData {
     unit?: string
     minValue?: number
     maxValue?: number
-    defaultValue?: boolean | number
+    currentValue?: boolean | number
   }
   size?: {
-    cols: number
-    rows: number
+    cols: number // Grid columns span (1 = 1/4, 2 = 1/2, 3 = 3/4, 4 = full width)
+  }
+  layout?: {
+    row: number // Posisi baris widget di grid
+    col: number // Posisi kolom widget di grid
   }
 }
 
@@ -53,8 +56,11 @@ export const mockDeviceWidgetsData: DeviceWidgetsResponse = {
         maxValue: 50,
       },
       size: {
-        cols: 2,
-        rows: 1,
+        cols: 1,
+      },
+      layout: {
+        row: 1,
+        col: 1,
       },
     },
     {
@@ -64,11 +70,14 @@ export const mockDeviceWidgetsData: DeviceWidgetsResponse = {
       config: {
         virtualPin: 'VP_1',
         unit: 'ON/OFF',
-        defaultValue: false,
+        currentValue: false,
       },
       size: {
         cols: 1,
-        rows: 1,
+      },
+      layout: {
+        row: 1,
+        col: 2,
       },
     },
     {
@@ -78,11 +87,14 @@ export const mockDeviceWidgetsData: DeviceWidgetsResponse = {
       config: {
         virtualPin: 'VP_2',
         unit: 'Status',
-        defaultValue: true,
+        currentValue: true,
       },
       size: {
         cols: 1,
-        rows: 1,
+      },
+      layout: {
+        row: 1,
+        col: 3,
       },
     },
     {
@@ -96,8 +108,11 @@ export const mockDeviceWidgetsData: DeviceWidgetsResponse = {
         maxValue: 100,
       },
       size: {
-        cols: 2,
-        rows: 1,
+        cols: 1,
+      },
+      layout: {
+        row: 1,
+        col: 4,
       },
     },
     {
@@ -125,8 +140,11 @@ export const mockDeviceWidgetsData: DeviceWidgetsResponse = {
         unit: 'Reading',
       },
       size: {
-        cols: 4,
-        rows: 2,
+        cols: 2,
+      },
+      layout: {
+        row: 2,
+        col: 1,
       },
     },
     {
@@ -138,11 +156,14 @@ export const mockDeviceWidgetsData: DeviceWidgetsResponse = {
         unit: '%',
         minValue: 0,
         maxValue: 100,
-        defaultValue: 50,
+        currentValue: 50,
       },
       size: {
         cols: 2,
-        rows: 1,
+      },
+      layout: {
+        row: 2,
+        col: 3,
       },
     },
   ],
