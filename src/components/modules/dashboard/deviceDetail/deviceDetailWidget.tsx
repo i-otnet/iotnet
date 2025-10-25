@@ -283,6 +283,7 @@ export default function DeviceDetailWidget({
         }`}
         style={{
           gridColumn: `span ${size.cols}`,
+          gridRow: `span ${size.rows}`,
           userSelect: isResizing ? 'none' : 'auto',
           transform: 'translate(0, 0)',
         }}
