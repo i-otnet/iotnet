@@ -55,7 +55,7 @@ export default function EditWidgetDeviceModal({
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[600px] max-h-[85vh] bg-white dark:bg-slate-900/85 backdrop-blur-xl border-gray-200 dark:border-white/10 flex flex-col">
-        <DialogHeader className="flex-shrink-0">
+        <DialogHeader className="shrink-0">
           <DialogTitle>Edit {widget.title} Widget</DialogTitle>
           <DialogDescription>
             Update your widget configuration
@@ -70,7 +70,7 @@ export default function EditWidgetDeviceModal({
             onValidationChange={setIsValid}
           />
         </div>
-        <div className="flex justify-end gap-2 mt-4 flex-shrink-0">
+        <div className="flex justify-end gap-2 mt-4 shrink-0">
           <Button variant="outline" onClick={handleClose}>
             Cancel
           </Button>

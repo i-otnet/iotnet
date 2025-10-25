@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card'
 import {
   AUTOMATION_BUILDER_DEVICES as DEVICES,
   AUTOMATION_BUILDER_MODELS as MODELS,
-} from '@/lib/json/data/automation/automationsData'
+} from '@/lib/json'
 
 interface Device {
   id: string

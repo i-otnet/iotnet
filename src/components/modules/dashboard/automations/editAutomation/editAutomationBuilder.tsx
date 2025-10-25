@@ -18,7 +18,7 @@ import {
   AUTOMATION_BUILDER_DEVICES as DEVICES,
   AUTOMATION_BUILDER_MODELS as MODELS,
   AUTOMATION_BUILDER_TRIGGER_TYPES as TRIGGER_TYPES,
-} from '@/lib/json/data/automation/automationsData'
+} from '@/lib/json'
 import EditTriggerSection from './EditTriggerSection'
 import EditActionSection from './EditActionSection'
 
@@ -173,7 +173,7 @@ const EditAutomationBuilder = forwardRef<
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full justify-between">
               <span>{triggerType}</span>
-              <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+              <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent

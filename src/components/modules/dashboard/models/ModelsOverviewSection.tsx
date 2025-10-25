@@ -183,7 +183,7 @@ export default function ModelsOverviewSection({
           <Button
             variant="outline"
             size="icon"
-            className="flex-shrink-0"
+            className="shrink-0"
             onClick={() => setShowFilterModal(true)}
           >
             <Filter className="w-4 h-4" />
@@ -202,7 +202,7 @@ export default function ModelsOverviewSection({
             <Button
               variant="outline"
               size="icon"
-              className="flex-shrink-0"
+              className="shrink-0"
               onClick={() => setShowFilterModal(true)}
             >
               <Filter className="w-4 h-4" />
@@ -216,7 +216,7 @@ export default function ModelsOverviewSection({
               variant={selectedFilter === 'all' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setSelectedFilter('all')}
-              className="whitespace-nowrap flex-shrink-0"
+              className="whitespace-nowrap shrink-0"
             >
               <span className="text-xs md:text-sm">All Models</span>
               <Badge
@@ -246,7 +246,7 @@ export default function ModelsOverviewSection({
                   }
                   size="sm"
                   onClick={() => setSelectedFilter(filterData.value)}
-                  className="whitespace-nowrap flex-shrink-0"
+                  className="whitespace-nowrap shrink-0"
                 >
                   <span className="text-xs md:text-sm">{filterData.label}</span>
                   <Badge
@@ -286,7 +286,7 @@ export default function ModelsOverviewSection({
                 }
                 size="sm"
                 onClick={() => setSelectedFilter(filterData.value)}
-                className="whitespace-nowrap flex-shrink-0 text-xs"
+                className="whitespace-nowrap shrink-0 text-xs"
               >
                 <span>{filterData.label}</span>
                 <Badge

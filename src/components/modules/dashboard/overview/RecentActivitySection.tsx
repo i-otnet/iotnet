@@ -33,7 +33,7 @@ export default function RecentActivitySection() {
     <Card className="h-full gap-2">
       <CardHeader className="p-4 sm:p-6">
         <CardTitle className="text-base sm:text-lg flex items-center gap-2">
-          <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
+          <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0" />
           Recent Activity
         </CardTitle>
         <CardDescription className="text-xs sm:text-sm">
@@ -48,7 +48,7 @@ export default function RecentActivitySection() {
               className="flex items-start gap-2 sm:gap-3 p-3 sm:p-3 rounded-lg border border-border/50 bg-card/50 hover:bg-accent/50 transition-colors"
             >
               <div
-                className={`w-2 h-2 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 ${getActivityTypeColor(
+                className={`w-2 h-2 rounded-full mt-1.5 sm:mt-2 shrink-0 ${getActivityTypeColor(
                   activity.type
                 )}`}
               />

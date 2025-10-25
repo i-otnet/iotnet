@@ -96,7 +96,7 @@ export default function BrokerIonetSetup({
           <Label htmlFor="user-role">Role</Label>
           <Button variant="outline" className="w-full justify-between" disabled>
             <span>User</span>
-            <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+            <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
           </Button>
           <p className="text-xs text-muted-foreground">
             IoTNet broker users are always assigned as &quot;User&quot; role.
@@ -107,7 +107,7 @@ export default function BrokerIonetSetup({
       <Card className="border border-border/70 shadow-sm">
         <CardHeader className="pb-4">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-lg bg-primary/10 flex-shrink-0">
+            <div className="p-2.5 rounded-lg bg-primary/10 shrink-0">
               <Info className="h-5 w-5 text-primary" />
             </div>
             <div className="flex flex-col leading-tight">
@@ -168,7 +168,7 @@ export default function BrokerIonetSetup({
           {credentials && (
             <div className="mt-4 space-y-5 p-5 bg-gradient-to-br from-green-50/30 to-green-100/20 dark:from-green-950/20 dark:to-green-900/10 rounded-lg border border-green-200/50 dark:border-green-900/50">
               <div className="flex items-center gap-2 pb-3 border-b border-green-200/50 dark:border-green-900/50">
-                <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                <CheckCircle className="h-5 w-5 text-green-500 shrink-0" />
                 <p className="text-sm font-semibold text-foreground">
                   Credentials Generated
                 </p>
@@ -191,7 +191,7 @@ export default function BrokerIonetSetup({
                             field
                           )
                         }
-                        className="p-2 hover:bg-muted rounded-md transition-colors flex-shrink-0"
+                        className="p-2 hover:bg-muted rounded-md transition-colors shrink-0"
                         title="Copy to clipboard"
                       >
                         {copiedField === field ? (

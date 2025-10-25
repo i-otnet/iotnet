@@ -59,7 +59,7 @@ export function EditDeviceModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
-        <DialogHeader className="flex-shrink-0">
+        <DialogHeader className="shrink-0">
           <DialogTitle className="flex items-center justify-between">
             <span>{headerInfo.title}</span>
           </DialogTitle>
@@ -74,7 +74,7 @@ export function EditDeviceModal({
         </div>
 
         {/* Footer Actions */}
-        <div className="flex justify-end gap-2 mt-4 flex-shrink-0">
+        <div className="flex justify-end gap-2 mt-4 shrink-0">
           {currentView === 'default' && (
             <>
               <Button variant="outline" onClick={() => onOpenChange(false)}>

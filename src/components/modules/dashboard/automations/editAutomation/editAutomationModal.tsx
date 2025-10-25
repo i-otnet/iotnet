@@ -93,7 +93,7 @@ export function EditAutomationModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[700px] max-h-[85vh] flex flex-col">
-        <DialogHeader className="flex-shrink-0">
+        <DialogHeader className="shrink-0">
           <DialogTitle>
             {currentView === 'default'
               ? `Edit Automation - ${automation.name}`
@@ -110,7 +110,7 @@ export function EditAutomationModal({
           {renderContent()}
         </div>
 
-        <div className="flex justify-end gap-2 mt-4 flex-shrink-0">
+        <div className="flex justify-end gap-2 mt-4 shrink-0">
           {currentView === 'default' && (
             <>
               <Button variant="outline" onClick={() => setCurrentView('flow')}>

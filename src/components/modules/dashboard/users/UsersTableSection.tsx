@@ -137,7 +137,7 @@ export default function UsersTableSection() {
                       ? 'Admin'
                       : 'User'}
                   </span>
-                  <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                  <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -170,7 +170,7 @@ export default function UsersTableSection() {
                       ? 'IoTNet'
                       : 'External'}
                   </span>
-                  <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                  <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -203,7 +203,7 @@ export default function UsersTableSection() {
                       ? 'Active'
                       : 'Inactive'}
                   </span>
-                  <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                  <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent

@@ -18,7 +18,7 @@ import {
   AUTOMATION_BUILDER_EVENT_TYPES as EVENT_TYPES,
   AUTOMATION_BUILDER_TIMEZONES as TIMEZONES,
   VIRTUAL_PINS,
-} from '@/lib/json/data/automation/automationsData'
+} from '@/lib/json'
 
 interface Device {
   id: string
@@ -96,7 +96,7 @@ export default function EditTriggerSection({
                     <span>
                       {triggerSource === 'device' ? 'Device' : 'Model'}
                     </span>
-                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
@@ -134,7 +134,7 @@ export default function EditTriggerSection({
                             (m: Model) => m.id === triggerSourceId
                           )?.name}
                     </span>
-                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
@@ -169,7 +169,7 @@ export default function EditTriggerSection({
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-full justify-between">
                     <span>{triggerDatapoint || 'Select a virtual pin'}</span>
-                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
@@ -197,7 +197,7 @@ export default function EditTriggerSection({
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-full justify-between">
                     <span>{triggerOperator}</span>
-                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
@@ -251,7 +251,7 @@ export default function EditTriggerSection({
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-full justify-between">
                     <span>{timezone || 'UTC'}</span>
-                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
@@ -288,7 +288,7 @@ export default function EditTriggerSection({
                         )?.name
                       }
                     </span>
-                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
@@ -314,7 +314,7 @@ export default function EditTriggerSection({
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-full justify-between">
                     <span>{eventType || 'Select event'}</span>
-                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent

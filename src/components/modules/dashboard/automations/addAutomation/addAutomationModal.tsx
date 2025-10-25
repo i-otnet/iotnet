@@ -56,7 +56,7 @@ export function AddAutomationModal({
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[700px] max-h-[85vh] flex flex-col">
-        <DialogHeader className="flex-shrink-0">
+        <DialogHeader className="shrink-0">
           <DialogTitle>Create Automation Flow</DialogTitle>
           <DialogDescription>
             Build a workflow: Trigger → Action (like n8n, Blynk style)
@@ -71,7 +71,7 @@ export function AddAutomationModal({
           />
         </div>
 
-        <div className="flex justify-end gap-2 mt-4 flex-shrink-0">
+        <div className="flex justify-end gap-2 mt-4 shrink-0">
           <Button variant="outline" onClick={handleClose}>
             Cancel
           </Button>

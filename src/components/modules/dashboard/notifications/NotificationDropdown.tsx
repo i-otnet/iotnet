@@ -153,7 +153,7 @@ export default function NotificationDropdown() {
                     </div>
                   </div>
 
-                  <div className="flex gap-1 flex-shrink-0 ml-2">
+                  <div className="flex gap-1 shrink-0 ml-2">
                     <button
                       onClick={() => toggleNotificationRead(notification.id)}
                       className="p-1.5 hover:bg-background rounded transition-colors"

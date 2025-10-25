@@ -66,7 +66,7 @@ export default function NotificationSection() {
         <div className="flex items-start justify-between gap-4">
           <div>
             <CardTitle className="text-base sm:text-lg flex items-center gap-2">
-              <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
+              <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0" />
               Notifications
             </CardTitle>
             <CardDescription className="text-xs sm:text-sm mt-1">
@@ -76,7 +76,7 @@ export default function NotificationSection() {
           </div>
 
           {notifications.length > 0 && (
-            <div className="flex gap-2 flex-shrink-0">
+            <div className="flex gap-2 shrink-0">
               <button
                 onClick={markAllAsRead}
                 className="flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium text-foreground hover:bg-accent rounded-md transition-colors border border-border hover:border-border/80"
@@ -144,7 +144,7 @@ export default function NotificationSection() {
                   </div>
                 </div>
 
-                <div className="flex gap-2 flex-shrink-0 ml-2">
+                <div className="flex gap-2 shrink-0 ml-2">
                   <button
                     onClick={() => toggleNotificationRead(notification.id)}
                     className="p-2 hover:bg-accent rounded-md transition-colors"

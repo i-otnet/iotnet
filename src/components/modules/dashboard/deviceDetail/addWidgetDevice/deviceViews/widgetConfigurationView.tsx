@@ -167,7 +167,7 @@ const WidgetConfigurationView = forwardRef<
                 <span>
                   {selectedPin ? selectedPin : 'Select a virtual pin...'}
                 </span>
-                <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -207,7 +207,7 @@ const WidgetConfigurationView = forwardRef<
                 >
                   {/* Color indicator */}
                   <div
-                    className="w-4 h-4 rounded-full flex-shrink-0"
+                    className="w-4 h-4 rounded-full shrink-0"
                     style={{ backgroundColor: chartPin.color }}
                   />
 
@@ -225,7 +225,7 @@ const WidgetConfigurationView = forwardRef<
                     variant="ghost"
                     size="sm"
                     onClick={() => handleRemoveChartPin(chartPin.pin)}
-                    className="h-8 w-8 p-0 hover:bg-destructive/10 hover:text-destructive flex-shrink-0"
+                    className="h-8 w-8 p-0 hover:bg-destructive/10 hover:text-destructive shrink-0"
                   >
                     <X className="h-4 w-4" />
                   </Button>
@@ -246,7 +246,7 @@ const WidgetConfigurationView = forwardRef<
                   <Plus className="h-4 w-4" />
                   {chartPins.length === 0 ? 'Add first pin' : 'Add another pin'}
                 </span>
-                <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -290,7 +290,7 @@ const WidgetConfigurationView = forwardRef<
                     ? 'Push Button (Press to activate)'
                     : 'Toggle Button (Press to toggle)'}
                 </span>
-                <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent

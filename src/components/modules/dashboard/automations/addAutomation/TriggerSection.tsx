@@ -19,7 +19,7 @@ import {
   AUTOMATION_BUILDER_EVENT_TYPES as EVENT_TYPES,
   AUTOMATION_BUILDER_TIMEZONES as TIMEZONES,
   VIRTUAL_PINS,
-} from '@/lib/json/data/automation/automationsData'
+} from '@/lib/json'
 
 interface Device {
   id: string
@@ -97,11 +97,11 @@ export default function AutomationBuilderTriggerSection({
                     <span>
                       {triggerSource === 'device' ? 'Device' : 'Model'}
                     </span>
-                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
-                  className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                  className="w-(--radix-dropdown-menu-trigger-width)"
                   align="start"
                 >
                   <DropdownMenuItem
@@ -135,11 +135,11 @@ export default function AutomationBuilderTriggerSection({
                             (m: Model) => m.id === triggerSourceId
                           )?.name}
                     </span>
-                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
-                  className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                  className="w-(--radix-dropdown-menu-trigger-width)"
                   align="start"
                 >
                   {triggerSource === 'device'
@@ -170,11 +170,11 @@ export default function AutomationBuilderTriggerSection({
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-full justify-between">
                     <span>{triggerDatapoint || 'Select a virtual pin'}</span>
-                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
-                  className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                  className="w-(--radix-dropdown-menu-trigger-width)"
                   align="start"
                 >
                   <div className="max-h-48 overflow-y-auto">
@@ -198,11 +198,11 @@ export default function AutomationBuilderTriggerSection({
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-full justify-between">
                     <span>{triggerOperator}</span>
-                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
-                  className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                  className="w-(--radix-dropdown-menu-trigger-width)"
                   align="start"
                 >
                   {OPERATORS.map((op: string) => (
@@ -252,11 +252,11 @@ export default function AutomationBuilderTriggerSection({
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-full justify-between">
                     <span>{timezone || 'UTC'}</span>
-                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
-                  className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                  className="w-(--radix-dropdown-menu-trigger-width)"
                   align="start"
                 >
                   {TIMEZONES.map((tz: string) => (
@@ -289,11 +289,11 @@ export default function AutomationBuilderTriggerSection({
                         )?.name
                       }
                     </span>
-                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
-                  className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                  className="w-(--radix-dropdown-menu-trigger-width)"
                   align="start"
                 >
                   {(DEVICES as Device[]).map((device: Device) => (
@@ -315,11 +315,11 @@ export default function AutomationBuilderTriggerSection({
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-full justify-between">
                     <span>{eventType || 'Select event'}</span>
-                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                    <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
-                  className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                  className="w-(--radix-dropdown-menu-trigger-width)"
                   align="start"
                 >
                   {EVENT_TYPES.map(

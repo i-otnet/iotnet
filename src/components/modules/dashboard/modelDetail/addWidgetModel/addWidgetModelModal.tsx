@@ -59,7 +59,7 @@ export default function AddWidgetModelModal({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-5xl max-h-[80vh] flex flex-col p-0">
         {/* Header - Fixed */}
-        <div className="flex-shrink-0 border-b border-border bg-background px-6 py-4">
+        <div className="shrink-0 border-b border-border bg-background px-6 py-4">
           <DialogTitle className="text-xl font-bold">
             {currentView === 'selection'
               ? 'Add New Widget'
@@ -87,7 +87,7 @@ export default function AddWidgetModelModal({
         </div>
 
         {/* Footer - Fixed */}
-        <div className="flex-shrink-0 flex gap-2 justify-end border-t border-border bg-background px-6 py-3">
+        <div className="shrink-0 flex gap-2 justify-end border-t border-border bg-background px-6 py-3">
           {currentView === 'detail' && (
             <Button variant="outline" onClick={handleBack} size="sm">
               Back

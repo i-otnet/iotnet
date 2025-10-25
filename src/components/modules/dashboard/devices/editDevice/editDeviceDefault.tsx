@@ -212,7 +212,7 @@ export default function EditDeviceDefault({ device }: EditDeviceDefaultProps) {
                   {/* OTA Info Box */}
                   <div className="p-3 bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 rounded-md">
                     <p className="text-xs text-blue-700 dark:text-blue-400 font-medium flex items-start gap-2">
-                      <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                      <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
                       <span>
                         Device must be online to receive OTA updates. The update
                         will begin immediately after upload.
