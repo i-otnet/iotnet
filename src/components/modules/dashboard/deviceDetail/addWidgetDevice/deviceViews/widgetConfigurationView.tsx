@@ -36,6 +36,7 @@ export interface DeviceWidgetConfiguration {
   maxValue?: number
   size: number // Size ratio (1 = 1/4, 2 = 1/2, etc.)
   currentValue?: boolean | number
+  buttonType?: 'push' | 'toggle' // For button widget only
 }
 
 export interface WidgetConfigurationHandle {
@@ -59,8 +60,10 @@ const WidgetConfigurationView = forwardRef<
   const [unit, setUnit] = useState('')
   const [minValue, setMinValue] = useState<number | ''>('')
   const [maxValue, setMaxValue] = useState<number | ''>('')
+  const [buttonType, setButtonType] = useState<'push' | 'toggle'>('push')
 
   const isChartWidget = widget.id === 'chart'
+  const isButtonWidget = widget.id === 'button'
   const hasUnit = WIDGETS_WITH_UNIT.includes(widget.id)
   const hasMinMax = WIDGETS_WITH_MIN_MAX.includes(widget.id)
 
@@ -118,6 +121,7 @@ const WidgetConfigurationView = forwardRef<
         minValue: Number(minValue),
         maxValue: Number(maxValue),
       }),
+      ...(isButtonWidget && { buttonType }),
     }
 
     onConfigurationSave(config)
@@ -264,6 +268,53 @@ const WidgetConfigurationView = forwardRef<
             {chartPins.length === 0
               ? 'Add data pins. Each pin will get a random color.'
               : `${chartPins.length} pin(s) added with random colors.`}
+          </p>
+        </div>
+      )}
+
+      {/* Button Type Selection (Only for button widget) */}
+      {isButtonWidget && (
+        <div className="space-y-2">
+          <Label htmlFor="button-type" className="text-sm font-semibold">
+            Button Type <span className="text-destructive">*</span>
+          </Label>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full justify-between h-10"
+                id="button-type"
+              >
+                <span>
+                  {buttonType === 'push'
+                    ? 'Push Button (Press to activate)'
+                    : 'Toggle Button (Press to toggle)'}
+                </span>
+                <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="w-[var(--radix-dropdown-menu-trigger-width)]"
+              align="start"
+            >
+              <DropdownMenuItem onClick={() => setButtonType('push')}>
+                Push Button
+                <span className="text-xs text-muted-foreground ml-2">
+                  Press to activate
+                </span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setButtonType('toggle')}>
+                Toggle Button
+                <span className="text-xs text-muted-foreground ml-2">
+                  Press to toggle
+                </span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <p className="text-xs text-muted-foreground">
+            {buttonType === 'push'
+              ? 'Button will be active while pressed, inactive when released'
+              : 'Button will toggle state on each press'}
           </p>
         </div>
       )}

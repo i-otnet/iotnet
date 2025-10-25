@@ -44,7 +44,11 @@ const EditWidgetConfigurationView = forwardRef<
   const [unit, setUnit] = useState(config.unit || '')
   const [minValue, setMinValue] = useState<number | ''>(config.minValue || '')
   const [maxValue, setMaxValue] = useState<number | ''>(config.maxValue || '')
+  const [buttonType, setButtonType] = useState<'push' | 'toggle'>(
+    config.buttonType || 'toggle'
+  )
 
+  const isButtonWidget = widget.id === 'button'
   const hasUnit = WIDGETS_WITH_UNIT.includes(widget.id)
   const hasMinMax = WIDGETS_WITH_MIN_MAX.includes(widget.id)
 
@@ -70,6 +74,7 @@ const EditWidgetConfigurationView = forwardRef<
         minValue: Number(minValue),
         maxValue: Number(maxValue),
       }),
+      ...(isButtonWidget && { buttonType }),
     }
 
     onConfigurationSave(updatedConfig)
@@ -135,6 +140,53 @@ const EditWidgetConfigurationView = forwardRef<
           Select the virtual pin that will provide data to this widget
         </p>
       </div>
+
+      {/* Button Type Selection (Only for button widget) */}
+      {isButtonWidget && (
+        <div className="space-y-2">
+          <Label htmlFor="button-type" className="text-sm font-semibold">
+            Button Type <span className="text-destructive">*</span>
+          </Label>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full justify-between h-10"
+                id="button-type"
+              >
+                <span>
+                  {buttonType === 'push'
+                    ? 'Push Button (Press to activate)'
+                    : 'Toggle Button (Press to toggle)'}
+                </span>
+                <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="w-[var(--radix-dropdown-menu-trigger-width)]"
+              align="start"
+            >
+              <DropdownMenuItem onClick={() => setButtonType('push')}>
+                Push Button
+                <span className="text-xs text-muted-foreground ml-2">
+                  Press to activate
+                </span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setButtonType('toggle')}>
+                Toggle Button
+                <span className="text-xs text-muted-foreground ml-2">
+                  Press to toggle
+                </span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <p className="text-xs text-muted-foreground">
+            {buttonType === 'push'
+              ? 'Button will be active while pressed, inactive when released'
+              : 'Button will toggle state on each press'}
+          </p>
+        </div>
+      )}
 
       {/* Unit (Optional for certain widgets) */}
       {hasUnit && (

@@ -22,6 +22,7 @@ export interface DeviceWidgetData {
     minValue?: number
     maxValue?: number
     currentValue?: boolean | number
+    buttonType?: 'push' | 'toggle' // For button widget only
   }
   size?: {
     cols: number // Grid columns span (1 = 1/4, 2 = 1/2, 3 = 3/4, 4 = full width)
@@ -71,6 +72,7 @@ export const mockDeviceWidgetsData: DeviceWidgetsResponse = {
         virtualPin: 'VP_1',
         unit: 'ON/OFF',
         currentValue: false,
+        buttonType: 'push',
       },
       size: {
         cols: 1,

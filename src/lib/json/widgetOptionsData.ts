@@ -3,6 +3,7 @@ export interface WidgetOption {
   title: string
   description: string
   icon: string // Icon name from lucide-react
+  buttonType?: 'push' | 'toggle' // For button widget only
 }
 
 // Device widgets - for IoT hardware monitoring and control

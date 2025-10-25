@@ -75,6 +75,7 @@ export default function DeviceDetailPage({
               minValue: widgetData.config.minValue,
               maxValue: widgetData.config.maxValue,
               currentValue: widgetData.config.currentValue,
+              buttonType: widgetData.config.buttonType,
             } as DeviceWidgetConfiguration,
             size: widgetData.size
               ? { cols: widgetData.size.cols, rows: 1 }
@@ -234,6 +235,7 @@ export default function DeviceDetailPage({
                     minValue: w.config.minValue,
                     maxValue: w.config.maxValue,
                     currentValue: w.config.currentValue,
+                    buttonType: w.config.buttonType,
                   }}
                   isEditing={isEditing}
                   isSelected={selectedWidgetId === w.id}

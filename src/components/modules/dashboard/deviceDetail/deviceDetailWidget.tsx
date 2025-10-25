@@ -30,6 +30,7 @@ interface WidgetConfig {
   minValue?: number
   maxValue?: number
   currentValue?: boolean | number
+  buttonType?: 'push' | 'toggle' // For button widget
 }
 
 interface DeviceDetailWidgetProps {
@@ -62,6 +63,7 @@ export default function DeviceDetailWidget({
   const [buttonState, setButtonState] = useState(
     typeof config.currentValue === 'boolean' ? config.currentValue : false
   )
+  const [isPushButtonPressed, setIsPushButtonPressed] = useState(false)
   const [switchState, setSwitchState] = useState(
     typeof config.currentValue === 'boolean' ? config.currentValue : false
   )
@@ -192,12 +194,37 @@ export default function DeviceDetailWidget({
         return <ChartWidget data={getChartData()} />
       case 'button':
         return (
-          <div className={`h-full ${isEditing ? 'pointer-events-none' : ''}`}>
+          <div
+            className={`h-full ${isEditing ? 'pointer-events-none' : ''}`}
+            onMouseUp={(e) => {
+              if (config.buttonType === 'push') {
+                handleInteraction(() => setIsPushButtonPressed(false))
+              }
+            }}
+            onTouchEnd={(e) => {
+              if (config.buttonType === 'push') {
+                handleInteraction(() => setIsPushButtonPressed(false))
+              }
+            }}
+          >
             <ButtonWidget
-              active={buttonState}
+              active={
+                config.buttonType === 'push' ? isPushButtonPressed : buttonState
+              }
+              buttonType={config.buttonType || 'toggle'}
               onClick={() =>
                 handleInteraction(() => setButtonState(!buttonState))
               }
+              onMouseDown={(e) => {
+                if (config.buttonType === 'push') {
+                  handleInteraction(() => setIsPushButtonPressed(true))
+                }
+              }}
+              onMouseUp={(e) => {
+                if (config.buttonType === 'push') {
+                  handleInteraction(() => setIsPushButtonPressed(false))
+                }
+              }}
             />
           </div>
         )
