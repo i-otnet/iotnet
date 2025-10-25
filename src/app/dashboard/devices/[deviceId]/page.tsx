@@ -169,9 +169,29 @@ export default function DeviceDetailPage({
   }
 
   const handleWidgetSizeChange = (widgetId: string, size: WidgetSize) => {
-    setWidgets((prevWidgets) =>
-      prevWidgets.map((w) => (w.id === widgetId ? { ...w, size } : w))
+    setWidgets((prev) =>
+      prev.map((w) =>
+        w.id === widgetId
+          ? {
+              ...w,
+              size: size,
+            }
+          : w
+      )
     )
+  }
+
+  const handleWidgetPositionChange = (widgetId: string, newIndex: number) => {
+    setWidgets((prev) => {
+      const currentIndex = prev.findIndex((w) => w.id === widgetId)
+      if (currentIndex === -1 || currentIndex === newIndex) return prev
+
+      const newWidgets = [...prev]
+      const [movedWidget] = newWidgets.splice(currentIndex, 1)
+      newWidgets.splice(newIndex, 0, movedWidget)
+
+      return newWidgets
+    })
   }
 
   return (
@@ -197,7 +217,7 @@ export default function DeviceDetailPage({
 
             {/* Widget Grid Section */}
             <DeviceDetailGridSection isEditing={isEditing}>
-              {widgets.map((w) => (
+              {widgets.map((w, index) => (
                 <WidgetRenderer
                   key={w.id}
                   widget={w.widget}
@@ -214,6 +234,13 @@ export default function DeviceDetailPage({
                   onEdit={() => handleEditWidget(w.id)}
                   onDelete={() => handleDeleteWidget(w.id)}
                   onSizeChange={(size) => handleWidgetSizeChange(w.id, size)}
+                  onPositionChange={(position) => {
+                    const newIndex = Math.min(
+                      widgets.length - 1,
+                      Math.max(0, index + (position.col - 1))
+                    )
+                    handleWidgetPositionChange(w.id, newIndex)
+                  }}
                 />
               ))}
             </DeviceDetailGridSection>

@@ -26,25 +26,25 @@ export default function DragDropGrid({
       {/* Dot Grid Background Pattern (only visible in edit mode) */}
       {showGrid && isEditing && (
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0 pointer-events-none transition-opacity duration-300"
           style={{
             backgroundImage: `radial-gradient(circle, hsl(var(--primary)) 1.5px, transparent 1.5px)`,
             backgroundSize: '24px 24px',
-            opacity: 0.25,
+            opacity: isEditing ? 0.25 : 0,
           }}
         />
       )}
 
-      {/* Grid Container */}
+      {/* Grid Container with smooth layout shifts */}
       <div
         ref={gridRef}
-        className="relative w-full grid"
+        className="relative w-full grid transition-all duration-300 ease-out"
         style={{
           gridTemplateColumns: `repeat(${columns}, 1fr)`,
           gap: `${gap}px`,
         }}
       >
-        {/* Children (Widgets) */}
+        {/* Children (Widgets) - each child gets smooth transition */}
         {children}
       </div>
     </div>

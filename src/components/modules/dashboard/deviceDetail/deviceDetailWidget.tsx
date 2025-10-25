@@ -21,6 +21,7 @@ import {
   getWidgetDefaultSize,
 } from '@/lib/utils/widgetUtils'
 import { useWidgetResize, type WidgetSize } from '@/lib/hooks/useWidgetResize'
+import { useWidgetDrag, type WidgetPosition } from '@/lib/hooks/useWidgetDrag'
 import ResizeLineIndicator from '@/components/shared/resizeLineIndicator'
 
 interface WidgetConfig {
@@ -40,6 +41,7 @@ interface DeviceDetailWidgetProps {
   onEdit?: () => void
   onDelete?: () => void
   onSizeChange?: (size: WidgetSize) => void
+  onPositionChange?: (position: WidgetPosition) => void
 }
 
 export default function DeviceDetailWidget({
@@ -51,6 +53,7 @@ export default function DeviceDetailWidget({
   onEdit,
   onDelete,
   onSizeChange,
+  onPositionChange,
 }: DeviceDetailWidgetProps) {
   const [buttonState, setButtonState] = useState(false)
   const [switchState, setSwitchState] = useState(false)
@@ -86,6 +89,20 @@ export default function DeviceDetailWidget({
     },
   })
 
+  const {
+    isDragging,
+    dragOffset,
+    handleDragStart,
+    attachDragListeners,
+    detachDragListeners,
+  } = useWidgetDrag({
+    initialPosition: { col: 1, row: 1 },
+    gridColumns: 4,
+    onDrag: (newPosition) => {
+      onPositionChange?.(newPosition)
+    },
+  })
+
   useEffect(() => {
     if (isResizing) {
       attachResizeListeners()
@@ -102,6 +119,20 @@ export default function DeviceDetailWidget({
       setResizeLineX(null)
     }
   }, [isResizing, attachResizeListeners, detachResizeListeners])
+
+  useEffect(() => {
+    if (isDragging) {
+      attachDragListeners()
+      // Disable text selection while dragging
+      document.body.style.userSelect = 'none'
+      document.body.style.webkitUserSelect = 'none'
+      return () => {
+        detachDragListeners()
+        document.body.style.userSelect = ''
+        document.body.style.webkitUserSelect = ''
+      }
+    }
+  }, [isDragging, attachDragListeners, detachDragListeners])
 
   const handleCardClick = () => {
     if (isEditing && onSelect) {
@@ -207,17 +238,24 @@ export default function DeviceDetailWidget({
     <>
       <div
         ref={containerRef}
-        className="relative transition-all duration-150"
+        className={`relative transition-all duration-300 ease-out ${
+          isDragging ? 'opacity-75 z-40' : 'opacity-100 z-0'
+        }`}
         style={{
           gridColumn: `span ${size.cols}`,
           userSelect: isResizing ? 'none' : 'auto',
+          transform: isDragging
+            ? `translate(${dragOffset.x}px, ${dragOffset.y}px)`
+            : 'translate(0, 0)',
         }}
         data-widget-container="true"
       >
         <Card
           className={`p-3 relative ${borderStyle} ${
             isEditing ? 'cursor-pointer' : ''
-          } transition-all h-full flex flex-col`}
+          } ${
+            isDragging ? 'shadow-lg ring-2 ring-primary' : ''
+          } transition-all duration-300 h-full flex flex-col`}
           onClick={handleCardClick}
           onKeyDown={(e) => {
             if (isEditing && (e.key === 'Enter' || e.key === ' ')) {
@@ -237,9 +275,37 @@ export default function DeviceDetailWidget({
 
           {/* Drag Handle Icon */}
           {isEditing && isSelected && (
-            <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20 cursor-move group">
-              <div className="p-1 rounded-full transition-all duration-200 group-hover:bg-primary/10">
-                <GripVertical className="h-5 w-5 text-primary" />
+            <div
+              className={`absolute top-2 left-1/2 -translate-x-1/2 z-50 cursor-move group ${
+                isDragging ? 'animate-pulse' : ''
+              }`}
+              onMouseDown={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                if (containerRef.current) {
+                  handleDragStart(e, containerRef.current)
+                }
+              }}
+              onTouchStart={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                if (containerRef.current) {
+                  handleDragStart(e, containerRef.current)
+                }
+              }}
+            >
+              <div
+                className={`p-1 rounded-full transition-all duration-200 ${
+                  isDragging
+                    ? 'bg-primary/20 ring-2 ring-primary'
+                    : 'group-hover:bg-primary/10'
+                }`}
+              >
+                <GripVertical
+                  className={`h-5 w-5 ${
+                    isDragging ? 'text-primary' : 'text-primary'
+                  } pointer-events-none`}
+                />
               </div>
             </div>
           )}
