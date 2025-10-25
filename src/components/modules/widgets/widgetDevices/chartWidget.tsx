@@ -198,7 +198,7 @@ export default function ChartWidget({ data, children }: ChartWidgetProps) {
   }
 
   return (
-    <div className="w-full h-full min-h-[200px]">
+    <div className="w-full h-full">
       <Line data={chartData} options={options} />
     </div>
   )
