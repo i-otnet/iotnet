@@ -181,10 +181,10 @@ export function getWidgetResizeConstraints(widgetId: string): {
   > = {
     // Device widgets
     statistics: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 2 },
-    chart: { minCols: 2, maxCols: 4, minRows: 1, maxRows: 1 },
-    button: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 1 },
+    chart: { minCols: 2, maxCols: 4, minRows: 1, maxRows: 2 },
+    button: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 2 },
     slider: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 2 },
-    switch: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 1 },
+    switch: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 2 },
     gauge: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 2 },
     // Model widgets
     'confusion-matrix': { minCols: 2, maxCols: 4, minRows: 2, maxRows: 4 },
