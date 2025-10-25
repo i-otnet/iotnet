@@ -62,6 +62,7 @@ export function useWidgetResize({
     widgetLeftEdge: number
     startSize: WidgetSize
     direction: string
+    gridContainerWidth: number
     containerHeight: number
     resizeDelta: number
     baseWidth: number
