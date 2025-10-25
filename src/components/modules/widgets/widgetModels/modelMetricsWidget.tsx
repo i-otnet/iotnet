@@ -23,15 +23,23 @@ export default function ModelMetricsWidget({
   ]
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="w-full grid grid-cols-2 gap-3">
       {metrics.map(
         (metric) =>
           metric.value !== undefined && (
-            <div key={metric.label} className="flex flex-col">
-              <span className="text-sm text-gray-600">{metric.label}</span>
-              <span className="text-xl font-bold text-primary-600">
-                {(metric.value * 100).toFixed(2)}%
-              </span>
+            <div
+              key={metric.label}
+              className="bg-card border border-border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+            >
+              <div className="text-xs font-semibold text-muted-foreground mb-1">
+                {metric.label}
+              </div>
+              <div className="text-2xl font-bold text-primary">
+                {(metric.value * 100).toFixed(1)}%
+              </div>
+              <div className="text-xs text-muted-foreground mt-2">
+                Score: {metric.value.toFixed(3)}
+              </div>
             </div>
           )
       )}
