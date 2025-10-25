@@ -33,7 +33,7 @@ export function useWidgetDrag({
 }: UseWidgetDragProps = {}) {
   const [isDragging, setIsDragging] = useState(false)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
-  const [startPosition, setStartPosition] = useState({ x: 0, y: 0 })
+  const [dragSize, setDragSize] = useState({ width: 0, height: 0 })
 
   const dragRef = useRef<{
     startX: number
@@ -43,6 +43,12 @@ export function useWidgetDrag({
     holdTimer: NodeJS.Timeout | null
     isHeld: boolean
     startPosition: WidgetPosition
+    containerStartX: number
+    containerStartY: number
+    containerWidth: number
+    containerHeight: number
+    lastOffsetX: number
+    lastOffsetY: number
   } | null>(null)
 
   const handleDragStart = useCallback(
@@ -55,15 +61,21 @@ export function useWidgetDrag({
 
       // Simpan posisi start container
       const rect = containerElement.getBoundingClientRect()
-      setStartPosition({ x: rect.left, y: rect.top })
 
       // Start holding timer
       const holdTimer = setTimeout(() => {
         if (dragRef.current) {
           dragRef.current.isHeld = true
           setIsDragging(true)
-          // Set drag offset ke posisi container saat drag mulai (avoid pojok kiri atas flash)
-          setDragOffset({ x: startPosition.x, y: startPosition.y })
+          // Set drag offset dan size ke posisi container saat drag mulai
+          setDragOffset({
+            x: dragRef.current.containerStartX,
+            y: dragRef.current.containerStartY,
+          })
+          setDragSize({
+            width: dragRef.current.containerWidth,
+            height: dragRef.current.containerHeight,
+          })
           onDragStart?.(initialPosition)
         }
       }, DRAG_CONFIG.HOLD_TIME)
@@ -76,10 +88,18 @@ export function useWidgetDrag({
         holdTimer,
         isHeld: false,
         startPosition: { ...initialPosition },
+        containerStartX: rect.left,
+        containerStartY: rect.top,
+        containerWidth: rect.width,
+        containerHeight: rect.height,
+        lastOffsetX: 0,
+        lastOffsetY: 0,
       }
     },
     [initialPosition, onDragStart]
   )
+
+  const animationFrameRef = useRef<number | null>(null)
 
   const handleDragMove = useCallback(
     (e: MouseEvent | TouchEvent) => {
@@ -117,11 +137,30 @@ export function useWidgetDrag({
       const deltaX = clientX - dragRef.current.startX
       const deltaY = clientY - dragRef.current.startY
 
-      // Update visual offset saat drag - gunakan client position absolut
-      setDragOffset({
-        x: startPosition.x + deltaX,
-        y: startPosition.y + deltaY,
-      })
+      // Calculate new offset
+      const newOffsetX = dragRef.current.containerStartX + deltaX
+      const newOffsetY = dragRef.current.containerStartY + deltaY
+
+      // Hanya update state jika offset berubah signifikan (avoid excessive re-renders)
+      if (
+        dragRef.current.lastOffsetX !== newOffsetX ||
+        dragRef.current.lastOffsetY !== newOffsetY
+      ) {
+        dragRef.current.lastOffsetX = newOffsetX
+        dragRef.current.lastOffsetY = newOffsetY
+
+        // Use requestAnimationFrame untuk smooth updates tanpa blocking
+        if (animationFrameRef.current) {
+          cancelAnimationFrame(animationFrameRef.current)
+        }
+
+        animationFrameRef.current = requestAnimationFrame(() => {
+          setDragOffset({
+            x: newOffsetX,
+            y: newOffsetY,
+          })
+        })
+      }
 
       // Calculate grid position berdasarkan pixel movement
       const gridContainer = document.querySelector(
@@ -153,6 +192,12 @@ export function useWidgetDrag({
   const handleDragEnd = useCallback(() => {
     if (!dragRef.current) return
 
+    // Cancel animation frame jika masih pending
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current)
+      animationFrameRef.current = null
+    }
+
     // Cancel hold timer jika masih menunggu
     if (dragRef.current.holdTimer) {
       clearTimeout(dragRef.current.holdTimer)
@@ -165,6 +210,7 @@ export function useWidgetDrag({
 
     dragRef.current = null
     setDragOffset({ x: 0, y: 0 })
+    setDragSize({ width: 0, height: 0 })
   }, [onDragEnd])
 
   const attachDragListeners = useCallback(() => {
@@ -184,6 +230,7 @@ export function useWidgetDrag({
   return {
     isDragging,
     dragOffset,
+    dragSize,
     handleDragStart,
     attachDragListeners,
     detachDragListeners,

@@ -119,11 +119,11 @@ const EditWidgetConfigurationView = forwardRef<
               <span>
                 {selectedPin ? selectedPin : 'Select a virtual pin...'}
               </span>
-              <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+              <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[var(--radix-dropdown-menu-trigger-width)] max-h-64 overflow-y-auto"
+            className="w-(--radix-dropdown-menu-trigger-width) max-h-64 overflow-y-auto"
             align="start"
           >
             {virtualPinsResponse.data.virtualPins.map((pin) => (
@@ -159,11 +159,11 @@ const EditWidgetConfigurationView = forwardRef<
                     ? 'Push Button (Press to activate)'
                     : 'Toggle Button (Press to toggle)'}
                 </span>
-                <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              className="w-[var(--radix-dropdown-menu-trigger-width)]"
+              className="w-(--radix-dropdown-menu-trigger-width)"
               align="start"
             >
               <DropdownMenuItem onClick={() => setButtonType('push')}>

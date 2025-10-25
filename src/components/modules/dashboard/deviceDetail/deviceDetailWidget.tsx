@@ -20,8 +20,8 @@ import {
 import { useWidgetResize, type WidgetSize } from '@/lib/hooks/useWidgetResize'
 import { useWidgetDrag, type WidgetPosition } from '@/lib/hooks/useWidgetDrag'
 import ResizeLineIndicator from '@/components/shared/resizeLineIndicator'
-import WidgetControls from './widgetControls'
-import DragPlaceholder from './dragPlaceholder'
+import WidgetControls from '@/components/shared/widgetControls'
+import DragPlaceholder from '@/components/shared/dragPlaceholder'
 
 interface WidgetConfig {
   name: string
@@ -106,6 +106,7 @@ export default function DeviceDetailWidget({
   const {
     isDragging,
     dragOffset,
+    dragSize,
     handleDragStart,
     attachDragListeners,
     detachDragListeners,
@@ -196,12 +197,12 @@ export default function DeviceDetailWidget({
         return (
           <div
             className={`h-full ${isEditing ? 'pointer-events-none' : ''}`}
-            onMouseUp={(e) => {
+            onMouseUp={() => {
               if (config.buttonType === 'push') {
                 handleInteraction(() => setIsPushButtonPressed(false))
               }
             }}
-            onTouchEnd={(e) => {
+            onTouchEnd={() => {
               if (config.buttonType === 'push') {
                 handleInteraction(() => setIsPushButtonPressed(false))
               }
@@ -215,12 +216,12 @@ export default function DeviceDetailWidget({
               onClick={() =>
                 handleInteraction(() => setButtonState(!buttonState))
               }
-              onMouseDown={(e) => {
+              onMouseDown={() => {
                 if (config.buttonType === 'push') {
                   handleInteraction(() => setIsPushButtonPressed(true))
                 }
               }}
-              onMouseUp={(e) => {
+              onMouseUp={() => {
                 if (config.buttonType === 'push') {
                   handleInteraction(() => setIsPushButtonPressed(false))
                 }
@@ -288,7 +289,7 @@ export default function DeviceDetailWidget({
         data-widget-container="true"
       >
         {isDragging ? (
-          <DragPlaceholder name={config.name} />
+          <DragPlaceholder name={config.name} isDragging={false} />
         ) : (
           <Card
             className={`p-3 relative ${borderStyle} ${
@@ -350,20 +351,37 @@ export default function DeviceDetailWidget({
       {/* Global Resize Line Indicator */}
       <ResizeLineIndicator lineX={resizeLineX} isVisible={isResizing} />
 
-      {/* Drag Overlay Ghost - Hanya muncul saat dragging */}
-      {isDragging && (
+      {/* Drag Overlay Ghost - Widget floating mengikuti mouse */}
+      {isDragging && dragSize.width > 0 && dragSize.height > 0 && (
         <div
           className="fixed pointer-events-none z-50"
           style={{
             left: `${dragOffset.x}px`,
             top: `${dragOffset.y}px`,
-            width: containerRef.current?.offsetWidth,
-            height: containerRef.current?.offsetHeight,
+            width: `${dragSize.width}px`,
+            height: `${dragSize.height}px`,
           }}
         >
           <Card
             className={`p-3 relative ${borderStyle} shadow-lg ring-2 ring-primary opacity-80 h-full flex flex-col`}
           >
+            <WidgetControls
+              widgetId={widget.id}
+              isDragging={isDragging}
+              isSelected={isSelected}
+              isEditing={isEditing}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onDragStart={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+              }}
+              onResizeStart={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+              }}
+            />
+
             {/* Widget Content */}
             <div className="flex flex-col h-full mt-6 justify-between">
               <div className="mb-3">
