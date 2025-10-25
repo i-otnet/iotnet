@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { iconsData, iconMap } from '@/lib/json/iconsData'
+import { iconsData, iconMap } from '@/lib/json/data/shared/iconsData'
 
 interface Model {
   id: number

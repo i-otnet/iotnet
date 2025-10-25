@@ -11,8 +11,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdownMenu'
 import { ChevronDown } from 'lucide-react'
-import { iconsData, iconMap } from '@/lib/json/iconsData'
-import { mockUsersData } from '@/lib/json/usersData'
+import { iconsData, iconMap } from '@/lib/json/data/shared/iconsData'
+import { mockUsersData } from '@/lib/json/data/user/usersData'
 
 export interface AddModelByQuickSetupRef {
   submit: () => void

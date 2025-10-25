@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Plus, Cpu, Wifi, WifiOff, Zap, Filter } from 'lucide-react'
-import { mockDevicesData } from '@/lib/json/devicesData'
+import { mockDevicesData } from '@/lib/json/data/device/devicesData'
 import { FilterDeviceModal } from './filterDevice/filterDeviceModal'
 import SearchDeviceDefault from './searchDevice/searchDeviceDefault'
 

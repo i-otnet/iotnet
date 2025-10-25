@@ -4,8 +4,8 @@ import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Zap, Bell, Cpu, BrainCircuit, AlertCircle } from 'lucide-react'
-import { iconMap } from '@/lib/json/iconsData'
-import { AUTOMATION_BUILDER_ICONS as ICONS } from '@/lib/json/automationsData'
+import { iconMap } from '@/lib/json/data/shared/iconsData'
+import { AUTOMATION_BUILDER_ICONS as ICONS } from '@/lib/json/data/automation/automationsData'
 
 interface Automation {
   id: number

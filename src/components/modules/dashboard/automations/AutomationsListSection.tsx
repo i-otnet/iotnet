@@ -23,7 +23,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdownMenu'
-import { iconMap } from '@/lib/json/iconsData'
+import { iconMap } from '@/lib/json/data/shared/iconsData'
 import { AddAutomationModal } from './addAutomation/addAutomationModal'
 import { EditAutomationModal } from './editAutomation/editAutomationModal'
 

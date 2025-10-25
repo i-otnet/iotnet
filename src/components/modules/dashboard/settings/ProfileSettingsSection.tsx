@@ -11,7 +11,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { mockProfileData } from '@/lib/json/settingsData'
+import { mockProfileData } from '@/lib/json/data/settings/settingsData'
 
 export default function ProfileSettingsSection() {
   const [isEditing, setIsEditing] = useState(false)

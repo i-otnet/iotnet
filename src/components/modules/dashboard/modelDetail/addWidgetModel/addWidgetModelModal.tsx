@@ -13,7 +13,7 @@ import WidgetModelDetailView from './modelViews/widgetModelDetailView'
 import {
   MODEL_WIDGET_OPTIONS,
   WidgetOption,
-} from '@/lib/json/widgetOptionsData'
+} from '@/lib/json/data/widget/widgetOptionsData'
 
 interface AddWidgetModelModalProps {
   open: boolean

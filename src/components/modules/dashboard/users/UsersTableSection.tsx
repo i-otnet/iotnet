@@ -29,7 +29,7 @@ import {
   ChevronDown,
 } from 'lucide-react'
 import { EditUserModal } from './editMqttUser/editUserModal'
-import { mockUsersData } from '@/lib/json/usersData'
+import { mockUsersData } from '@/lib/json/data/user/usersData'
 
 const getBrokerInfo = (type: string) => {
   switch (type) {

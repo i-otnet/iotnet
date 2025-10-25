@@ -8,9 +8,9 @@ import GaugeWidget from '@/components/modules/widgets/widgetDevices/gaugeWidget'
 import SliderWidget from '@/components/modules/widgets/widgetDevices/sliderWidget'
 import StatWidget from '@/components/modules/widgets/widgetDevices/statWidget'
 import SwitchWidget from '@/components/modules/widgets/widgetDevices/switchWidget'
-import { WidgetOption } from '@/lib/json/widgetOptionsData'
-import { mockChartData } from '@/lib/json/mockChartData'
-import type { ChartPin } from '@/lib/json/deviceWidgetsMockData'
+import { WidgetOption } from '@/lib/json/data/widget/widgetOptionsData'
+import { mockChartData } from '@/lib/json/data/widget/mockChartData'
+import type { ChartPin } from '@/lib/json/data/widget/deviceWidgetsMockData'
 import { generateChartDataFromPins } from '@/lib/utils/chartColorUtils'
 import {
   getWidgetBorderStyle,

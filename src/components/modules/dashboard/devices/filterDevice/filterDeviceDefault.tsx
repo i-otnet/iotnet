@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Badge } from '@/components/ui/badge'
-import { mockDevicesData } from '@/lib/json/devicesData'
+import { mockDevicesData } from '@/lib/json/data/device/devicesData'
 
 interface FilterDeviceDefaultProps {
   selectedDeviceTypes: string[]

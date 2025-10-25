@@ -14,8 +14,8 @@ import {
   AUTOMATION_BUILDER_MODELS as MODELS,
   AUTOMATION_BUILDER_TRIGGER_TYPES as TRIGGER_TYPES,
   AUTOMATION_BUILDER_ICONS as ICONS,
-} from '@/lib/json/automationsData'
-import { iconMap } from '@/lib/json/iconsData'
+} from '@/lib/json/data/automation/automationsData'
+import { iconMap } from '@/lib/json/data/shared/iconsData'
 import TriggerSection from './TriggerSection'
 import ActionSection from './ActionSection'
 

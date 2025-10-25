@@ -1,7 +1,7 @@
 'use client'
 
 import * as LucideIcons from 'lucide-react'
-import { WidgetOption } from '@/lib/json/widgetOptionsData'
+import { WidgetOption } from '@/lib/json/data/widget/widgetOptionsData'
 
 interface WidgetModelCardProps {
   widget: WidgetOption

@@ -18,7 +18,7 @@ import {
   AUTOMATION_BUILDER_DEVICES as DEVICES,
   AUTOMATION_BUILDER_MODELS as MODELS,
   AUTOMATION_BUILDER_TRIGGER_TYPES as TRIGGER_TYPES,
-} from '@/lib/json/automationsData'
+} from '@/lib/json/data/automation/automationsData'
 import EditTriggerSection from './EditTriggerSection'
 import EditActionSection from './EditActionSection'
 

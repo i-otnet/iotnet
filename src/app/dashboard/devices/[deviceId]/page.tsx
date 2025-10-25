@@ -10,15 +10,15 @@ import ConnectionStatusCard from '@/components/shared/connectionStatusCard'
 import WidgetRenderer from '@/components/modules/dashboard/deviceDetail/deviceDetailWidget'
 import RedirectPage from '@/components/shared/redirectPage'
 import EditWidgetDeviceModal from '@/components/modules/dashboard/deviceDetail/editWidgetDevice/editWidgetDeviceModal'
-import { mockDevicesData } from '@/lib/json/devicesData'
-import { mockDeviceWidgetsData } from '@/lib/json/deviceWidgetsMockData'
+import { mockDevicesData } from '@/lib/json/data/device/devicesData'
+import { mockDeviceWidgetsData } from '@/lib/json/data/widget/deviceWidgetsMockData'
 import {
   WidgetOption,
   DEVICE_WIDGET_OPTIONS,
-} from '@/lib/json/widgetOptionsData'
+} from '@/lib/json/data/widget/widgetOptionsData'
 import { DeviceWidgetConfiguration } from '@/components/modules/dashboard/deviceDetail/addWidgetDevice/deviceViews/widgetConfigurationView'
 import type { WidgetSize } from '@/lib/hooks/useWidgetResize'
-import type { DeviceWidgetData } from '@/lib/json/deviceWidgetsMockData'
+import type { DeviceWidgetData } from '@/lib/json/data/widget/deviceWidgetsMockData'
 
 interface SavedDeviceWidget {
   id: string

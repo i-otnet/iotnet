@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/dropdownMenu'
 import { Button } from '@/components/ui/button'
 import { Bell, Trash2, CheckCircle2, Check, X } from 'lucide-react'
-import { mockRecentActivityData } from '@/lib/json/dashboardData'
+import { mockRecentActivityData } from '@/lib/json/data/dashboard/dashboardData'
 
 interface Notification {
   id: number

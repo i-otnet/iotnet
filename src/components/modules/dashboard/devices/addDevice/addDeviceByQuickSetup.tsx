@@ -11,9 +11,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdownMenu'
 import { Info, ChevronDown } from 'lucide-react'
-import { mockDeviceTypesData } from '@/lib/json/deviceTypesData'
-import { iconsData, iconMap } from '@/lib/json/iconsData'
-import { mockUsersData } from '@/lib/json/usersData'
+import { mockDeviceTypesData } from '@/lib/json/response/device/deviceTypesResponse'
+import { iconsData, iconMap } from '@/lib/json/data/shared/iconsData'
+import { mockUsersData } from '@/lib/json/data/user/usersData'
 
 interface QuickSetupProps {
   onDeviceAdded?: (deviceData: DeviceData) => void

@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Users, Activity, Globe, Plus } from 'lucide-react'
 import { BrokerSetupModal } from '@/components/modules/dashboard/users/addMqttUser/addUserModal'
-import { mockUsersOverviewData } from '@/lib/json/usersData'
+import { mockUsersOverviewData } from '@/lib/json/data/user/usersData'
 
 export default function UsersOverviewSection() {
   const [isAddUserOpen, setIsAddUserOpen] = useState(false)

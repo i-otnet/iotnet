@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, Pencil, Plus, Check } from 'lucide-react'
 import AddWidgetDeviceModal from './addWidgetDevice/addWidgetDeviceModal'
-import { WidgetOption } from '@/lib/json/widgetOptionsData'
+import { WidgetOption } from '@/lib/json/data/widget/widgetOptionsData'
 import { DeviceWidgetConfiguration } from './addWidgetDevice/deviceViews/widgetConfigurationView'
 
 interface DeviceDetailHeaderProps {

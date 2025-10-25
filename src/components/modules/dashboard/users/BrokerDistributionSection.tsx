@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Network, Zap, Globe } from 'lucide-react'
-import { mockUsersData } from '@/lib/json/usersData'
+import { mockUsersData } from '@/lib/json/data/user/usersData'
 
 const getBrokerInfo = (type: string) => {
   switch (type) {

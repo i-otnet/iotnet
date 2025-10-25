@@ -1,10 +1,16 @@
-import { WidgetOption } from './widgetOptionsData'
-
 /**
  * Mock API response untuk device widgets
  * Simulasi fetch API untuk menampilkan widgets pada device detail page
  * Saat ini hanya berisi 1 widget: button
  */
+
+export interface WidgetOption {
+  id: string
+  title: string
+  description: string
+  icon: string // Icon name from lucide-react
+  buttonType?: 'push' | 'toggle' // For button widget only
+}
 
 export interface ChartPin {
   pin: string

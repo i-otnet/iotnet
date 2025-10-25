@@ -7,7 +7,7 @@ import DashboardHeader from '@/components/modules/dashboard/header'
 import DashboardModelsLayout from '@/components/layout/dashboard/dashboardModelsLayout'
 import ModelsOverviewSection from '@/components/modules/dashboard/models/ModelsOverviewSection'
 import ModelsGridSection from '@/components/modules/dashboard/models/ModelsGridSection'
-import { mockModelsData } from '@/lib/json/modelsData'
+import { mockModelsData } from '@/lib/json/data/model/modelsData'
 
 interface Model {
   id: number

@@ -18,7 +18,7 @@ import {
   AUTOMATION_BUILDER_EVENT_TYPES as EVENT_TYPES,
   AUTOMATION_BUILDER_TIMEZONES as TIMEZONES,
   VIRTUAL_PINS,
-} from '@/lib/json/automationsData'
+} from '@/lib/json/data/automation/automationsData'
 
 interface Device {
   id: string

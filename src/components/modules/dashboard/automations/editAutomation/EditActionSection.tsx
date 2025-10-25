@@ -15,7 +15,7 @@ import {
   AUTOMATION_BUILDER_DEVICES as DEVICES,
   AUTOMATION_BUILDER_ACTION_TYPES as ACTION_TYPES,
   VIRTUAL_PINS,
-} from '@/lib/json/automationsData'
+} from '@/lib/json/data/automation/automationsData'
 
 interface Device {
   id: string

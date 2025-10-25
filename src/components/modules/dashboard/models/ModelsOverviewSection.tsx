@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Plus, BrainCircuit, Sparkles, Filter, PauseCircle } from 'lucide-react'
-import { mockModelsData } from '@/lib/json/modelsData'
+import { mockModelsData } from '@/lib/json/data/model/modelsData'
 import { FilterModelModal } from './filterModel/filterModelModal'
 import SearchModelDefault from './searchModel/searchModelDefault'
 

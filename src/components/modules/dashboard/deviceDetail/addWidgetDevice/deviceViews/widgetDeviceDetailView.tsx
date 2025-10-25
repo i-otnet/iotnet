@@ -1,6 +1,6 @@
 'use client'
 
-import { WidgetOption } from '@/lib/json/widgetOptionsData'
+import { WidgetOption } from '@/lib/json/data/widget/widgetOptionsData'
 import * as LucideIcons from 'lucide-react'
 
 interface WidgetDeviceDetailViewProps {

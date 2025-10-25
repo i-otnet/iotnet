@@ -13,7 +13,7 @@ import EditWidgetConfigurationView, {
   type WidgetConfigurationHandle,
 } from './deviceViews/editWidgetConfigurationView'
 import { DeviceWidgetConfiguration } from '@/components/modules/dashboard/deviceDetail/addWidgetDevice/deviceViews/widgetConfigurationView'
-import { WidgetOption } from '@/lib/json/widgetOptionsData'
+import { WidgetOption } from '@/lib/json/data/widget/widgetOptionsData'
 
 interface EditWidgetDeviceModalProps {
   open: boolean

@@ -1,6 +1,6 @@
 'use client'
 
-import { WidgetOption } from '@/lib/json/widgetOptionsData'
+import { WidgetOption } from '@/lib/json/data/widget/widgetOptionsData'
 import AddWidgetDeviceCard from './addWidgetDeviceCard'
 
 interface AddWidgetDeviceGridProps {

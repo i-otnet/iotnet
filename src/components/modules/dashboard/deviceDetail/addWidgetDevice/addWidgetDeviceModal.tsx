@@ -17,7 +17,7 @@ import WidgetConfigurationView, {
 import {
   DEVICE_WIDGET_OPTIONS,
   WidgetOption,
-} from '@/lib/json/widgetOptionsData'
+} from '@/lib/json/data/widget/widgetOptionsData'
 
 interface AddWidgetDeviceModalProps {
   open: boolean

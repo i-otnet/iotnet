@@ -25,7 +25,7 @@ import { AddModelModal } from './addModel/addModelModal'
 import { EditModelModal } from './editModel/editModelModal'
 import { FilterModelModal } from './filterModel/filterModelModal'
 import { SearchModelModal } from './searchModel/searchModelModal'
-import { iconMap } from '@/lib/json/iconsData'
+import { iconMap } from '@/lib/json/data/shared/iconsData'
 
 interface Model {
   id: number

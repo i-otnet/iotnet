@@ -1,15 +1,6 @@
 // Import real data from other files
-import { mockDevicesData } from './devicesData'
-import { mockModelsData } from './modelsData'
-
-// Import dropdown data from separate response files
-import { AUTOMATION_BUILDER_TRIGGER_TYPES } from './triggerTypesResponse'
-import { AUTOMATION_BUILDER_OPERATORS } from './operatorsResponse'
-import { AUTOMATION_BUILDER_ACTION_TYPES } from './actionTypesResponse'
-import { AUTOMATION_BUILDER_EVENT_TYPES } from './eventTypesResponse'
-import { AUTOMATION_BUILDER_TIMEZONES } from './timezonesResponse'
-import { AUTOMATION_BUILDER_ICONS } from './automationIconsResponse'
-import { VIRTUAL_PINS } from './virtualPinsData'
+import { mockDevicesData } from '../device/devicesData'
+import { mockModelsData } from '../model/modelsData'
 
 // Extract devices from mockDevicesData and transform for automation builder
 export const AUTOMATION_BUILDER_DEVICES = mockDevicesData.data.devices.map(
@@ -30,17 +21,6 @@ export const AUTOMATION_BUILDER_MODELS = mockModelsData.data.models.map(
     outputs: ['result', 'confidence', 'prediction'],
   })
 )
-
-// Re-export dropdown data from separate response files
-export {
-  AUTOMATION_BUILDER_TRIGGER_TYPES,
-  AUTOMATION_BUILDER_OPERATORS,
-  AUTOMATION_BUILDER_ACTION_TYPES,
-  AUTOMATION_BUILDER_EVENT_TYPES,
-  AUTOMATION_BUILDER_TIMEZONES,
-  AUTOMATION_BUILDER_ICONS,
-  VIRTUAL_PINS,
-}
 
 export const mockAutomationsData = {
   success: true,

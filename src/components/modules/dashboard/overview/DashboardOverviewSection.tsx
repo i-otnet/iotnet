@@ -4,7 +4,7 @@ import React from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Users, Cpu, BrainCircuit, TrendingUp, Zap, Clock } from 'lucide-react'
-import { mockDashboardOverviewData } from '@/lib/json/dashboardData'
+import { mockDashboardOverviewData } from '@/lib/json/data/dashboard/dashboardData'
 
 export default function DashboardOverviewSection() {
   return (

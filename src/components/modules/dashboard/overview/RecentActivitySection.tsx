@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Activity } from 'lucide-react'
-import { mockRecentActivityData } from '@/lib/json/dashboardData'
+import { mockRecentActivityData } from '@/lib/json/data/dashboard/dashboardData'
 
 export default function RecentActivitySection() {
   const getActivityTypeColor = (type: string) => {

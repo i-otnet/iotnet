@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/card'
 import { FileUpload } from '@/components/shared/fileUpload'
 import { AlertCircle } from 'lucide-react'
-import { iconsData, iconMap } from '@/lib/json/iconsData'
+import { iconsData, iconMap } from '@/lib/json/data/shared/iconsData'
 
 interface Device {
   id: number

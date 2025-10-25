@@ -7,7 +7,7 @@ import DashboardAutomationsLayout from '@/components/layout/dashboard/dashboardA
 import AutomationsOverviewSection from '@/components/modules/dashboard/automations/AutomationsOverviewSection'
 import AutomationsListSection from '@/components/modules/dashboard/automations/AutomationsListSection'
 import { AddAutomationModal } from '@/components/modules/dashboard/automations/addAutomation/addAutomationModal'
-import { mockAutomationsData } from '@/lib/json/automationsData'
+import { mockAutomationsData } from '@/lib/json/data/automation/automationsData'
 
 interface Automation {
   id: number

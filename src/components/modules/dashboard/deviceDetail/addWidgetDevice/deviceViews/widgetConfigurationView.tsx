@@ -11,8 +11,8 @@ import {
 } from '@/components/ui/dropdownMenu'
 import { Button } from '@/components/ui/button'
 import { ChevronDown, Plus, X } from 'lucide-react'
-import { WidgetOption } from '@/lib/json/widgetOptionsData'
-import { virtualPinsResponse } from '@/lib/json/virtualPinsResponse'
+import { WidgetOption } from '@/lib/json/data/widget/widgetOptionsData'
+import { virtualPinsResponse } from '@/lib/json/response/virtualPin/virtualPinsResponse'
 import { getDeviceWidgetDefaultSize } from '@/lib/utils/widgetUtils'
 import { getRandomChartColor } from '@/lib/utils/chartColorUtils'
 

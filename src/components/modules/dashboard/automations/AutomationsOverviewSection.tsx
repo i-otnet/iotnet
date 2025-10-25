@@ -12,7 +12,7 @@ import {
   Activity,
   Filter,
 } from 'lucide-react'
-import { mockAutomationsData } from '@/lib/json/automationsData'
+import { mockAutomationsData } from '@/lib/json/data/automation/automationsData'
 import { FilterAutomationModal } from './filterAutomation/filterAutomationModal'
 import SearchAutomationDefault from './searchAutomation/searchAutomationDefault'
 
