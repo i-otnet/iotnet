@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, Pencil, Plus, Check } from 'lucide-react'
 import AddWidgetDeviceModal from './addWidgetDevice/addWidgetDeviceModal'
-import { WidgetOption } from '@/lib/json/widgetOptionsData'
+import { WidgetOption } from '@/lib/json/data/widget/widgetOptionsData'
 import { DeviceWidgetConfiguration } from './addWidgetDevice/deviceViews/widgetConfigurationView'
 
 interface DeviceDetailHeaderProps {
@@ -52,7 +52,7 @@ export default function DeviceDetailHeader({
           variant="ghost"
           size="icon"
           onClick={() => router.back()}
-          className="h-10 w-10 flex-shrink-0"
+          className="h-10 w-10 shrink-0"
         >
           <ChevronLeft className="h-5 w-5" />
         </Button>

@@ -12,7 +12,7 @@ export default function ConnectionStatusCard({
   return (
     <div className="w-full p-3 bg-card dark:bg-slate-900 rounded-lg border border-border dark:border-slate-700 flex items-center gap-3">
       <div
-        className={`p-2 rounded-full flex-shrink-0 ${
+        className={`p-2 rounded-full shrink-0 ${
           status === 'online'
             ? 'bg-green-100 dark:bg-green-900/30'
             : 'bg-red-100 dark:bg-red-900/30'
@@ -42,7 +42,7 @@ export default function ConnectionStatusCard({
             : 'Device is offline'}
         </p>
       </div>
-      <div className="text-right text-xs flex-shrink-0 flex gap-6">
+      <div className="text-right text-xs shrink-0 flex gap-6">
         <div>
           <p className="text-muted-foreground dark:text-slate-400">
             Subscribed Topics

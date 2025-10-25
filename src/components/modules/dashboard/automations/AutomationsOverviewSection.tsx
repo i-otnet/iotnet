@@ -12,7 +12,7 @@ import {
   Activity,
   Filter,
 } from 'lucide-react'
-import { mockAutomationsData } from '@/lib/json/automationsData'
+import { mockAutomationsData } from '@/lib/json'
 import { FilterAutomationModal } from './filterAutomation/filterAutomationModal'
 import SearchAutomationDefault from './searchAutomation/searchAutomationDefault'
 
@@ -195,7 +195,7 @@ export default function AutomationsOverviewSection({
           <Button
             variant="outline"
             size="icon"
-            className="flex-shrink-0"
+            className="shrink-0"
             onClick={() => setShowFilterModal(true)}
           >
             <Filter className="w-4 h-4" />
@@ -214,7 +214,7 @@ export default function AutomationsOverviewSection({
             <Button
               variant="outline"
               size="icon"
-              className="flex-shrink-0"
+              className="shrink-0"
               onClick={() => setShowFilterModal(true)}
             >
               <Filter className="w-4 h-4" />
@@ -228,7 +228,7 @@ export default function AutomationsOverviewSection({
               variant={selectedFilter === 'all' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setSelectedFilter('all')}
-              className="whitespace-nowrap flex-shrink-0"
+              className="whitespace-nowrap shrink-0"
             >
               <span className="text-xs md:text-sm">All Triggers</span>
               <Badge
@@ -258,7 +258,7 @@ export default function AutomationsOverviewSection({
                   }
                   size="sm"
                   onClick={() => setSelectedFilter(filterData.value)}
-                  className="whitespace-nowrap flex-shrink-0"
+                  className="whitespace-nowrap shrink-0"
                 >
                   <span className="text-xs md:text-sm">{filterData.label}</span>
                   <Badge
@@ -298,7 +298,7 @@ export default function AutomationsOverviewSection({
                 }
                 size="sm"
                 onClick={() => setSelectedFilter(filterData.value)}
-                className="whitespace-nowrap flex-shrink-0 text-xs"
+                className="whitespace-nowrap shrink-0 text-xs"
               >
                 <span>{filterData.label}</span>
                 <Badge

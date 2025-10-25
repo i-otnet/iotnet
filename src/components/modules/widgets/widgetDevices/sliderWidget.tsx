@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 interface SliderWidgetProps {
   value: number
@@ -21,6 +21,31 @@ export default function SliderWidget({
   label,
   children,
 }: SliderWidgetProps) {
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    // Detect dark mode
+    const isDark = document.documentElement.classList.contains('dark')
+    setIsDarkMode(isDark)
+
+    // Watch for theme changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          const isDark = document.documentElement.classList.contains('dark')
+          setIsDarkMode(isDark)
+        }
+      })
+    })
+
+    observer.observe(document.documentElement, { attributes: true })
+
+    return () => observer.disconnect()
+  }, [])
+
+  // Colors for dark and light mode - unfilled track color
+  const unfilledColor = isDarkMode ? '#4b5563' : '#d1d5db'
+
   return (
     <div className="flex flex-col h-full justify-between items-center px-2">
       <div />
@@ -36,11 +61,13 @@ export default function SliderWidget({
           style={{
             background: `linear-gradient(to right, var(--primary) 0%, var(--primary) ${
               ((value - min) / (max - min)) * 100
-            }%, #d1d5db ${((value - min) / (max - min)) * 100}%, #d1d5db 100%)`,
+            }%, ${unfilledColor} ${
+              ((value - min) / (max - min)) * 100
+            }%, ${unfilledColor} 100%)`,
           }}
         />
         {label && (
-          <label className="text-lg font-medium text-gray-800 block text-center">
+          <label className="text-lg font-medium text-gray-800 dark:text-gray-200 block text-center">
             {label}
           </label>
         )}

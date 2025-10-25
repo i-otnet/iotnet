@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/dropdownMenu'
 import { AddDeviceModal } from './addDevice/addDeviceModal'
 import { EditDeviceModal } from './editDevice/editDeviceModal'
-import { iconMap } from '@/lib/json/iconsData'
+import { iconMap } from '@/lib/json/data/shared/iconsData'
 
 interface Device {
   id: number

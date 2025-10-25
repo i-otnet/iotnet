@@ -15,7 +15,7 @@ import {
   AUTOMATION_BUILDER_DEVICES as DEVICES,
   AUTOMATION_BUILDER_ACTION_TYPES as ACTION_TYPES,
   VIRTUAL_PINS,
-} from '@/lib/json/automationsData'
+} from '@/lib/json'
 
 interface Device {
   id: string
@@ -70,11 +70,11 @@ export default function AutomationBuilderActionSection({
                     )?.name
                   }
                 </span>
-                <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              className="w-[var(--radix-dropdown-menu-trigger-width)]"
+              className="w-(--radix-dropdown-menu-trigger-width)"
               align="start"
             >
               {(DEVICES as Device[]).map((device: Device) => (
@@ -96,11 +96,11 @@ export default function AutomationBuilderActionSection({
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="w-full justify-between">
                 <span>{actionType}</span>
-                <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              className="w-[var(--radix-dropdown-menu-trigger-width)]"
+              className="w-(--radix-dropdown-menu-trigger-width)"
               align="start"
             >
               {(ACTION_TYPES as string[]).map((type: string) => {
@@ -140,11 +140,11 @@ export default function AutomationBuilderActionSection({
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="w-full justify-between">
                   <span>{actionValue || 'Select a virtual pin'}</span>
-                  <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                  <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                className="w-(--radix-dropdown-menu-trigger-width)"
                 align="start"
               >
                 <div className="max-h-48 overflow-y-auto">

@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Badge } from '@/components/ui/badge'
-import { mockAutomationsData } from '@/lib/json/automationsData'
+import { mockAutomationsData } from '@/lib/json'
 
 interface FilterAutomationDefaultProps {
   selectedAutomationTypes: string[]

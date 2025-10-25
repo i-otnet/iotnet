@@ -81,7 +81,7 @@ export function EditUserModal({
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] bg-white dark:bg-slate-900/85 backdrop-blur-xl border-gray-200 dark:border-white/10 flex flex-col">
-        <DialogHeader className="flex-shrink-0">
+        <DialogHeader className="shrink-0">
           <div className="flex items-center gap-3">
             <DialogTitle className="text-xl">Edit MQTT User</DialogTitle>
             <Badge
@@ -104,7 +104,7 @@ export function EditUserModal({
         <div className="flex-1 overflow-y-auto min-h-0 pr-2">
           {renderContent()}
         </div>
-        <div className="flex justify-end gap-2 mt-4 flex-shrink-0">
+        <div className="flex justify-end gap-2 mt-4 shrink-0">
           {!credentialsRevoked && (
             <Button variant="outline" onClick={handleClose}>
               Cancel

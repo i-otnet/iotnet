@@ -115,7 +115,7 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
         )}
       >
         {/* Header */}
-        <div className="p-6 border-b border-sidebar-border flex-shrink-0">
+        <div className="p-6 border-b border-sidebar-border shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl flex items-center justify-center border border-primary/20">
@@ -214,7 +214,7 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
         </nav>
 
         {/* Footer */}
-        <div className="p-4 border-t border-sidebar-border flex-shrink-0">
+        <div className="p-4 border-t border-sidebar-border shrink-0">
           <div className="flex items-center space-x-3 px-3 py-2">
             <div className="w-8 h-8 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center">
               <Activity className="h-4 w-4 text-primary animate-pulse" />

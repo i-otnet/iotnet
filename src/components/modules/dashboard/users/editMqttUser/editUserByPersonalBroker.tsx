@@ -80,7 +80,7 @@ export default function EditUserPersonalBroker({
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="w-full justify-between">
                 <span>{role === 'user' ? 'User' : 'Admin'}</span>
-                <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent

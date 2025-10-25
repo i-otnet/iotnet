@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Badge } from '@/components/ui/badge'
-import { mockModelsData } from '@/lib/json/modelsData'
+import { mockModelsData } from '@/lib/json/data/model/modelsData'
 
 interface FilterModelDefaultProps {
   selectedModelTypes: string[]

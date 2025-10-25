@@ -11,8 +11,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdownMenu'
 import { ChevronDown } from 'lucide-react'
-import { iconsData, iconMap } from '@/lib/json/iconsData'
-import { mockUsersData } from '@/lib/json/usersData'
+import { iconsData, iconMap } from '@/lib/json/data/shared/iconsData'
+import { mockUsersData } from '@/lib/json/data/user/usersData'
 
 export interface AddModelByQuickSetupRef {
   submit: () => void
@@ -147,7 +147,7 @@ const AddModelByQuickSetup = forwardRef<
               <span className="truncate">
                 {mqttUser || 'Select MQTT user (required)'}
               </span>
-              <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+              <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent

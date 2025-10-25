@@ -8,7 +8,7 @@ import ModelDetailGridSection from '@/components/modules/dashboard/modelDetail/m
 import ModelDetailHeader from '@/components/modules/dashboard/modelDetail/modelDetailHeader'
 import ConnectionStatusCard from '@/components/shared/connectionStatusCard'
 import RedirectPage from '@/components/shared/redirectPage'
-import { mockModelsData } from '@/lib/json/modelsData'
+import { mockModelsData } from '@/lib/json/data/model/modelsData'
 
 export default function ModelDetailPage({
   params,

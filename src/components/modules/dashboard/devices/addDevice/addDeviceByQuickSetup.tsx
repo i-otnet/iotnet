@@ -11,9 +11,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdownMenu'
 import { Info, ChevronDown } from 'lucide-react'
-import { mockDeviceTypesData } from '@/lib/json/deviceTypesData'
-import { iconsData, iconMap } from '@/lib/json/iconsData'
-import { mockUsersData } from '@/lib/json/usersData'
+import { mockDeviceTypesData } from '@/lib/json/response/device/deviceTypesResponse'
+import { iconsData, iconMap } from '@/lib/json/data/shared/iconsData'
+import { mockUsersData } from '@/lib/json/data/user/usersData'
 
 interface QuickSetupProps {
   onDeviceAdded?: (deviceData: DeviceData) => void
@@ -140,11 +140,11 @@ const QuickSetup = forwardRef<QuickSetupRef, QuickSetupProps>(
                   <span className="truncate">
                     {deviceType || 'Select a device type'}
                   </span>
-                  <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                  <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-[var(--radix-dropdown-menu-trigger-width)] p-2"
+                className="w-(--radix-dropdown-menu-trigger-width) p-2"
                 align="start"
               >
                 {/* Search Input */}
@@ -230,11 +230,11 @@ const QuickSetup = forwardRef<QuickSetupRef, QuickSetupProps>(
                   <span className="truncate">
                     {mqttUser || 'Select MQTT user (required)'}
                   </span>
-                  <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                  <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-[var(--radix-dropdown-menu-trigger-width)] p-2"
+                className="w-(--radix-dropdown-menu-trigger-width) p-2"
                 align="start"
               >
                 <div className="max-h-60 overflow-y-auto space-y-1">
@@ -264,7 +264,7 @@ const QuickSetup = forwardRef<QuickSetupRef, QuickSetupProps>(
           </div>
 
           <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 rounded-lg">
-            <Info className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+            <Info className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
             <p className="text-sm text-blue-800 dark:text-blue-300">
               Fill in the device details. Your device will be added to the
               device list and ready to use.

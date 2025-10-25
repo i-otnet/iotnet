@@ -95,7 +95,7 @@ const ProgressBar = ({ progress }: { progress: number }) => (
       className="h-full bg-primary transition-all duration-300 ease-out rounded-full relative overflow-hidden"
       style={{ width: `${Math.min(progress, 100)}%` }}
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
+      <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent animate-pulse" />
     </div>
   </div>
 )
@@ -132,7 +132,7 @@ const FilePreview = ({
   return (
     <Card className="p-3 transition-all duration-200 hover:shadow-sm border-border/50">
       <CardContent className="flex items-center gap-3 p-0">
-        <div className="flex-shrink-0">
+        <div className="shrink-0">
           {isImage && previewUrl ? (
             <Image
               src={previewUrl}
@@ -175,7 +175,7 @@ const FilePreview = ({
           variant="ghost"
           size="icon"
           onClick={onRemove}
-          className="flex-shrink-0 text-muted-foreground hover:text-destructive h-8 w-8 transition-colors duration-200"
+          className="shrink-0 text-muted-foreground hover:text-destructive h-8 w-8 transition-colors duration-200"
         >
           <Trash2 className="w-4 h-4" />
         </Button>
@@ -487,7 +487,7 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
               />
             </div>
 
-            <div className="space-y-2 min-h-[3rem] flex flex-col justify-center">
+            <div className="space-y-2 min-h-12 flex flex-col justify-center">
               <p
                 className={cn(
                   'text-sm font-medium transition-all duration-500 ease-out',

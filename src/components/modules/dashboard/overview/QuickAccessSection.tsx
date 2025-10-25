@@ -86,7 +86,7 @@ export default function QuickAccessSection() {
               <CardHeader className="p-4 sm:p-6 pb-2">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors flex-shrink-0">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors shrink-0">
                       <IconComponent className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                     </div>
                     <div className="min-w-0">
@@ -98,7 +98,7 @@ export default function QuickAccessSection() {
                       </Badge>
                     </div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
+                  <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
                 </div>
               </CardHeader>
               <CardContent className="p-4 sm:p-6 pt-2 -mt-6 sm:-mt-8">

@@ -7,7 +7,7 @@ import DashboardHeader from '@/components/modules/dashboard/header'
 import DashboardDevicesLayout from '@/components/layout/dashboard/dashboardDevicesLayout'
 import DevicesOverviewSection from '@/components/modules/dashboard/devices/DevicesOverviewSection'
 import DevicesGridSection from '@/components/modules/dashboard/devices/DevicesGridSection'
-import { mockDevicesData } from '@/lib/json/devicesData'
+import { mockDevicesData } from '@/lib/json/data/device/devicesData'
 
 interface Device {
   id: number

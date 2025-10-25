@@ -11,8 +11,8 @@ import {
 } from '@/components/ui/dropdownMenu'
 import { Button } from '@/components/ui/button'
 import { ChevronDown, Plus, X } from 'lucide-react'
-import { WidgetOption } from '@/lib/json/widgetOptionsData'
-import { virtualPinsResponse } from '@/lib/json/virtualPinsResponse'
+import { WidgetOption } from '@/lib/json/data/widget/widgetOptionsData'
+import { virtualPinsResponse } from '@/lib/json/response/virtualPin/virtualPinsResponse'
 import { getDeviceWidgetDefaultSize } from '@/lib/utils/widgetUtils'
 import { getRandomChartColor } from '@/lib/utils/chartColorUtils'
 
@@ -35,6 +35,8 @@ export interface DeviceWidgetConfiguration {
   minValue?: number
   maxValue?: number
   size: number // Size ratio (1 = 1/4, 2 = 1/2, etc.)
+  currentValue?: boolean | number
+  buttonType?: 'push' | 'toggle' // For button widget only
 }
 
 export interface WidgetConfigurationHandle {
@@ -58,8 +60,10 @@ const WidgetConfigurationView = forwardRef<
   const [unit, setUnit] = useState('')
   const [minValue, setMinValue] = useState<number | ''>('')
   const [maxValue, setMaxValue] = useState<number | ''>('')
+  const [buttonType, setButtonType] = useState<'push' | 'toggle'>('push')
 
   const isChartWidget = widget.id === 'chart'
+  const isButtonWidget = widget.id === 'button'
   const hasUnit = WIDGETS_WITH_UNIT.includes(widget.id)
   const hasMinMax = WIDGETS_WITH_MIN_MAX.includes(widget.id)
 
@@ -117,6 +121,7 @@ const WidgetConfigurationView = forwardRef<
         minValue: Number(minValue),
         maxValue: Number(maxValue),
       }),
+      ...(isButtonWidget && { buttonType }),
     }
 
     onConfigurationSave(config)
@@ -162,7 +167,7 @@ const WidgetConfigurationView = forwardRef<
                 <span>
                   {selectedPin ? selectedPin : 'Select a virtual pin...'}
                 </span>
-                <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -202,7 +207,7 @@ const WidgetConfigurationView = forwardRef<
                 >
                   {/* Color indicator */}
                   <div
-                    className="w-4 h-4 rounded-full flex-shrink-0"
+                    className="w-4 h-4 rounded-full shrink-0"
                     style={{ backgroundColor: chartPin.color }}
                   />
 
@@ -220,7 +225,7 @@ const WidgetConfigurationView = forwardRef<
                     variant="ghost"
                     size="sm"
                     onClick={() => handleRemoveChartPin(chartPin.pin)}
-                    className="h-8 w-8 p-0 hover:bg-destructive/10 hover:text-destructive flex-shrink-0"
+                    className="h-8 w-8 p-0 hover:bg-destructive/10 hover:text-destructive shrink-0"
                   >
                     <X className="h-4 w-4" />
                   </Button>
@@ -241,7 +246,7 @@ const WidgetConfigurationView = forwardRef<
                   <Plus className="h-4 w-4" />
                   {chartPins.length === 0 ? 'Add first pin' : 'Add another pin'}
                 </span>
-                <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -263,6 +268,53 @@ const WidgetConfigurationView = forwardRef<
             {chartPins.length === 0
               ? 'Add data pins. Each pin will get a random color.'
               : `${chartPins.length} pin(s) added with random colors.`}
+          </p>
+        </div>
+      )}
+
+      {/* Button Type Selection (Only for button widget) */}
+      {isButtonWidget && (
+        <div className="space-y-2">
+          <Label htmlFor="button-type" className="text-sm font-semibold">
+            Button Type <span className="text-destructive">*</span>
+          </Label>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full justify-between h-10"
+                id="button-type"
+              >
+                <span>
+                  {buttonType === 'push'
+                    ? 'Push Button (Press to activate)'
+                    : 'Toggle Button (Press to toggle)'}
+                </span>
+                <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="w-[var(--radix-dropdown-menu-trigger-width)]"
+              align="start"
+            >
+              <DropdownMenuItem onClick={() => setButtonType('push')}>
+                Push Button
+                <span className="text-xs text-muted-foreground ml-2">
+                  Press to activate
+                </span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setButtonType('toggle')}>
+                Toggle Button
+                <span className="text-xs text-muted-foreground ml-2">
+                  Press to toggle
+                </span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <p className="text-xs text-muted-foreground">
+            {buttonType === 'push'
+              ? 'Button will be active while pressed, inactive when released'
+              : 'Button will toggle state on each press'}
           </p>
         </div>
       )}

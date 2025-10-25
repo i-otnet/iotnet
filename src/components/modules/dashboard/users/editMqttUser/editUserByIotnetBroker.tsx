@@ -93,7 +93,7 @@ export default function EditUserIotnetBroker({
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="w-full justify-between">
                 <span>{role === 'user' ? 'User' : 'Admin'}</span>
-                <ChevronDown className="ml-2 h-4 w-4 opacity-50 flex-shrink-0" />
+                <ChevronDown className="ml-2 h-4 w-4 opacity-50 shrink-0" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -151,7 +151,7 @@ export default function EditUserIotnetBroker({
             ) : (
               <div className="w-full p-4 bg-destructive/10 border border-destructive/30 rounded-lg">
                 <div className="flex items-start gap-3 mb-4">
-                  <AlertTriangle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
+                  <AlertTriangle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
                   <div className="flex-1">
                     <h4 className="text-sm font-semibold text-foreground mb-1">
                       Confirm Credentials Revocation
@@ -188,7 +188,7 @@ export default function EditUserIotnetBroker({
         {credentials && (
           <div className="space-y-4 p-4 bg-gradient-to-br from-green-50/30 to-green-100/20 dark:from-green-950/20 dark:to-green-900/10 rounded-lg border border-green-200/50 dark:border-green-900/50">
             <div className="flex items-center gap-2 pb-2 border-b border-green-200/50 dark:border-green-900/50">
-              <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+              <CheckCircle className="h-5 w-5 text-green-500 shrink-0" />
               <p className="text-sm font-semibold text-foreground">
                 New Credentials Generated
               </p>
@@ -211,7 +211,7 @@ export default function EditUserIotnetBroker({
                           field
                         )
                       }
-                      className="p-2 hover:bg-muted rounded-md transition-colors flex-shrink-0"
+                      className="p-2 hover:bg-muted rounded-md transition-colors shrink-0"
                       title="Copy to clipboard"
                     >
                       {copiedField === field ? (

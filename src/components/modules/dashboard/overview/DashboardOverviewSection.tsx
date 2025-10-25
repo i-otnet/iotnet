@@ -4,7 +4,7 @@ import React from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Users, Cpu, BrainCircuit, TrendingUp, Zap, Clock } from 'lucide-react'
-import { mockDashboardOverviewData } from '@/lib/json/dashboardData'
+import { mockDashboardOverviewData } from '@/lib/json/data/dashboard/dashboardData'
 
 export default function DashboardOverviewSection() {
   return (
@@ -38,7 +38,7 @@ export default function DashboardOverviewSection() {
         <Card className="hover:shadow-md transition-shadow">
           <CardContent className="p-4 sm:p-5 md:p-6">
             <div className="flex items-center gap-3 md:gap-4">
-              <div className="p-2 md:p-3 rounded-lg sm:rounded-full bg-primary/10 flex-shrink-0">
+              <div className="p-2 md:p-3 rounded-lg sm:rounded-full bg-primary/10 shrink-0">
                 <Cpu className="w-5 h-5 md:w-6 md:h-6 text-primary" />
               </div>
               <div className="min-w-0">
@@ -51,7 +51,7 @@ export default function DashboardOverviewSection() {
               </div>
             </div>
             <div className="flex items-center mt-3 md:mt-4 text-xs sm:text-sm">
-              <TrendingUp className="w-3 h-3 text-primary mr-1 flex-shrink-0" />
+              <TrendingUp className="w-3 h-3 text-primary mr-1 shrink-0" />
               <span className="text-primary font-medium">
                 +{mockDashboardOverviewData.data.monthlyGrowth.devices}%
               </span>
@@ -66,7 +66,7 @@ export default function DashboardOverviewSection() {
         <Card className="hover:shadow-md transition-shadow">
           <CardContent className="p-4 sm:p-5 md:p-6">
             <div className="flex items-center gap-3 md:gap-4">
-              <div className="p-2 md:p-3 rounded-lg sm:rounded-full bg-primary/10 flex-shrink-0">
+              <div className="p-2 md:p-3 rounded-lg sm:rounded-full bg-primary/10 shrink-0">
                 <Users className="w-5 h-5 md:w-6 md:h-6 text-primary" />
               </div>
               <div className="min-w-0">
@@ -79,7 +79,7 @@ export default function DashboardOverviewSection() {
               </div>
             </div>
             <div className="flex items-center mt-3 md:mt-4 text-xs sm:text-sm">
-              <TrendingUp className="w-3 h-3 text-primary mr-1 flex-shrink-0" />
+              <TrendingUp className="w-3 h-3 text-primary mr-1 shrink-0" />
               <span className="text-primary font-medium">
                 +{mockDashboardOverviewData.data.monthlyGrowth.users}%
               </span>
@@ -94,7 +94,7 @@ export default function DashboardOverviewSection() {
         <Card className="hover:shadow-md transition-shadow">
           <CardContent className="p-4 sm:p-5 md:p-6">
             <div className="flex items-center gap-3 md:gap-4">
-              <div className="p-2 md:p-3 rounded-lg sm:rounded-full bg-primary/10 flex-shrink-0">
+              <div className="p-2 md:p-3 rounded-lg sm:rounded-full bg-primary/10 shrink-0">
                 <BrainCircuit className="w-5 h-5 md:w-6 md:h-6 text-primary" />
               </div>
               <div className="min-w-0">
@@ -107,7 +107,7 @@ export default function DashboardOverviewSection() {
               </div>
             </div>
             <div className="flex items-center mt-3 md:mt-4 text-xs sm:text-sm">
-              <TrendingUp className="w-3 h-3 text-primary mr-1 flex-shrink-0" />
+              <TrendingUp className="w-3 h-3 text-primary mr-1 shrink-0" />
               <span className="text-primary font-medium">
                 +{mockDashboardOverviewData.data.monthlyGrowth.models}%
               </span>
@@ -122,7 +122,7 @@ export default function DashboardOverviewSection() {
         <Card className="hover:shadow-md transition-shadow">
           <CardContent className="p-4 sm:p-5 md:p-6">
             <div className="flex items-center gap-3 md:gap-4">
-              <div className="p-2 md:p-3 rounded-lg sm:rounded-full bg-primary/10 flex-shrink-0">
+              <div className="p-2 md:p-3 rounded-lg sm:rounded-full bg-primary/10 shrink-0">
                 <Zap className="w-5 h-5 md:w-6 md:h-6 text-primary" />
               </div>
               <div className="min-w-0">
@@ -135,7 +135,7 @@ export default function DashboardOverviewSection() {
               </div>
             </div>
             <div className="flex items-center mt-3 md:mt-4 text-xs sm:text-sm">
-              <TrendingUp className="w-3 h-3 text-primary mr-1 flex-shrink-0" />
+              <TrendingUp className="w-3 h-3 text-primary mr-1 shrink-0" />
               <span className="text-primary font-medium">
                 +{mockDashboardOverviewData.data.monthlyGrowth.automations}%
               </span>

@@ -4,8 +4,8 @@ import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Zap, Bell, Cpu, BrainCircuit, AlertCircle } from 'lucide-react'
-import { iconMap } from '@/lib/json/iconsData'
-import { AUTOMATION_BUILDER_ICONS as ICONS } from '@/lib/json/automationsData'
+import { iconMap } from '@/lib/json/data/shared/iconsData'
+import { AUTOMATION_BUILDER_ICONS as ICONS } from '@/lib/json'
 
 interface Automation {
   id: number
@@ -200,7 +200,7 @@ export default function EditAutomationDefault({
         {/* Edit Trigger/Action Info Box */}
         <div className="p-3 bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 rounded-lg">
           <p className="text-sm text-blue-800 dark:text-blue-300 font-medium flex items-start gap-2">
-            <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
             <span>
               To edit trigger, action, or device configuration, use the
               &quot;Edit Automation Flow&quot; option or scroll down in this

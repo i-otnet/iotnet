@@ -10,20 +10,22 @@ import ConnectionStatusCard from '@/components/shared/connectionStatusCard'
 import WidgetRenderer from '@/components/modules/dashboard/deviceDetail/deviceDetailWidget'
 import RedirectPage from '@/components/shared/redirectPage'
 import EditWidgetDeviceModal from '@/components/modules/dashboard/deviceDetail/editWidgetDevice/editWidgetDeviceModal'
-import { mockDevicesData } from '@/lib/json/devicesData'
-import { mockDeviceWidgetsData } from '@/lib/json/deviceWidgetsMockData'
+import { mockDevicesData } from '@/lib/json/data/device/devicesData'
+import { mockDeviceWidgetsData } from '@/lib/json/data/widget/deviceWidgetsMockData'
 import {
   WidgetOption,
   DEVICE_WIDGET_OPTIONS,
-} from '@/lib/json/widgetOptionsData'
+} from '@/lib/json/data/widget/widgetOptionsData'
 import { DeviceWidgetConfiguration } from '@/components/modules/dashboard/deviceDetail/addWidgetDevice/deviceViews/widgetConfigurationView'
 import type { WidgetSize } from '@/lib/hooks/useWidgetResize'
+import type { DeviceWidgetData } from '@/lib/json/data/widget/deviceWidgetsMockData'
 
 interface SavedDeviceWidget {
   id: string
   widget: WidgetOption
   config: DeviceWidgetConfiguration
   size?: WidgetSize
+  layout?: DeviceWidgetData['layout']
 }
 
 export default function DeviceDetailPage({
@@ -72,8 +74,13 @@ export default function DeviceDetailPage({
               unit: widgetData.config.unit,
               minValue: widgetData.config.minValue,
               maxValue: widgetData.config.maxValue,
+              currentValue: widgetData.config.currentValue,
+              buttonType: widgetData.config.buttonType,
             } as DeviceWidgetConfiguration,
-            size: widgetData.size,
+            size: widgetData.size
+              ? { cols: widgetData.size.cols, rows: 1 }
+              : undefined,
+            layout: widgetData.layout,
           } as SavedDeviceWidget
         })
 
@@ -169,9 +176,29 @@ export default function DeviceDetailPage({
   }
 
   const handleWidgetSizeChange = (widgetId: string, size: WidgetSize) => {
-    setWidgets((prevWidgets) =>
-      prevWidgets.map((w) => (w.id === widgetId ? { ...w, size } : w))
+    setWidgets((prev) =>
+      prev.map((w) =>
+        w.id === widgetId
+          ? {
+              ...w,
+              size: size,
+            }
+          : w
+      )
     )
+  }
+
+  const handleWidgetPositionChange = (widgetId: string, newIndex: number) => {
+    setWidgets((prev) => {
+      const currentIndex = prev.findIndex((w) => w.id === widgetId)
+      if (currentIndex === -1 || currentIndex === newIndex) return prev
+
+      const newWidgets = [...prev]
+      const [movedWidget] = newWidgets.splice(currentIndex, 1)
+      newWidgets.splice(newIndex, 0, movedWidget)
+
+      return newWidgets
+    })
   }
 
   return (
@@ -197,7 +224,7 @@ export default function DeviceDetailPage({
 
             {/* Widget Grid Section */}
             <DeviceDetailGridSection isEditing={isEditing}>
-              {widgets.map((w) => (
+              {widgets.map((w, index) => (
                 <WidgetRenderer
                   key={w.id}
                   widget={w.widget}
@@ -207,6 +234,8 @@ export default function DeviceDetailPage({
                     unit: w.config.unit,
                     minValue: w.config.minValue,
                     maxValue: w.config.maxValue,
+                    currentValue: w.config.currentValue,
+                    buttonType: w.config.buttonType,
                   }}
                   isEditing={isEditing}
                   isSelected={selectedWidgetId === w.id}
@@ -214,6 +243,15 @@ export default function DeviceDetailPage({
                   onEdit={() => handleEditWidget(w.id)}
                   onDelete={() => handleDeleteWidget(w.id)}
                   onSizeChange={(size) => handleWidgetSizeChange(w.id, size)}
+                  onPositionChange={(position) => {
+                    const newIndex = Math.min(
+                      widgets.length - 1,
+                      Math.max(0, index + (position.col - 1))
+                    )
+                    handleWidgetPositionChange(w.id, newIndex)
+                  }}
+                  initialSize={w.size}
+                  initialPosition={w.layout}
                 />
               ))}
             </DeviceDetailGridSection>

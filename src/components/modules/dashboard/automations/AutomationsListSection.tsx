@@ -23,7 +23,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdownMenu'
-import { iconMap } from '@/lib/json/iconsData'
+import { iconMap } from '@/lib/json/data/shared/iconsData'
 import { AddAutomationModal } from './addAutomation/addAutomationModal'
 import { EditAutomationModal } from './editAutomation/editAutomationModal'
 
@@ -122,7 +122,7 @@ export default function AutomationsListSection({
           return (
             <Card
               key={automation.id}
-              className="group hover:shadow-lg transition-all duration-200 border-0 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm"
+              className="group hover:shadow-lg transition-all duration-200 border-0 bg-linear-to-br from-card to-card/50 backdrop-blur-sm"
             >
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
@@ -200,9 +200,9 @@ export default function AutomationsListSection({
                 {/* Source Information */}
                 <div className="flex items-center gap-2 p-2.5 bg-muted/50 rounded-lg">
                   {automation.source === 'devices' ? (
-                    <Cpu className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                    <Cpu className="w-4 h-4 text-blue-500 shrink-0" />
                   ) : (
-                    <BrainCircuit className="w-4 h-4 text-purple-500 flex-shrink-0" />
+                    <BrainCircuit className="w-4 h-4 text-purple-500 shrink-0" />
                   )}
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-muted-foreground">
@@ -219,14 +219,14 @@ export default function AutomationsListSection({
                 {/* Trigger and Action */}
                 <div className="space-y-2 text-sm">
                   <div className="flex items-start gap-2">
-                    <Zap className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                    <Zap className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
                     <div>
                       <p className="text-xs text-muted-foreground">Trigger</p>
                       <p className="font-medium">{automation.trigger}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-2">
-                    <Bell className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                    <Bell className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
                     <div>
                       <p className="text-xs text-muted-foreground">Action</p>
                       <p className="font-medium">{automation.action}</p>
