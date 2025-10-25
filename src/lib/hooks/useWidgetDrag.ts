@@ -33,6 +33,7 @@ export function useWidgetDrag({
 }: UseWidgetDragProps = {}) {
   const [isDragging, setIsDragging] = useState(false)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
+  const [startPosition, setStartPosition] = useState({ x: 0, y: 0 })
 
   const dragRef = useRef<{
     startX: number
@@ -52,11 +53,17 @@ export function useWidgetDrag({
       const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
       const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
 
+      // Simpan posisi start container
+      const rect = containerElement.getBoundingClientRect()
+      setStartPosition({ x: rect.left, y: rect.top })
+
       // Start holding timer
       const holdTimer = setTimeout(() => {
         if (dragRef.current) {
           dragRef.current.isHeld = true
           setIsDragging(true)
+          // Set drag offset ke posisi container saat drag mulai (avoid pojok kiri atas flash)
+          setDragOffset({ x: startPosition.x, y: startPosition.y })
           onDragStart?.(initialPosition)
         }
       }, DRAG_CONFIG.HOLD_TIME)
@@ -110,8 +117,11 @@ export function useWidgetDrag({
       const deltaX = clientX - dragRef.current.startX
       const deltaY = clientY - dragRef.current.startY
 
-      // Update visual offset saat drag
-      setDragOffset({ x: deltaX, y: deltaY })
+      // Update visual offset saat drag - gunakan client position absolut
+      setDragOffset({
+        x: startPosition.x + deltaX,
+        y: startPosition.y + deltaY,
+      })
 
       // Calculate grid position berdasarkan pixel movement
       const gridContainer = document.querySelector(

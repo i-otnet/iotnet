@@ -12,17 +12,16 @@ import { WidgetOption } from '@/lib/json/widgetOptionsData'
 import { mockChartData } from '@/lib/json/mockChartData'
 import type { ChartPin } from '@/lib/json/deviceWidgetsMockData'
 import { generateChartDataFromPins } from '@/lib/utils/chartColorUtils'
-import { Trash2, Edit2, GripVertical, ArrowLeftRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import {
   getWidgetBorderStyle,
-  getWidgetTypeName,
   getWidgetResizeConstraints,
   getWidgetDefaultSize,
 } from '@/lib/utils/widgetUtils'
 import { useWidgetResize, type WidgetSize } from '@/lib/hooks/useWidgetResize'
 import { useWidgetDrag, type WidgetPosition } from '@/lib/hooks/useWidgetDrag'
 import ResizeLineIndicator from '@/components/shared/resizeLineIndicator'
+import WidgetControls from './widgetControls'
+import DragPlaceholder from './dragPlaceholder'
 
 interface WidgetConfig {
   name: string
@@ -239,161 +238,110 @@ export default function DeviceDetailWidget({
       <div
         ref={containerRef}
         className={`relative transition-all duration-300 ease-out ${
-          isDragging ? 'opacity-75 z-40' : 'opacity-100 z-0'
+          isDragging ? 'opacity-100 z-0' : 'opacity-100 z-0'
         }`}
         style={{
           gridColumn: `span ${size.cols}`,
           userSelect: isResizing ? 'none' : 'auto',
-          transform: isDragging
-            ? `translate(${dragOffset.x}px, ${dragOffset.y}px)`
-            : 'translate(0, 0)',
+          transform: 'translate(0, 0)',
         }}
         data-widget-container="true"
       >
-        <Card
-          className={`p-3 relative ${borderStyle} ${
-            isEditing ? 'cursor-pointer' : ''
-          } ${
-            isDragging ? 'shadow-lg ring-2 ring-primary' : ''
-          } transition-all duration-300 h-full flex flex-col`}
-          onClick={handleCardClick}
-          onKeyDown={(e) => {
-            if (isEditing && (e.key === 'Enter' || e.key === ' ')) {
-              e.preventDefault()
-              handleCardClick()
-            }
-          }}
-          role={isEditing ? 'button' : undefined}
-          tabIndex={isEditing ? 0 : -1}
-        >
-          {/* Widget Type Label */}
-          <div className="absolute top-2 left-2 z-10">
-            <span className="text-xs font-medium text-primary">
-              {getWidgetTypeName(widget.id)}
-            </span>
-          </div>
-
-          {/* Drag Handle Icon */}
-          {isEditing && isSelected && (
-            <div
-              className={`absolute top-2 left-1/2 -translate-x-1/2 z-50 cursor-move group ${
-                isDragging ? 'animate-pulse' : ''
-              }`}
-              onMouseDown={(e) => {
+        {isDragging ? (
+          <DragPlaceholder name={config.name} />
+        ) : (
+          <Card
+            className={`p-3 relative ${borderStyle} ${
+              isEditing ? 'cursor-pointer' : ''
+            } transition-all duration-300 h-full flex flex-col`}
+            onClick={handleCardClick}
+            onKeyDown={(e) => {
+              if (isEditing && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault()
+                handleCardClick()
+              }
+            }}
+            role={isEditing ? 'button' : undefined}
+            tabIndex={isEditing ? 0 : -1}
+          >
+            <WidgetControls
+              widgetId={widget.id}
+              isDragging={isDragging}
+              isSelected={isSelected}
+              isEditing={isEditing}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onDragStart={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
                 if (containerRef.current) {
                   handleDragStart(e, containerRef.current)
                 }
               }}
-              onTouchStart={(e) => {
+              onResizeStart={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
-                if (containerRef.current) {
-                  handleDragStart(e, containerRef.current)
-                }
-              }}
-            >
-              <div
-                className={`p-1 rounded-full transition-all duration-200 ${
-                  isDragging
-                    ? 'bg-primary/20 ring-2 ring-primary'
-                    : 'group-hover:bg-primary/10'
-                }`}
-              >
-                <GripVertical
-                  className={`h-5 w-5 ${
-                    isDragging ? 'text-primary' : 'text-primary'
-                  } pointer-events-none`}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Resize Handle Icon - Right Middle */}
-          {isEditing && isSelected && (
-            <div
-              className="absolute -right-2 top-1/2 -translate-y-1/2 z-50 cursor-ew-resize group select-none"
-              onMouseDown={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                // For chart widgets, only allow horizontal resize (direction 'e')
-                // For other widgets, allow both directions (direction 'se')
                 const direction = widget.id === 'chart' ? 'e' : 'se'
                 if (containerRef.current) {
                   handleResizeStart(e, direction, containerRef.current)
                 }
               }}
-              onTouchStart={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                // For chart widgets, only allow horizontal resize (direction 'e')
-                // For other widgets, allow both directions (direction 'se')
-                const direction = widget.id === 'chart' ? 'e' : 'se'
-                if (containerRef.current) {
-                  handleResizeStart(e, direction, containerRef.current)
-                }
-              }}
-              style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
-            >
-              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white border-2 border-primary shadow-sm transition-all duration-200 group-hover:bg-primary/10 group-hover:shadow-md">
-                <ArrowLeftRight className="h-3 w-3 text-primary pointer-events-none" />
+            />
+
+            {/* Widget Content */}
+            <div className="flex flex-col h-full mt-6 justify-between">
+              <div className="mb-3">
+                <h3 className="text-sm font-medium text-foreground">
+                  {config.name}
+                </h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Pin:{' '}
+                  {Array.isArray(config.virtualPin)
+                    ? config.virtualPin.map((p) => p.pin).join(', ')
+                    : config.virtualPin}
+                </p>
               </div>
+              <div className="flex-1">{renderWidget()}</div>
             </div>
-          )}
-
-          {/* Edit and Delete buttons */}
-          {isEditing && isSelected && (
-            <div className="absolute top-2 right-2 z-10 flex gap-2">
-              {onEdit && (
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-8 w-8 bg-white border-primary hover:bg-primary/10"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    onEdit()
-                  }}
-                >
-                  <Edit2 className="h-4 w-4 text-primary" />
-                </Button>
-              )}
-              {onDelete && (
-                <Button
-                  variant="destructive"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    onDelete()
-                  }}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              )}
-            </div>
-          )}
-
-          {/* Widget Content */}
-          <div className="flex flex-col h-full mt-6 justify-between">
-            <div className="mb-3">
-              <h3 className="text-sm font-medium text-foreground">
-                {config.name}
-              </h3>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                Pin:{' '}
-                {Array.isArray(config.virtualPin)
-                  ? config.virtualPin.map((p) => p.pin).join(', ')
-                  : config.virtualPin}
-              </p>
-            </div>
-            <div className="flex-1">{renderWidget()}</div>
-          </div>
-        </Card>
+          </Card>
+        )}
       </div>
 
       {/* Global Resize Line Indicator */}
       <ResizeLineIndicator lineX={resizeLineX} isVisible={isResizing} />
+
+      {/* Drag Overlay Ghost - Hanya muncul saat dragging */}
+      {isDragging && (
+        <div
+          className="fixed pointer-events-none z-50"
+          style={{
+            left: `${dragOffset.x}px`,
+            top: `${dragOffset.y}px`,
+            width: containerRef.current?.offsetWidth,
+            height: containerRef.current?.offsetHeight,
+          }}
+        >
+          <Card
+            className={`p-3 relative ${borderStyle} shadow-lg ring-2 ring-primary opacity-80 h-full flex flex-col`}
+          >
+            {/* Widget Content */}
+            <div className="flex flex-col h-full mt-6 justify-between">
+              <div className="mb-3">
+                <h3 className="text-sm font-medium text-foreground">
+                  {config.name}
+                </h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Pin:{' '}
+                  {Array.isArray(config.virtualPin)
+                    ? config.virtualPin.map((p) => p.pin).join(', ')
+                    : config.virtualPin}
+                </p>
+              </div>
+              <div className="flex-1 pointer-events-none">{renderWidget()}</div>
+            </div>
+          </Card>
+        </div>
+      )}
     </>
   )
 }
