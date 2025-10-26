@@ -53,7 +53,7 @@ export default function DashboardSettingsLayout({
       {/* Danger Zone Section */}
       {dangerZone}
 
-      {/* Default children container jika ada konten tambahan */}
+      {/* Default children container if there's additional content */}
       {children}
     </div>
   )

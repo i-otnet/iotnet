@@ -3,8 +3,8 @@ import { Zap, Network } from 'lucide-react'
 export type BrokerType = 'iotnet' | 'external'
 
 /**
- * Utility functions untuk broker-related logic
- * Centralized logic untuk mendapatkan icon, label, dan variant berdasarkan broker type
+ * Utility functions for broker-related logic
+ * Centralized logic to get icon, label, and variant based on broker type
  */
 
 export const getBrokerIcon = (brokerType: BrokerType) => {

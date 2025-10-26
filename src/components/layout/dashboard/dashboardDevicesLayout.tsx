@@ -21,7 +21,7 @@ export default function DashboardDevicesLayout({
       {/* Devices Grid Section */}
       {devicesGrid}
 
-      {/* Default children container jika ada konten tambahan */}
+      {/* Default children container if there's additional content */}
       {children}
     </div>
   )

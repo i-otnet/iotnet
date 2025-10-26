@@ -21,7 +21,7 @@ export default function DashboardAutomationsLayout({
       {/* Automations List Section */}
       {automationsList}
 
-      {/* Default children container jika ada konten tambahan */}
+      {/* Default children container if there's additional content */}
       {children}
     </div>
   )

@@ -4,7 +4,7 @@ import React, { ReactNode } from 'react'
 
 interface DashboardUsersLayoutProps {
   children?: ReactNode
-  // Props untuk users layout
+  // Props for the users layout
   usersOverview?: ReactNode
   usersTable?: ReactNode
   brokerDistribution?: ReactNode
@@ -27,7 +27,7 @@ export default function DashboardUsersLayout({
       {/* Broker Distribution Section */}
       {brokerDistribution}
 
-      {/* Default children container jika ada konten tambahan */}
+      {/* Default children container if there's additional content */}
       {children}
     </div>
   )

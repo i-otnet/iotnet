@@ -4,11 +4,10 @@ import { Card } from '@/components/ui/card'
 import ModelMetricsWidget from '@/components/modules/widgets/widgetModels/modelMetricsWidget'
 import PerformanceChartWidget from '@/components/modules/widgets/widgetModels/performanceChartWidget'
 import ConfusionMatrixWidget from '@/components/modules/widgets/widgetModels/confusionMatrixWidget'
-import RocCurveWidget from '@/components/modules/widgets/widgetModels/rocCurveWidget'
 import FeatureImportanceWidget from '@/components/modules/widgets/widgetModels/featureImportanceWidget'
 import PredictionOutputWidget from '@/components/modules/widgets/widgetModels/predictionOutputWidget'
+import DescriptionWidget from '@/components/modules/widgets/widgetModels/descriptionWidget'
 import { WidgetOption } from '@/lib/json/data/widget/widgetOptionsData'
-import type { ModelChartPin } from '@/lib/json/data/widget/modelWidgetsMockData'
 import { mockModelWidgetsData } from '@/lib/json/data/widget/modelWidgetsMockData'
 import type { ModelMetrics } from '@/lib/json/data/widget/modelWidgetsMockData'
 import { useState, useRef, useEffect } from 'react'
@@ -25,11 +24,12 @@ import { useWidgetDrag, type WidgetPosition } from '@/lib/hooks/useWidgetDrag'
 
 interface ModelWidgetConfig {
   name: string
-  virtualPin: string | ModelChartPin[]
   unit?: string
   minValue?: number
   maxValue?: number
   currentValue?: boolean | number | string
+  title?: string
+  description?: string
   metrics?: ModelMetrics
   chartData?: Array<{
     label: string
@@ -45,7 +45,7 @@ interface ModelWidgetConfig {
   }
   labels?: string[]
   auc?: number
-  rocCurveData?: Array<{ fpr: number; tpr: number }>
+  // rocCurveData removed: ROC curve widget has been removed from model widgets
   features?: Array<{ name: string; importance: number }>
   mainPrediction?: string
   mainConfidence?: number
@@ -119,14 +119,7 @@ export default function ModelDetailWidget(props: ModelDetailWidgetProps) {
           />
         ) : null
       }
-      case 'roc-curve': {
-        return (
-          <RocCurveWidget
-            auc={config.auc || 0}
-            rocCurveData={config.rocCurveData || []}
-          />
-        )
-      }
+      // 'roc-curve' widget removed
       case 'feature-importance': {
         return config.features ? (
           <FeatureImportanceWidget features={config.features} />
@@ -138,6 +131,14 @@ export default function ModelDetailWidget(props: ModelDetailWidgetProps) {
             mainPrediction={config.mainPrediction}
             mainConfidence={config.mainConfidence}
             predictions={config.predictions}
+          />
+        )
+      }
+      case 'description': {
+        return (
+          <DescriptionWidget
+            title={config.title}
+            description={config.description}
           />
         )
       }
@@ -277,18 +278,13 @@ export default function ModelDetailWidget(props: ModelDetailWidgetProps) {
             />
 
             {/* Widget Header */}
-            <div className="pt-6 mb-4 pb-3 border-b border-border">
+            <div className="pt-6 pb-2 border-b border-border">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1">
                   <h3 className="text-base font-bold text-foreground">
                     {config.name || widgetData?.name || widget.title}
                   </h3>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Pin:{' '}
-                    {Array.isArray(config.virtualPin)
-                      ? config.virtualPin.map((p) => p.pin).join(', ')
-                      : config.virtualPin}
-                  </p>
+                  {/* virtualPin removed for model widgets */}
                 </div>
               </div>
             </div>
@@ -357,12 +353,7 @@ export default function ModelDetailWidget(props: ModelDetailWidgetProps) {
                   <h3 className="text-base font-bold text-foreground">
                     {config.name || widgetData?.name || widget.title}
                   </h3>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Pin:{' '}
-                    {Array.isArray(config.virtualPin)
-                      ? config.virtualPin.map((p) => p.pin).join(', ')
-                      : config.virtualPin}
-                  </p>
+                  {/* virtualPin removed for model widgets */}
                 </div>
                 <div className="px-2 py-1 bg-primary rounded text-xs font-semibold text-primary-foreground border border-primary">
                   {widget.title}

@@ -76,7 +76,7 @@ const AutomationBuilder = forwardRef<
   const [actionType, setActionType] = useState('Turn On')
   const [actionValue, setActionValue] = useState('')
 
-  // State untuk different trigger types
+  // State for different trigger types
   const [timeOfDay, setTimeOfDay] = useState('08:00')
   const [timezone, setTimezone] = useState('UTC')
   const [eventType, setEventType] = useState('device-online')

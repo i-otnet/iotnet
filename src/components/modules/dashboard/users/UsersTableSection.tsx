@@ -141,7 +141,7 @@ export default function UsersTableSection() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                className="w-(--radix-dropdown-menu-trigger-width)"
                 align="start"
               >
                 <DropdownMenuItem onClick={() => setFilterRole('all')}>
@@ -174,7 +174,7 @@ export default function UsersTableSection() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                className="w-(--radix-dropdown-menu-trigger-width)"
                 align="start"
               >
                 <DropdownMenuItem onClick={() => setFilterBroker('all')}>
@@ -207,7 +207,7 @@ export default function UsersTableSection() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                className="w-(--radix-dropdown-menu-trigger-width)"
                 align="start"
               >
                 <DropdownMenuItem onClick={() => setFilterStatus('all')}>

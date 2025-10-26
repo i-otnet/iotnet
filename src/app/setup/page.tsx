@@ -24,7 +24,7 @@ export default function SetupPage() {
       {/* === Background themed with primary color === */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         {/* Base gradient using Tailwind primary color classes */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-background" />
+        <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-background to-background" />
 
         {/* Animated grid using primary color */}
         <div
@@ -73,7 +73,7 @@ export default function SetupPage() {
         <div className="absolute inset-0 bg-gradient-radial from-transparent via-background/30 to-background/70" />
       </div>
 
-      {/* === CONTENT (tidak diubah) === */}
+      {/* === CONTENT (unchanged) === */}
       <div className="relative z-10 text-center space-y-6">
         <div className="space-y-4">
           <div className="flex items-center justify-center space-x-2 mb-6">
