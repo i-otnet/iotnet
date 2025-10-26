@@ -42,7 +42,6 @@ export function getModelWidgetTypeName(widgetId: string): string {
     statistics: 'MODEL METRICS',
     chart: 'PERFORMANCE CHART',
     'confusion-matrix': 'CONFUSION MATRIX',
-    'roc-curve': 'ROC CURVE',
     'feature-importance': 'FEATURE IMPORTANCE',
     'prediction-output': 'PREDICTION OUTPUT',
   }
@@ -130,7 +129,6 @@ export function getModelWidgetDefaultSize(widgetId: string): number {
     statistics: 1, // 1/4 (Model Metrics)
     chart: 2, // 1/2 (Performance Chart)
     'confusion-matrix': 2, // 1/2
-    'roc-curve': 2, // 1/2
     'feature-importance': 1, // 1/4
     'prediction-output': 1, // 1/4
   }
@@ -188,7 +186,7 @@ export function getWidgetResizeConstraints(widgetId: string): {
     gauge: { minCols: 1, maxCols: 4, minRows: 1, maxRows: 2 },
     // Model widgets
     'confusion-matrix': { minCols: 2, maxCols: 4, minRows: 2, maxRows: 4 },
-    'roc-curve': { minCols: 2, maxCols: 4, minRows: 2, maxRows: 3 },
+    // 'roc-curve' removed: no constraints kept
     'feature-importance': { minCols: 1, maxCols: 4, minRows: 1, maxRows: 3 },
     'prediction-output': { minCols: 1, maxCols: 4, minRows: 1, maxRows: 2 },
   }

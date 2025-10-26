@@ -4,9 +4,9 @@ import { Card } from '@/components/ui/card'
 import ModelMetricsWidget from '@/components/modules/widgets/widgetModels/modelMetricsWidget'
 import PerformanceChartWidget from '@/components/modules/widgets/widgetModels/performanceChartWidget'
 import ConfusionMatrixWidget from '@/components/modules/widgets/widgetModels/confusionMatrixWidget'
-import RocCurveWidget from '@/components/modules/widgets/widgetModels/rocCurveWidget'
 import FeatureImportanceWidget from '@/components/modules/widgets/widgetModels/featureImportanceWidget'
 import PredictionOutputWidget from '@/components/modules/widgets/widgetModels/predictionOutputWidget'
+import DescriptionWidget from '@/components/modules/widgets/widgetModels/descriptionWidget'
 import { WidgetOption } from '@/lib/json/data/widget/widgetOptionsData'
 import type { ModelChartPin } from '@/lib/json/data/widget/modelWidgetsMockData'
 import { mockModelWidgetsData } from '@/lib/json/data/widget/modelWidgetsMockData'
@@ -45,7 +45,7 @@ interface ModelWidgetConfig {
   }
   labels?: string[]
   auc?: number
-  rocCurveData?: Array<{ fpr: number; tpr: number }>
+  // rocCurveData removed: ROC curve widget has been removed from model widgets
   features?: Array<{ name: string; importance: number }>
   mainPrediction?: string
   mainConfidence?: number
@@ -119,14 +119,7 @@ export default function ModelDetailWidget(props: ModelDetailWidgetProps) {
           />
         ) : null
       }
-      case 'roc-curve': {
-        return (
-          <RocCurveWidget
-            auc={config.auc || 0}
-            rocCurveData={config.rocCurveData || []}
-          />
-        )
-      }
+      // 'roc-curve' widget removed
       case 'feature-importance': {
         return config.features ? (
           <FeatureImportanceWidget features={config.features} />
@@ -138,6 +131,14 @@ export default function ModelDetailWidget(props: ModelDetailWidgetProps) {
             mainPrediction={config.mainPrediction}
             mainConfidence={config.mainConfidence}
             predictions={config.predictions}
+          />
+        )
+      }
+      case 'description': {
+        return (
+          <DescriptionWidget
+            title={(config as any).title}
+            description={(config as any).description}
           />
         )
       }

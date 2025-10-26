@@ -154,31 +154,6 @@ export const mockModelWidgetsData: ModelWidgetsResponse = {
       },
     },
     {
-      id: 'model_widget_roc_001',
-      widgetType: 'roc-curve',
-      name: 'ROC Curve',
-      config: {
-        virtualPin: 'MP_2',
-        unit: 'Score',
-        auc: 0.945,
-        rocCurveData: [
-          { fpr: 0.0, tpr: 0.0 },
-          { fpr: 0.1, tpr: 0.6 },
-          { fpr: 0.2, tpr: 0.75 },
-          { fpr: 0.3, tpr: 0.85 },
-          { fpr: 0.4, tpr: 0.92 },
-          { fpr: 0.5, tpr: 0.97 },
-          { fpr: 1.0, tpr: 1.0 },
-        ],
-      },
-      size: {
-        cols: 4,
-      },
-      layout: {
-        row: 4,
-      },
-    },
-    {
       id: 'model_widget_feature_001',
       widgetType: 'feature-importance',
       name: 'Feature Importance',
@@ -220,6 +195,36 @@ export const mockModelWidgetsData: ModelWidgetsResponse = {
       },
       layout: {
         row: 6,
+      },
+    },
+    {
+      id: 'model_widget_description_001',
+      widgetType: 'description',
+      name: 'Model Description',
+      config: {
+        virtualPin: 'MP_5',
+        title: 'Model Overview',
+        description: `## Model Overview
+
+This model detects anomalies from sensor telemetry using a supervised learning approach.
+
+### Key points
+- Trained on multi-sensor time-series data
+- Validated with cross-validation, achieved high F1 score
+
+### Usage
+Provide device sensor streams to the model endpoint. The widget shows an overview and important notes.
+
+### Notes
+- Retrain periodically with new labeled data
+- Watch out for data drift and feature distribution changes
+`,
+      },
+      size: {
+        cols: 4,
+      },
+      layout: {
+        row: 7,
       },
     },
   ],

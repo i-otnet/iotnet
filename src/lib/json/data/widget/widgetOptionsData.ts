@@ -67,12 +67,6 @@ export const MODEL_WIDGET_OPTIONS: WidgetOption[] = [
     icon: 'Grid3X3',
   },
   {
-    id: 'roc-curve',
-    title: 'ROC Curve',
-    description: 'Model classification performance curve',
-    icon: 'TrendingUp',
-  },
-  {
     id: 'feature-importance',
     title: 'Feature Importance',
     description: 'Top contributing features in predictions',
@@ -83,6 +77,13 @@ export const MODEL_WIDGET_OPTIONS: WidgetOption[] = [
     title: 'Prediction Output',
     description: 'Display model predictions and confidence scores',
     icon: 'Brain',
+  },
+  {
+    id: 'description',
+    title: 'Description',
+    description:
+      'Display a markdown-formatted description or notes about the model',
+    icon: 'FileText',
   },
 ]
 
