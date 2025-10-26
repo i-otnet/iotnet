@@ -94,7 +94,7 @@ const EditAutomationBuilder = forwardRef<
   const [actionType, setActionType] = useState('Turn On')
   const [actionValue, setActionValue] = useState('')
 
-  // State untuk different trigger types
+  // State for different trigger types
   const [timeOfDay, setTimeOfDay] = useState('08:00')
   const [timezone, setTimezone] = useState('UTC')
   const [eventType, setEventType] = useState('device-online')
@@ -177,7 +177,7 @@ const EditAutomationBuilder = forwardRef<
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[var(--radix-dropdown-menu-trigger-width)]"
+            className="w-(--radix-dropdown-menu-trigger-width)"
             align="start"
           >
             {TRIGGER_TYPES.map((type: string) => (

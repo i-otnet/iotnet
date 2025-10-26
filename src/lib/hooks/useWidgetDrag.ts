@@ -59,7 +59,7 @@ export function useWidgetDrag({
       const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
       const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
 
-      // Simpan posisi start container
+      // Save container start position
       const rect = containerElement.getBoundingClientRect()
 
       // Start holding timer
@@ -67,7 +67,7 @@ export function useWidgetDrag({
         if (dragRef.current) {
           dragRef.current.isHeld = true
           setIsDragging(true)
-          // Set drag offset dan size ke posisi container saat drag mulai
+          // Set drag offset and size to the container's position when drag starts
           setDragOffset({
             x: dragRef.current.containerStartX,
             y: dragRef.current.containerStartY,
@@ -111,12 +111,12 @@ export function useWidgetDrag({
       dragRef.current.currentX = clientX
       dragRef.current.currentY = clientY
 
-      // Jika belum di-hold, check jika gerakan melebihi MIN_DRAG_DISTANCE (cancel hold)
+      // If not yet held, check if movement exceeds MIN_DRAG_DISTANCE (cancel hold)
       if (!dragRef.current.isHeld) {
         const deltaX = Math.abs(clientX - dragRef.current.startX)
         const deltaY = Math.abs(clientY - dragRef.current.startY)
 
-        // Jika gerakan terlalu jauh, cancel drag
+        // If movement is too large, cancel drag
         if (
           deltaX > DRAG_CONFIG.MIN_DRAG_DISTANCE ||
           deltaY > DRAG_CONFIG.MIN_DRAG_DISTANCE
@@ -129,11 +129,11 @@ export function useWidgetDrag({
           setDragOffset({ x: 0, y: 0 })
           return
         }
-        // Belum di-hold, jadi jangan lakukan apa-apa
+        // Not held yet, do nothing
         return
       }
 
-      // Sudah di-hold, sekarang track gerakan
+      // Already held, now track movement
       const deltaX = clientX - dragRef.current.startX
       const deltaY = clientY - dragRef.current.startY
 
@@ -141,7 +141,7 @@ export function useWidgetDrag({
       const newOffsetX = dragRef.current.containerStartX + deltaX
       const newOffsetY = dragRef.current.containerStartY + deltaY
 
-      // Hanya update state jika offset berubah signifikan (avoid excessive re-renders)
+      // Only update state if the offset changed significantly (avoids excessive re-renders)
       if (
         dragRef.current.lastOffsetX !== newOffsetX ||
         dragRef.current.lastOffsetY !== newOffsetY
@@ -149,7 +149,7 @@ export function useWidgetDrag({
         dragRef.current.lastOffsetX = newOffsetX
         dragRef.current.lastOffsetY = newOffsetY
 
-        // Use requestAnimationFrame untuk smooth updates tanpa blocking
+        // Use requestAnimationFrame for smooth updates without blocking
         if (animationFrameRef.current) {
           cancelAnimationFrame(animationFrameRef.current)
         }
@@ -162,7 +162,7 @@ export function useWidgetDrag({
         })
       }
 
-      // Calculate grid position berdasarkan pixel movement
+      // Calculate grid position based on pixel movement
       const gridContainer = document.querySelector(
         '[style*="gridTemplateColumns"]'
       ) as HTMLElement
@@ -172,7 +172,7 @@ export function useWidgetDrag({
       const baseWidth = gridRect.width / gridColumns
       const baseHeight = baseWidth * 0.75
 
-      // Hitung pergerakan dalam grid cells
+      // Compute movement in grid cells
       const colMovement = Math.floor(deltaX / baseWidth)
       const rowMovement = Math.floor(deltaY / baseHeight)
 
@@ -192,13 +192,13 @@ export function useWidgetDrag({
   const handleDragEnd = useCallback(() => {
     if (!dragRef.current) return
 
-    // Cancel animation frame jika masih pending
+    // Cancel animation frame if still pending
     if (animationFrameRef.current) {
       cancelAnimationFrame(animationFrameRef.current)
       animationFrameRef.current = null
     }
 
-    // Cancel hold timer jika masih menunggu
+    // Cancel hold timer if still waiting
     if (dragRef.current.holdTimer) {
       clearTimeout(dragRef.current.holdTimer)
     }

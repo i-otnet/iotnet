@@ -1,11 +1,11 @@
 import { MouseEvent } from 'react'
 
 /**
- * Utility functions untuk modal components
+ * Utility functions for modal components
  */
 
 /**
- * Handle backdrop click untuk custom modals
+ * Handle backdrop click for custom modals
  */
 export const handleBackdropClick = (
   e: MouseEvent<HTMLDivElement>,
@@ -17,7 +17,7 @@ export const handleBackdropClick = (
 }
 
 /**
- * Get modal size classes berdasarkan size prop
+ * Get modal size classes based on the size prop
  */
 export const getModalSizeClasses = (
   size: 'sm' | 'md' | 'lg' | 'xl' | 'full' = 'md'
@@ -39,30 +39,30 @@ export const getModalSizeClasses = (
 }
 
 /**
- * Base styles untuk custom modal backdrop
+ * Base styles for custom modal backdrop
  */
 export const MODAL_BACKDROP_CLASSES =
   'fixed inset-0 z-50 flex items-end sm:items-center justify-center'
 
 /**
- * Base styles untuk modal backdrop overlay
+ * Base styles for modal backdrop overlay
  */
 export const MODAL_OVERLAY_CLASSES = 'fixed inset-0 bg-black/50'
 
 /**
- * Base styles untuk modal container
+ * Base styles for modal container
  */
 export const MODAL_CONTAINER_BASE_CLASSES =
   'relative bg-background rounded-t-lg sm:rounded-lg w-full max-h-[80vh] overflow-y-auto shadow-lg'
 
 /**
- * Base styles untuk modal header
+ * Base styles for modal header
  */
 export const MODAL_HEADER_CLASSES =
   'sticky top-0 bg-background border-b p-4 flex items-center justify-between'
 
 /**
- * Base styles untuk modal footer
+ * Base styles for modal footer
  */
 export const MODAL_FOOTER_CLASSES =
   'sticky bottom-0 bg-background border-t p-4 flex gap-2'

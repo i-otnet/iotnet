@@ -8,7 +8,6 @@ import FeatureImportanceWidget from '@/components/modules/widgets/widgetModels/f
 import PredictionOutputWidget from '@/components/modules/widgets/widgetModels/predictionOutputWidget'
 import DescriptionWidget from '@/components/modules/widgets/widgetModels/descriptionWidget'
 import { WidgetOption } from '@/lib/json/data/widget/widgetOptionsData'
-import type { ModelChartPin } from '@/lib/json/data/widget/modelWidgetsMockData'
 import { mockModelWidgetsData } from '@/lib/json/data/widget/modelWidgetsMockData'
 import type { ModelMetrics } from '@/lib/json/data/widget/modelWidgetsMockData'
 import { useState, useRef, useEffect } from 'react'
@@ -25,7 +24,6 @@ import { useWidgetDrag, type WidgetPosition } from '@/lib/hooks/useWidgetDrag'
 
 interface ModelWidgetConfig {
   name: string
-  virtualPin: string | ModelChartPin[]
   unit?: string
   minValue?: number
   maxValue?: number
@@ -278,18 +276,13 @@ export default function ModelDetailWidget(props: ModelDetailWidgetProps) {
             />
 
             {/* Widget Header */}
-            <div className="pt-6 mb-4 pb-3 border-b border-border">
+            <div className="pt-6 pb-2 border-b border-border">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1">
                   <h3 className="text-base font-bold text-foreground">
                     {config.name || widgetData?.name || widget.title}
                   </h3>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Pin:{' '}
-                    {Array.isArray(config.virtualPin)
-                      ? config.virtualPin.map((p) => p.pin).join(', ')
-                      : config.virtualPin}
-                  </p>
+                  {/* virtualPin removed for model widgets */}
                 </div>
               </div>
             </div>
@@ -358,12 +351,7 @@ export default function ModelDetailWidget(props: ModelDetailWidgetProps) {
                   <h3 className="text-base font-bold text-foreground">
                     {config.name || widgetData?.name || widget.title}
                   </h3>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Pin:{' '}
-                    {Array.isArray(config.virtualPin)
-                      ? config.virtualPin.map((p) => p.pin).join(', ')
-                      : config.virtualPin}
-                  </p>
+                  {/* virtualPin removed for model widgets */}
                 </div>
                 <div className="px-2 py-1 bg-primary rounded text-xs font-semibold text-primary-foreground border border-primary">
                   {widget.title}

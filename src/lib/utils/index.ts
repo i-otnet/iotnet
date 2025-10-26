@@ -1,5 +1,5 @@
 /**
- * Central export untuk semua utility functions
+ * Central export for all utility functions
  */
 
 export * from './brokerUtils'

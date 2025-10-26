@@ -1,5 +1,5 @@
 /**
- * Utility functions untuk device-related logic
+ * Utility functions for device-related logic
  */
 
 export interface DeviceType {
@@ -9,7 +9,7 @@ export interface DeviceType {
 }
 
 /**
- * Filter device types berdasarkan search query
+ * Filter device types based on search query
  */
 export const filterDeviceTypes = (
   deviceTypes: DeviceType[],
@@ -29,12 +29,12 @@ export const filterDeviceTypes = (
  * Validate chip ID format
  */
 export const isValidChipId = (chipId: string): boolean => {
-  // Basic validation - dapat disesuaikan dengan format yang diinginkan
+  // Basic validation - can be adjusted to the desired format
   return chipId.length >= 8 && /^[a-zA-Z0-9]+$/.test(chipId)
 }
 
 /**
- * Format chip ID untuk display
+ * Format chip ID for display
  */
 export const formatChipId = (chipId: string): string => {
   // Format: XXXX-XXXX-XXXX
@@ -42,7 +42,7 @@ export const formatChipId = (chipId: string): string => {
 }
 
 /**
- * Get status badge variant berdasarkan device status
+ * Get status badge variant based on device status
  */
 export const getDeviceStatusVariant = (
   status: string
@@ -60,7 +60,7 @@ export const getDeviceStatusVariant = (
 }
 
 /**
- * Get status color untuk display
+ * Get status color for display
  */
 export const getDeviceStatusColor = (status: string): string => {
   switch (status.toLowerCase()) {

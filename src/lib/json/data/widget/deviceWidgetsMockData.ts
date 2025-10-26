@@ -1,7 +1,7 @@
 /**
- * Mock API response untuk device widgets
- * Simulasi fetch API untuk menampilkan widgets pada device detail page
- * Saat ini hanya berisi 1 widget: button
+ * Mock API response for device widgets
+ * Simulated API fetch to display widgets on the device detail page
+ * Currently contains 1 sample widget: button
  */
 
 export interface WidgetOption {
@@ -46,8 +46,8 @@ export interface DeviceWidgetsResponse {
 }
 
 /**
- * Mock data untuk device widgets
- * Berisi beberapa widget default yang ditampilkan pada device detail page
+ * Mock data for device widgets
+ * Contains several default widgets displayed on the device detail page
  */
 export const mockDeviceWidgetsData: DeviceWidgetsResponse = {
   success: true,

@@ -117,7 +117,7 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
             }}
           >
             {animated && percentage > 0 && percentage < 100 && (
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse" />
+              <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/30 to-transparent animate-pulse" />
             )}
           </div>
         </div>
@@ -128,7 +128,7 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
 
 ProgressBar.displayName = 'ProgressBar'
 
-// Hook untuk simulasi progress (opsional)
+// Hook to simulate progress (optional)
 export const useProgress = (duration: number = 3000) => {
   const [progress, setProgress] = React.useState(0)
   const [isLoading, setIsLoading] = React.useState(false)
@@ -144,7 +144,7 @@ export const useProgress = (duration: number = 3000) => {
           setIsLoading(false)
           return 100
         }
-        // Simulasi progress yang tidak linear (lebih realistis)
+        // Simulate non-linear progress (more realistic)
         const increment = Math.random() * 15 + 5
         return Math.min(prev + increment, 100)
       })

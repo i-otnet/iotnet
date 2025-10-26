@@ -5,18 +5,12 @@ export interface ModelWidgetOption {
   icon: string
 }
 
-export interface ModelChartPin {
-  pin: string
-  color: string
-  backgroundColor: string
-}
-
 export interface ModelWidgetData {
   id: string
   widgetType: ModelWidgetOption['id']
   name: string
   config: {
-    virtualPin: string | ModelChartPin[]
+    // virtualPin removed for model widgets; config holds widget-specific properties
     unit?: string
     minValue?: number
     maxValue?: number
@@ -64,9 +58,9 @@ export interface ModelWidgetsResponse {
 }
 
 /**
- * Mock data untuk model widgets
- * Berisi berbagai widget untuk menampilkan informasi dan metrik model
- * Hanya menggunakan widget types yang tersedia di MODEL_WIDGET_OPTIONS
+ * Mock data for model widgets
+ * Contains various widgets to display model information and metrics
+ * Only uses widget types available in MODEL_WIDGET_OPTIONS
  */
 export const mockModelWidgetsData: ModelWidgetsResponse = {
   success: true,
@@ -76,7 +70,6 @@ export const mockModelWidgetsData: ModelWidgetsResponse = {
       widgetType: 'statistics',
       name: 'Model Metrics',
       config: {
-        virtualPin: 'MP_0',
         unit: '%',
         minValue: 0,
         maxValue: 100,
@@ -100,23 +93,6 @@ export const mockModelWidgetsData: ModelWidgetsResponse = {
       widgetType: 'chart',
       name: 'Model Performance History',
       config: {
-        virtualPin: [
-          {
-            pin: 'ACCURACY',
-            color: '#3b82f6',
-            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-          },
-          {
-            pin: 'PRECISION',
-            color: '#10b981',
-            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-          },
-          {
-            pin: 'RECALL',
-            color: '#f59e0b',
-            backgroundColor: 'rgba(245, 158, 11, 0.1)',
-          },
-        ],
         unit: 'Score',
         chartData: [
           { label: 'Jan', accuracy: 0.93, precision: 0.91, recall: 0.95 },
@@ -136,7 +112,6 @@ export const mockModelWidgetsData: ModelWidgetsResponse = {
       widgetType: 'confusion-matrix',
       name: 'Confusion Matrix',
       config: {
-        virtualPin: 'MP_1',
         unit: 'Count',
         matrixData: {
           truePositive: 245,
@@ -158,7 +133,6 @@ export const mockModelWidgetsData: ModelWidgetsResponse = {
       widgetType: 'feature-importance',
       name: 'Feature Importance',
       config: {
-        virtualPin: 'MP_3',
         unit: 'Importance',
         features: [
           { name: 'Temperature', importance: 0.28 },
@@ -180,7 +154,6 @@ export const mockModelWidgetsData: ModelWidgetsResponse = {
       widgetType: 'prediction-output',
       name: 'Prediction Output',
       config: {
-        virtualPin: 'MP_4',
         unit: 'Confidence',
         currentValue: 0.92,
         mainPrediction: 'Anomaly Detected',
@@ -202,7 +175,6 @@ export const mockModelWidgetsData: ModelWidgetsResponse = {
       widgetType: 'description',
       name: 'Model Description',
       config: {
-        virtualPin: 'MP_5',
         title: 'Model Overview',
         description: `## Model Overview
 

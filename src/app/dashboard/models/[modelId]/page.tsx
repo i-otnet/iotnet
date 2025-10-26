@@ -23,9 +23,7 @@ interface SavedModelWidget {
   widget: WidgetOption
   config: {
     name: string
-    virtualPin:
-      | string
-      | Array<{ pin: string; color: string; backgroundColor: string }>
+    // virtualPin removed for model widgets
     unit?: string
     minValue?: number
     maxValue?: number
@@ -71,11 +69,11 @@ export default function ModelDetailPage({
             widget: widgetOption,
             config: {
               name: widgetData.name,
-              virtualPin: widgetData.config.virtualPin,
               unit: widgetData.config.unit,
               minValue: widgetData.config.minValue,
               maxValue: widgetData.config.maxValue,
               currentValue: widgetData.config.currentValue,
+              // virtualPin removed
             },
             size: widgetData.size
               ? { cols: widgetData.size.cols, rows: 1 }
@@ -124,13 +122,6 @@ export default function ModelDetailPage({
           <ModelDetailOverviewSection>
             <ModelDetailHeader modelName={model.name} modelType={model.type} />
 
-            {/* Connection Status - Full Width, Outside Grid */}
-            <div className="mb-6">
-              <ConnectionStatusCard
-                status={model.status as 'online' | 'offline'}
-              />
-            </div>
-
             {/* Model Widget Grid Section */}
             <ModelDetailGridSection>
               {widgets.map((w) => (
@@ -139,7 +130,6 @@ export default function ModelDetailPage({
                   widget={w.widget}
                   config={{
                     name: w.config.name,
-                    virtualPin: w.config.virtualPin,
                     unit: w.config.unit,
                     minValue: w.config.minValue,
                     maxValue: w.config.maxValue,

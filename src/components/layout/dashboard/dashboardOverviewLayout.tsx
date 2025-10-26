@@ -4,7 +4,7 @@ import React, { ReactNode } from 'react'
 
 interface DashboardOverviewLayoutProps {
   children?: ReactNode
-  // Props untuk 5 section layout
+  // Props for the 5-section layout
   dashboardOverview?: ReactNode
   quickAccess?: ReactNode
   systemStatus?: ReactNode
@@ -37,7 +37,7 @@ export default function DashboardOverviewLayout({
       {/* 5. Getting Started Container */}
       <div className="getting-started-section">{gettingStarted}</div>
 
-      {/* Default children container jika ada konten tambahan */}
+      {/* Default children container if there's additional content */}
       {children && <div className="additional-content">{children}</div>}
     </div>
   )
