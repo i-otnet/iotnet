@@ -7,7 +7,6 @@ import ModelDetailOverviewSection from '@/components/modules/dashboard/modelDeta
 import ModelDetailGridSection from '@/components/modules/dashboard/modelDetail/modelDetailGridSection'
 import ModelDetailHeader from '@/components/modules/dashboard/modelDetail/modelDetailHeader'
 import ModelDetailWidget from '@/components/modules/dashboard/modelDetail/modelDetailWidget'
-import ConnectionStatusCard from '@/components/shared/connectionStatusCard'
 import RedirectPage from '@/components/shared/redirectPage'
 import { mockModelsData } from '@/lib/json/data/model/modelsData'
 import { mockModelWidgetsData } from '@/lib/json/data/widget/modelWidgetsMockData'

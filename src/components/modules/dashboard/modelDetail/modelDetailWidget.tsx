@@ -28,6 +28,8 @@ interface ModelWidgetConfig {
   minValue?: number
   maxValue?: number
   currentValue?: boolean | number | string
+  title?: string
+  description?: string
   metrics?: ModelMetrics
   chartData?: Array<{
     label: string
@@ -135,8 +137,8 @@ export default function ModelDetailWidget(props: ModelDetailWidgetProps) {
       case 'description': {
         return (
           <DescriptionWidget
-            title={(config as any).title}
-            description={(config as any).description}
+            title={config.title}
+            description={config.description}
           />
         )
       }
