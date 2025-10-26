@@ -1,14 +1,8 @@
-/**
- * Mock API response untuk model widgets
- * Simulasi fetch API untuk menampilkan widgets pada model detail page
- * Berisi berbagai tipe widget untuk visualisasi data model
- */
-
 export interface ModelWidgetOption {
   id: string
   title: string
   description: string
-  icon: string // Icon name from lucide-react
+  icon: string
 }
 
 export interface ModelChartPin {
@@ -47,14 +41,13 @@ export interface ModelWidgetData {
     mainPrediction?: string
     mainConfidence?: number
     predictions?: { label: string; confidence: number }[]
-    [key: string]: any
+    [key: string]: unknown
   }
   size?: {
     cols: number
   }
   layout?: {
     row: number
-    col: number
   }
 }
 export interface ModelMetrics {
@@ -96,11 +89,10 @@ export const mockModelWidgetsData: ModelWidgetsResponse = {
         },
       },
       size: {
-        cols: 1,
+        cols: 4,
       },
       layout: {
         row: 1,
-        col: 1,
       },
     },
     {
@@ -133,11 +125,10 @@ export const mockModelWidgetsData: ModelWidgetsResponse = {
         ],
       },
       size: {
-        cols: 2,
+        cols: 4,
       },
       layout: {
-        row: 1,
-        col: 2,
+        row: 2,
       },
     },
     {
@@ -156,11 +147,10 @@ export const mockModelWidgetsData: ModelWidgetsResponse = {
         labels: ['Positive', 'Negative'],
       },
       size: {
-        cols: 1,
+        cols: 4,
       },
       layout: {
-        row: 2,
-        col: 1,
+        row: 3,
       },
     },
     {
@@ -182,11 +172,10 @@ export const mockModelWidgetsData: ModelWidgetsResponse = {
         ],
       },
       size: {
-        cols: 1,
+        cols: 4,
       },
       layout: {
-        row: 2,
-        col: 2,
+        row: 4,
       },
     },
     {
@@ -205,11 +194,10 @@ export const mockModelWidgetsData: ModelWidgetsResponse = {
         ],
       },
       size: {
-        cols: 2,
+        cols: 4,
       },
       layout: {
-        row: 2,
-        col: 3,
+        row: 5,
       },
     },
     {
@@ -228,11 +216,10 @@ export const mockModelWidgetsData: ModelWidgetsResponse = {
         ],
       },
       size: {
-        cols: 2,
+        cols: 4,
       },
       layout: {
-        row: 3,
-        col: 1,
+        row: 6,
       },
     },
   ],

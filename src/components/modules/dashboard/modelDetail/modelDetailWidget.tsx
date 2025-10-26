@@ -11,6 +11,17 @@ import { WidgetOption } from '@/lib/json/data/widget/widgetOptionsData'
 import type { ModelChartPin } from '@/lib/json/data/widget/modelWidgetsMockData'
 import { mockModelWidgetsData } from '@/lib/json/data/widget/modelWidgetsMockData'
 import type { ModelMetrics } from '@/lib/json/data/widget/modelWidgetsMockData'
+import { useState, useRef, useEffect } from 'react'
+import ResizeLineIndicator from '@/components/shared/resizeLineIndicator'
+import WidgetControls from '@/components/shared/widgetControls'
+import DragPlaceholder from '@/components/shared/dragPlaceholder'
+import {
+  getWidgetBorderStyle,
+  getWidgetResizeConstraints,
+  getWidgetDefaultSize,
+} from '@/lib/utils/widgetUtils'
+import { useWidgetResize, type WidgetSize } from '@/lib/hooks/useWidgetResize'
+import { useWidgetDrag, type WidgetPosition } from '@/lib/hooks/useWidgetDrag'
 
 interface ModelWidgetConfig {
   name: string
@@ -44,10 +55,34 @@ interface ModelWidgetConfig {
 interface ModelDetailWidgetProps {
   widget: WidgetOption
   config?: Partial<ModelWidgetConfig>
+  isEditing?: boolean
+  isSelected?: boolean
+  onSelect?: () => void
+  onEdit?: () => void
+  onDelete?: () => void
+  onSizeChange?: (size: WidgetSize) => void
+  onPositionChange?: (position: WidgetPosition) => void
+  initialSize?: WidgetSize
+  initialPosition?: { row: number; col: number }
 }
 
 export default function ModelDetailWidget(props: ModelDetailWidgetProps) {
-  const { widget, config: propsConfig } = props
+  const {
+    widget,
+    config: propsConfig,
+    isEditing = false,
+    isSelected = false,
+    onSelect,
+    onEdit,
+    onDelete,
+    onSizeChange,
+    onPositionChange,
+    initialSize,
+    initialPosition = { row: 1, col: 1 },
+  } = props
+
+  const [resizeLineX, setResizeLineX] = useState<number | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const widgetData = mockModelWidgetsData.data.find(
     (w) => w.widgetType === widget.id
@@ -111,47 +146,235 @@ export default function ModelDetailWidget(props: ModelDetailWidgetProps) {
     }
   }
 
+  // --- Resize & Drag setup ---
+  const constraints = getWidgetResizeConstraints(widget.id)
+  const defaultSize = getWidgetDefaultSize(widget.id, 'model')
+  const fixedRows = initialSize?.rows ?? 1
+
+  const {
+    isResizing,
+    handleResizeStart,
+    attachResizeListeners,
+    detachResizeListeners,
+  } = useWidgetResize({
+    initialSize: initialSize || { cols: defaultSize, rows: fixedRows },
+    minSize: { cols: constraints.minCols, rows: fixedRows },
+    maxSize: { cols: constraints.maxCols, rows: fixedRows },
+    gridColumns: 4,
+    onResize: (newSize) => {
+      onSizeChange?.({ cols: newSize.cols, rows: fixedRows })
+    },
+    onResizeMove: (clientX) => {
+      setResizeLineX(clientX)
+    },
+  })
+
+  const {
+    isDragging,
+    dragOffset,
+    dragSize,
+    handleDragStart,
+    attachDragListeners,
+    detachDragListeners,
+  } = useWidgetDrag({
+    initialPosition: { col: initialPosition.col, row: initialPosition.row },
+    gridColumns: 4,
+    onDrag: (newPosition) => {
+      onPositionChange?.(newPosition)
+    },
+  })
+
+  useEffect(() => {
+    if (isResizing) {
+      attachResizeListeners()
+      document.body.style.userSelect = 'none'
+      document.body.style.webkitUserSelect = 'none'
+      return () => {
+        detachResizeListeners()
+        document.body.style.userSelect = ''
+        document.body.style.webkitUserSelect = ''
+      }
+    } else {
+      setResizeLineX(null)
+    }
+  }, [isResizing, attachResizeListeners, detachResizeListeners])
+
+  useEffect(() => {
+    if (isDragging) {
+      attachDragListeners()
+      document.body.style.userSelect = 'none'
+      document.body.style.webkitUserSelect = 'none'
+      return () => {
+        detachDragListeners()
+        document.body.style.userSelect = ''
+        document.body.style.webkitUserSelect = ''
+      }
+    }
+  }, [isDragging, attachDragListeners, detachDragListeners])
+
+  const handleCardClick = () => {
+    if (isEditing && onSelect) {
+      onSelect()
+    }
+  }
+
+  const borderStyle = getWidgetBorderStyle(isEditing, isSelected)
+
   return (
-    <Card className="p-5 h-full flex flex-col border border-border shadow-md hover:shadow-lg transition-shadow">
-      {/* Widget Header */}
-      <div className="mb-4 pb-3 border-b border-border">
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex-1">
-            <h3 className="text-base font-bold text-foreground">
-              {config.name || widgetData?.name || widget.title}
-            </h3>
-            <p className="text-xs text-muted-foreground mt-1">
-              Pin:{' '}
-              {Array.isArray(config.virtualPin)
-                ? config.virtualPin.map((p) => p.pin).join(', ')
-                : config.virtualPin}
-            </p>
-          </div>
-          <div className="px-2 py-1 bg-primary rounded text-xs font-semibold text-primary-foreground border border-primary">
-            {widget.title}
-          </div>
-        </div>
+    <>
+      <div
+        ref={containerRef}
+        className={`relative transition-all duration-300 ease-out ${
+          isDragging ? 'opacity-100 z-0' : 'opacity-100 z-0'
+        }`}
+        style={{
+          gridColumn: `span 4`,
+          userSelect: isResizing ? 'none' : 'auto',
+          transform: 'translate(0, 0)',
+        }}
+        data-widget-container="true"
+      >
+        {isDragging ? (
+          <DragPlaceholder
+            name={config.name || widget.title}
+            isDragging={false}
+          />
+        ) : (
+          <Card
+            className={`p-5 relative ${borderStyle} h-full flex flex-col transition-shadow border border-border shadow-md hover:shadow-lg`}
+            onClick={handleCardClick}
+            onKeyDown={(e) => {
+              if (isEditing && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault()
+                handleCardClick()
+              }
+            }}
+            role={isEditing ? 'button' : undefined}
+            tabIndex={isEditing ? 0 : -1}
+          >
+            <WidgetControls
+              widgetId={widget.id}
+              isDragging={isDragging}
+              isSelected={isSelected}
+              isEditing={isEditing}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onDragStart={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                if (containerRef.current) {
+                  handleDragStart(e, containerRef.current)
+                }
+              }}
+              onResizeStart={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                const direction = 'se'
+                if (containerRef.current) {
+                  handleResizeStart(e, direction, containerRef.current)
+                }
+              }}
+            />
+
+            {/* Widget Header */}
+            <div className="pt-6 mb-4 pb-3 border-b border-border">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1">
+                  <h3 className="text-base font-bold text-foreground">
+                    {config.name || widgetData?.name || widget.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Pin:{' '}
+                    {Array.isArray(config.virtualPin)
+                      ? config.virtualPin.map((p) => p.pin).join(', ')
+                      : config.virtualPin}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Widget Content */}
+            <div className="flex-1 flex flex-col justify-start min-h-0">
+              {renderWidget()}
+            </div>
+
+            {/* Widget Footer */}
+            {config.currentValue !== undefined && (
+              <div className="mt-4 pt-3 border-t border-border">
+                <p className="text-xs text-muted-foreground font-medium">
+                  Last Value
+                </p>
+                <p className="text-lg font-bold text-primary mt-1">
+                  {config.currentValue}{' '}
+                  <span className="text-sm text-muted-foreground">
+                    {config.unit || ''}
+                  </span>
+                </p>
+              </div>
+            )}
+          </Card>
+        )}
       </div>
 
-      {/* Widget Content */}
-      <div className="flex-1 flex flex-col justify-start min-h-0">
-        {renderWidget()}
-      </div>
+      {/* Global Resize Line Indicator */}
+      <ResizeLineIndicator lineX={resizeLineX} isVisible={isResizing} />
 
-      {/* Widget Footer */}
-      {config.currentValue !== undefined && (
-        <div className="mt-4 pt-3 border-t border-border">
-          <p className="text-xs text-muted-foreground font-medium">
-            Last Value
-          </p>
-          <p className="text-lg font-bold text-primary mt-1">
-            {config.currentValue}{' '}
-            <span className="text-sm text-muted-foreground">
-              {config.unit || ''}
-            </span>
-          </p>
+      {/* Drag Overlay Ghost */}
+      {isDragging && dragSize.width > 0 && dragSize.height > 0 && (
+        <div
+          className="fixed pointer-events-none z-50"
+          style={{
+            left: `${dragOffset.x}px`,
+            top: `${dragOffset.y}px`,
+            width: `${dragSize.width}px`,
+            height: `${dragSize.height}px`,
+          }}
+        >
+          <Card
+            className={`p-5 relative ${borderStyle} shadow-lg ring-2 ring-primary opacity-80 h-full flex flex-col`}
+          >
+            <WidgetControls
+              widgetId={widget.id}
+              isDragging={isDragging}
+              isSelected={isSelected}
+              isEditing={isEditing}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onDragStart={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+              }}
+              onResizeStart={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+              }}
+            />
+
+            {/* Widget Header */}
+            <div className="pt-6 mb-4 pb-3 border-b border-border">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1">
+                  <h3 className="text-base font-bold text-foreground">
+                    {config.name || widgetData?.name || widget.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Pin:{' '}
+                    {Array.isArray(config.virtualPin)
+                      ? config.virtualPin.map((p) => p.pin).join(', ')
+                      : config.virtualPin}
+                  </p>
+                </div>
+                <div className="px-2 py-1 bg-primary rounded text-xs font-semibold text-primary-foreground border border-primary">
+                  {widget.title}
+                </div>
+              </div>
+            </div>
+
+            {/* Widget Content */}
+            <div className="flex-1 pointer-events-none">{renderWidget()}</div>
+          </Card>
         </div>
       )}
-    </Card>
+    </>
   )
 }
