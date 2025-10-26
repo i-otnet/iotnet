@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+iotnet — Web dashboard for IoT device management
 
-## Getting Started
+Overview
+This repository contains a Next.js web application designed to manage Internet of Things (IoT) devices and automation rules. The application provides a dashboard for monitoring devices, configuring automations, and administrating users.
 
-First, run the development server:
+Who this is for
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- End users: a web dashboard to view and control devices. For a ready-to-use experience, please visit the production site.
+- Developers and integrators: a codebase intended for extension, local testing, and deployment.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Live sites
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Production: https://i-ot.net/
+- Development / v2 (demo): https://iotunnel.my.id
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Quick start (for developers)
 
-## Learn More
+1. Install dependencies:
+   - npm: `npm install`
+   - or yarn: `yarn`
+   - or pnpm: `pnpm install`
+2. Start the development server:
+   - `npm run dev`
+3. Open your browser at: http://localhost:3000
 
-To learn more about Next.js, take a look at the following resources:
+Status
+This project is under active development. The repository represents a development snapshot and may change frequently. For a live experience, visit the production or demo links above.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+License
+This project is licensed under the MIT License. See the bundled `LICENSE` file for the full text.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Thank you for your interest in iotnet.
