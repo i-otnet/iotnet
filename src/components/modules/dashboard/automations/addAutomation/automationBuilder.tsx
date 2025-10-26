@@ -203,7 +203,7 @@ const AutomationBuilder = forwardRef<
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[var(--radix-dropdown-menu-trigger-width)]"
+            className="w-(--radix-dropdown-menu-trigger-width)"
             align="start"
           >
             {TRIGGER_TYPES.map((type: string) => (

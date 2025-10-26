@@ -20,25 +20,46 @@ export default function FeatureImportanceWidget({
   const maxImportance = Math.max(...topFeatures.map((f) => f.importance), 1)
 
   return (
-    <div className="w-full flex flex-col gap-3">
-      {topFeatures.map((feature, index) => (
-        <div key={`${feature.name}-${index}`} className="flex flex-col gap-1">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-700 font-medium">{feature.name}</span>
-            <span className="text-gray-600 text-xs">
-              {(feature.importance * 100).toFixed(1)}%
-            </span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+    <div className="w-full flex flex-col gap-4">
+      {/* Title */}
+      <div className="text-sm font-semibold text-foreground">
+        Top {Math.min(topN, features.length)} Features
+      </div>
+
+      {/* Feature Bars */}
+      <div className="flex flex-col gap-3">
+        {topFeatures.map((feature, index) => {
+          const percentage = (feature.importance / maxImportance) * 100
+          return (
             <div
-              className="bg-primary-500 h-full transition-all"
-              style={{
-                width: `${(feature.importance / maxImportance) * 100}%`,
-              }}
-            ></div>
-          </div>
-        </div>
-      ))}
+              key={`${feature.name}-${index}`}
+              className="bg-muted rounded-lg p-2 border border-border flex flex-col gap-1.5"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-muted-foreground">
+                  {index + 1}. {feature.name}
+                </span>
+                <span className="text-sm font-bold text-primary">
+                  {(feature.importance * 100).toFixed(1)}%
+                </span>
+              </div>
+              <div className="w-full bg-card rounded-full h-3 overflow-hidden shadow-sm border border-border">
+                <div
+                  className="h-full bg-primary transition-all duration-500"
+                  style={{
+                    width: `${percentage}%`,
+                  }}
+                ></div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Total Features Info */}
+      <div className="text-xs text-muted-foreground pt-2 border-t border-border">
+        Showing {Math.min(topN, features.length)} of {features.length} features
+      </div>
     </div>
   )
 }

@@ -6,9 +6,34 @@ import DashboardHeader from '@/components/modules/dashboard/header'
 import ModelDetailOverviewSection from '@/components/modules/dashboard/modelDetail/modelDetailOverviewSection'
 import ModelDetailGridSection from '@/components/modules/dashboard/modelDetail/modelDetailGridSection'
 import ModelDetailHeader from '@/components/modules/dashboard/modelDetail/modelDetailHeader'
+import ModelDetailWidget from '@/components/modules/dashboard/modelDetail/modelDetailWidget'
 import ConnectionStatusCard from '@/components/shared/connectionStatusCard'
 import RedirectPage from '@/components/shared/redirectPage'
 import { mockModelsData } from '@/lib/json/data/model/modelsData'
+import { mockModelWidgetsData } from '@/lib/json/data/widget/modelWidgetsMockData'
+import {
+  WidgetOption,
+  MODEL_WIDGET_OPTIONS,
+} from '@/lib/json/data/widget/widgetOptionsData'
+import type { WidgetSize } from '@/lib/hooks/useWidgetResize'
+import type { ModelWidgetData } from '@/lib/json/data/widget/modelWidgetsMockData'
+
+interface SavedModelWidget {
+  id: string
+  widget: WidgetOption
+  config: {
+    name: string
+    virtualPin:
+      | string
+      | Array<{ pin: string; color: string; backgroundColor: string }>
+    unit?: string
+    minValue?: number
+    maxValue?: number
+    currentValue?: boolean | number | string
+  }
+  size?: WidgetSize
+  layout?: ModelWidgetData['layout']
+}
 
 export default function ModelDetailPage({
   params,
@@ -20,11 +45,48 @@ export default function ModelDetailPage({
     (m) => m.id === parseInt(modelId)
   )
 
+  const [widgets, setWidgets] = useState<SavedModelWidget[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     // Simulate data fetching with delay for redirect effect
     const timer = setTimeout(() => {
+      // Load widgets from mock data after model is loaded
+      if (
+        mockModelWidgetsData.success &&
+        mockModelWidgetsData.data.length > 0
+      ) {
+        const loadedWidgets = mockModelWidgetsData.data.map((widgetData) => {
+          // Find the widget option from MODEL_WIDGET_OPTIONS
+          const widgetOption = MODEL_WIDGET_OPTIONS.find(
+            (w) => w.id === widgetData.widgetType
+          )
+
+          if (!widgetOption) {
+            throw new Error(`Widget type not found: ${widgetData.widgetType}`)
+          }
+
+          return {
+            id: widgetData.id,
+            widget: widgetOption,
+            config: {
+              name: widgetData.name,
+              virtualPin: widgetData.config.virtualPin,
+              unit: widgetData.config.unit,
+              minValue: widgetData.config.minValue,
+              maxValue: widgetData.config.maxValue,
+              currentValue: widgetData.config.currentValue,
+            },
+            size: widgetData.size
+              ? { cols: widgetData.size.cols, rows: 1 }
+              : undefined,
+            layout: widgetData.layout,
+          } as SavedModelWidget
+        })
+
+        setWidgets(loadedWidgets)
+      }
+
       setIsLoading(false)
     }, 1500)
 
@@ -71,7 +133,20 @@ export default function ModelDetailPage({
 
             {/* Model Widget Grid Section */}
             <ModelDetailGridSection>
-              {/* Widgets will be added here */}
+              {widgets.map((w) => (
+                <ModelDetailWidget
+                  key={w.id}
+                  widget={w.widget}
+                  config={{
+                    name: w.config.name,
+                    virtualPin: w.config.virtualPin,
+                    unit: w.config.unit,
+                    minValue: w.config.minValue,
+                    maxValue: w.config.maxValue,
+                    currentValue: w.config.currentValue,
+                  }}
+                />
+              ))}
             </ModelDetailGridSection>
           </ModelDetailOverviewSection>
         </div>

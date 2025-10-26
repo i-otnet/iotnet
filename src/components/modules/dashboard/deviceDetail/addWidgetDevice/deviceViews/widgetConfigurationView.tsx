@@ -171,7 +171,7 @@ const WidgetConfigurationView = forwardRef<
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              className="w-[var(--radix-dropdown-menu-trigger-width)] max-h-64 overflow-y-auto"
+              className="w-(--radix-dropdown-menu-trigger-width) max-h-64 overflow-y-auto"
               align="start"
             >
               {virtualPinsResponse.data.virtualPins.map((pin) => (
@@ -250,7 +250,7 @@ const WidgetConfigurationView = forwardRef<
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              className="w-[var(--radix-dropdown-menu-trigger-width)] max-h-64 overflow-y-auto"
+              className="w-(--radix-dropdown-menu-trigger-width) max-h-64 overflow-y-auto"
               align="start"
             >
               {getAvailablePins().map((pin) => (
@@ -294,7 +294,7 @@ const WidgetConfigurationView = forwardRef<
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              className="w-[var(--radix-dropdown-menu-trigger-width)]"
+              className="w-(--radix-dropdown-menu-trigger-width)"
               align="start"
             >
               <DropdownMenuItem onClick={() => setButtonType('push')}>

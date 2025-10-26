@@ -41,6 +41,7 @@ export default function DragDropGrid({
         className="relative w-full grid transition-all duration-300 ease-out"
         style={{
           gridTemplateColumns: `repeat(${columns}, 1fr)`,
+          gridAutoRows: '300px',
           gap: `${gap}px`,
         }}
       >
