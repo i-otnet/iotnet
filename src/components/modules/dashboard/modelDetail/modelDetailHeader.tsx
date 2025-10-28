@@ -4,27 +4,37 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, Pencil, Plus, Check } from 'lucide-react'
+import type { WidgetOption } from '@/lib/json/data/widget/widgetOptionsData'
+import type { ModelWidgetConfiguration } from './addWidgetModel/modelViews/widgetConfigurationView'
 import AddWidgetModelModal from './addWidgetModel/addWidgetModelModal'
 
 interface ModelDetailHeaderProps {
   modelName: string
   modelType: string
+  isEditing?: boolean
+  onEditingChange?: (isEditing: boolean) => void
+  onWidgetSelect?: (
+    widget: WidgetOption,
+    config: ModelWidgetConfiguration
+  ) => void
 }
 
 export default function ModelDetailHeader({
   modelName,
   modelType,
+  isEditing = false,
+  onEditingChange,
+  onWidgetSelect,
 }: ModelDetailHeaderProps) {
   const router = useRouter()
-  const [isEditing, setIsEditing] = useState(false)
   const [showAddWidgetModal, setShowAddWidgetModal] = useState(false)
 
   const handleEdit = () => {
-    setIsEditing(true)
+    onEditingChange?.(true)
   }
 
   const handleDone = () => {
-    setIsEditing(false)
+    onEditingChange?.(false)
   }
 
   return (
@@ -74,6 +84,7 @@ export default function ModelDetailHeader({
       <AddWidgetModelModal
         open={showAddWidgetModal}
         onOpenChange={setShowAddWidgetModal}
+        onWidgetSelect={onWidgetSelect}
       />
     </div>
   )

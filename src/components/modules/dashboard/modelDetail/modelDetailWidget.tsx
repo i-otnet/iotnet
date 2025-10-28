@@ -242,7 +242,7 @@ export default function ModelDetailWidget(props: ModelDetailWidgetProps) {
           />
         ) : (
           <Card
-            className={`p-5 relative ${borderStyle} h-full flex flex-col transition-shadow border border-border shadow-md hover:shadow-lg`}
+            className={`p-5 relative ${borderStyle} h-full flex flex-col transition-shadow shadow-md hover:shadow-lg`}
             onClick={handleCardClick}
             onKeyDown={(e) => {
               if (isEditing && (e.key === 'Enter' || e.key === ' ')) {
@@ -258,6 +258,7 @@ export default function ModelDetailWidget(props: ModelDetailWidgetProps) {
               isDragging={isDragging}
               isSelected={isSelected}
               isEditing={isEditing}
+              showHandles={false}
               onEdit={onEdit}
               onDelete={onDelete}
               onDragStart={(e) => {
@@ -334,6 +335,7 @@ export default function ModelDetailWidget(props: ModelDetailWidgetProps) {
               isDragging={isDragging}
               isSelected={isSelected}
               isEditing={isEditing}
+              showHandles={false}
               onEdit={onEdit}
               onDelete={onDelete}
               onDragStart={(e) => {

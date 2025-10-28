@@ -17,6 +17,7 @@ interface WidgetControlsProps {
   onResizeStart: (
     e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
   ) => void
+  showHandles?: boolean
 }
 
 export default function WidgetControls({
@@ -28,6 +29,7 @@ export default function WidgetControls({
   onDelete,
   onDragStart,
   onResizeStart,
+  showHandles = true,
 }: WidgetControlsProps) {
   return (
     <>
@@ -39,7 +41,7 @@ export default function WidgetControls({
       </div>
 
       {/* Drag Handle Icon */}
-      {isEditing && isSelected && (
+      {showHandles && isEditing && isSelected && (
         <div
           className={`absolute top-2 left-1/2 -translate-x-1/2 z-50 cursor-move group ${
             isDragging ? 'animate-pulse' : ''
@@ -64,7 +66,7 @@ export default function WidgetControls({
       )}
 
       {/* Resize Handle Icon - Right Middle */}
-      {isEditing && isSelected && (
+      {showHandles && isEditing && isSelected && (
         <div
           className="absolute -right-2 top-1/2 -translate-y-1/2 z-50 cursor-ew-resize group select-none"
           onMouseDown={onResizeStart}
