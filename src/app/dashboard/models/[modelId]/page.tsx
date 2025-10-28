@@ -53,6 +53,41 @@ export default function ModelDetailPage({
   )
   const [isLoading, setIsLoading] = useState(true)
 
+  // Handler to add a new widget from the AddWidgetModelModal
+  const handleAddWidget = (
+    widget: WidgetOption,
+    config: {
+      widgetName: string
+      description?: string
+      unit?: string
+      minValue?: number
+      maxValue?: number
+      currentValue?: boolean | number | string
+      size?: number
+    }
+  ) => {
+    const newId = `w-${Date.now()}`
+    const defaultCols = getModelWidgetDefaultSize(widget.id)
+
+    const newWidget: SavedModelWidget = {
+      id: newId,
+      widget: widget,
+      config: {
+        name: config.widgetName || widget.title,
+        description: config.description,
+        unit: config.unit,
+        minValue: config.minValue,
+        maxValue: config.maxValue,
+        currentValue: config.currentValue,
+      },
+      size: { cols: config.size ?? defaultCols, rows: 1 },
+    }
+
+    setWidgets((prev) => [...prev, newWidget])
+    // select the newly added widget (useful when in editing mode)
+    setSelectedWidgetId(newId)
+  }
+
   useEffect(() => {
     // Simulate data fetching with delay for redirect effect
     const timer = setTimeout(() => {
@@ -193,6 +228,7 @@ export default function ModelDetailPage({
               modelType={model.type}
               isEditing={isEditing}
               onEditingChange={setIsEditing}
+              onWidgetSelect={handleAddWidget}
             />
 
             {/* Model Widget Grid Section */}
