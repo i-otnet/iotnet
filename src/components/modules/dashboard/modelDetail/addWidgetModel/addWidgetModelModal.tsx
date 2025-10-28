@@ -1,15 +1,19 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogDescription,
+  DialogHeader,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import WidgetModelSelectionView from './modelViews/widgetModelSelectionView'
-import WidgetModelDetailView from './modelViews/widgetModelDetailView'
+import WidgetConfigurationView, {
+  type ModelWidgetConfiguration,
+  type WidgetConfigurationHandle,
+} from './modelViews/widgetConfigurationView'
 import {
   MODEL_WIDGET_OPTIONS,
   WidgetOption,
@@ -18,10 +22,13 @@ import {
 interface AddWidgetModelModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  onWidgetSelect?: (widget: WidgetOption) => void
+  onWidgetSelect?: (
+    widget: WidgetOption,
+    config: ModelWidgetConfiguration
+  ) => void
 }
 
-type ViewType = 'selection' | 'detail'
+type ViewType = 'selection' | 'configuration'
 
 export default function AddWidgetModelModal({
   open,
@@ -30,50 +37,57 @@ export default function AddWidgetModelModal({
 }: AddWidgetModelModalProps) {
   const [currentView, setCurrentView] = useState<ViewType>('selection')
   const [selectedWidget, setSelectedWidget] = useState<WidgetOption | null>(
-    MODEL_WIDGET_OPTIONS[0] || null
+    null
   )
+  const [isValid, setIsValid] = useState(false)
+  const configRef = useRef<WidgetConfigurationHandle | null>(null)
 
   const handleSelectWidget = (widget: WidgetOption) => {
     setSelectedWidget(widget)
-    setCurrentView('detail')
+    setCurrentView('configuration')
   }
 
-  const handleBack = () => {
-    setCurrentView('selection')
-  }
-
-  const handleAddWidget = () => {
+  const handleConfigurationSave = (config: ModelWidgetConfiguration) => {
     if (selectedWidget && onWidgetSelect) {
-      onWidgetSelect(selectedWidget)
+      onWidgetSelect(selectedWidget, config)
     }
     handleClose()
   }
 
+  const handleBack = () => {
+    if (currentView === 'configuration') {
+      setCurrentView('selection')
+    }
+  }
+
+  const handleSaveFromFooter = () => {
+    if (configRef.current?.handleSave) {
+      configRef.current.handleSave()
+    }
+  }
+
   const handleClose = () => {
-    setSelectedWidget(MODEL_WIDGET_OPTIONS[0] || null)
+    setSelectedWidget(null)
     setCurrentView('selection')
     onOpenChange(false)
   }
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-5xl max-h-[80vh] flex flex-col p-0">
-        {/* Header - Fixed */}
-        <div className="shrink-0 border-b border-border bg-background px-6 py-4">
-          <DialogTitle className="text-xl font-bold">
+      <DialogContent className="sm:max-w-[600px] max-h-[85vh] bg-white dark:bg-slate-900/85 backdrop-blur-xl border-gray-200 dark:border-white/10 flex flex-col">
+        <DialogHeader className="shrink-0">
+          <DialogTitle>
             {currentView === 'selection'
               ? 'Add New Widget'
-              : `${selectedWidget?.title} Selected`}
+              : `Configure ${selectedWidget?.title}`}
           </DialogTitle>
-          <DialogDescription className="text-xs text-muted-foreground mt-1">
+          <DialogDescription>
             {currentView === 'selection'
               ? 'Select widget type to add to your dashboard'
-              : selectedWidget?.description}
+              : 'Set up your widget configuration'}
           </DialogDescription>
-        </div>
-
-        {/* Content - Scrollable */}
-        <div className="flex-1 overflow-y-auto min-h-0 px-6 py-4">
+        </DialogHeader>
+        <div className="flex-1 overflow-y-auto min-h-0 pr-2">
           {currentView === 'selection' && (
             <WidgetModelSelectionView
               widgets={MODEL_WIDGET_OPTIONS}
@@ -81,35 +95,29 @@ export default function AddWidgetModelModal({
               onSelectWidget={handleSelectWidget}
             />
           )}
-          {currentView === 'detail' && selectedWidget && (
-            <WidgetModelDetailView widget={selectedWidget} />
+          {currentView === 'configuration' && selectedWidget && (
+            <WidgetConfigurationView
+              ref={configRef}
+              widget={selectedWidget}
+              onConfigurationSave={handleConfigurationSave}
+              onValidationChange={setIsValid}
+            />
           )}
         </div>
-
-        {/* Footer - Fixed */}
-        <div className="shrink-0 flex gap-2 justify-end border-t border-border bg-background px-6 py-3">
-          {currentView === 'detail' && (
-            <Button variant="outline" onClick={handleBack} size="sm">
-              Back
-            </Button>
+        <div className="flex justify-end gap-2 mt-4 shrink-0">
+          {currentView === 'configuration' && (
+            <>
+              <Button variant="outline" onClick={handleBack}>
+                Back
+              </Button>
+              <Button onClick={handleSaveFromFooter} disabled={!isValid}>
+                Add Widget
+              </Button>
+            </>
           )}
           {currentView === 'selection' && (
-            <Button variant="outline" onClick={handleClose} size="sm">
+            <Button variant="outline" onClick={handleClose}>
               Cancel
-            </Button>
-          )}
-          {currentView === 'selection' && (
-            <Button
-              onClick={() => handleSelectWidget(selectedWidget!)}
-              disabled={!selectedWidget}
-              size="sm"
-            >
-              Continue
-            </Button>
-          )}
-          {currentView === 'detail' && (
-            <Button onClick={handleAddWidget} size="sm">
-              Add Widget
             </Button>
           )}
         </div>
