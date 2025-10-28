@@ -158,7 +158,7 @@ const AutomationBuilder = forwardRef<
       {/* Icon Selector */}
       <div className="space-y-2">
         <label className="text-sm font-semibold">Automation Icon</label>
-        <div className="grid grid-cols-8 gap-2">
+        <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
           {ICONS.map((iconName: string) => {
             const IconComponent = iconMap[iconName]
             return (
@@ -171,9 +171,16 @@ const AutomationBuilder = forwardRef<
                     : 'border-muted-foreground/20 hover:border-primary/50'
                 }`}
                 type="button"
+                aria-pressed={icon === iconName}
                 title={iconName}
               >
-                <IconComponent className="w-5 h-5 text-primary" />
+                {IconComponent ? (
+                  <IconComponent className="w-5 h-5 text-primary" aria-hidden />
+                ) : (
+                  <span className="text-sm font-medium text-muted-foreground">
+                    {iconName.charAt(0)}
+                  </span>
+                )}
               </button>
             )
           })}

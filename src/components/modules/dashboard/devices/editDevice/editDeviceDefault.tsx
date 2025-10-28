@@ -57,7 +57,7 @@ export default function EditDeviceDefault({ device }: EditDeviceDefaultProps) {
         {/* Icon Selector */}
         <div className="space-y-2">
           <Label>Device Icon</Label>
-          <div className="grid grid-cols-8 gap-2">
+          <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
             {iconOptions.map((option) => {
               const IconComponent = option.icon
               return (
@@ -66,13 +66,23 @@ export default function EditDeviceDefault({ device }: EditDeviceDefaultProps) {
                   onClick={() => setSelectedIcon(option.name)}
                   className={`flex items-center justify-center p-3 rounded-lg border-2 transition-all ${
                     selectedIcon === option.name
-                      ? 'border-primary bg-primary/10'
+                      ? 'border-primary'
                       : 'border-muted-foreground/20 hover:border-primary/50'
                   }`}
                   type="button"
+                  aria-pressed={selectedIcon === option.name}
                   title={option.name}
                 >
-                  <IconComponent className="w-5 h-5 text-primary" />
+                  {IconComponent ? (
+                    <IconComponent
+                      className="w-5 h-5 text-primary"
+                      aria-hidden
+                    />
+                  ) : (
+                    <span className="text-sm font-medium text-muted-foreground">
+                      {option.name.charAt(0)}
+                    </span>
+                  )}
                 </button>
               )
             })}

@@ -96,7 +96,7 @@ const QuickSetup = forwardRef<QuickSetupRef, QuickSetupProps>(
           {/* Icon Selector - First */}
           <div className="space-y-2">
             <Label>Device Icon</Label>
-            <div className="grid grid-cols-8 gap-2">
+            <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
               {iconOptions.map((option) => {
                 const IconComponent = option.icon
                 return (
@@ -109,9 +109,19 @@ const QuickSetup = forwardRef<QuickSetupRef, QuickSetupProps>(
                         : 'border-muted-foreground/20 hover:border-primary/50'
                     }`}
                     type="button"
+                    aria-pressed={deviceIcon === option.name}
                     title={option.name}
                   >
-                    <IconComponent className="w-5 h-5 text-primary" />
+                    {IconComponent ? (
+                      <IconComponent
+                        className="w-5 h-5 text-primary"
+                        aria-hidden
+                      />
+                    ) : (
+                      <span className="text-sm font-medium text-muted-foreground">
+                        {option.name.charAt(0)}
+                      </span>
+                    )}
                   </button>
                 )
               })}

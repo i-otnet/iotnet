@@ -38,46 +38,60 @@ export default function ModelDetailHeader({
   }
 
   return (
-    <div className="flex items-center justify-between gap-6">
-      <div className="flex items-center gap-4">
+    // Mobile-first: keep title and controls side-by-side, truncate long names
+    <div className="flex items-center justify-between gap-3 w-full">
+      <div className="flex items-center gap-3 min-w-0 flex-1">
         <Button
           variant="ghost"
           size="icon"
           onClick={() => router.back()}
           className="h-10 w-10 shrink-0"
+          aria-label="Back"
         >
           <ChevronLeft className="h-5 w-5" />
         </Button>
-        <div>
-          <h1 className="text-3xl font-bold">{modelName}</h1>
-          <p className="text-sm text-muted-foreground mt-1">{modelType}</p>
+        <div className="min-w-0">
+          <h1 className="text-lg sm:text-2xl md:text-3xl font-bold truncate">
+            {modelName}
+          </h1>
+          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 truncate">
+            {modelType}
+          </p>
         </div>
       </div>
-      <div className="flex gap-3">
+      <div className="flex gap-2 items-center shrink-0">
         {isEditing ? (
           <>
             <Button
-              size="lg"
+              size="sm"
               variant="default"
               onClick={() => setShowAddWidgetModal(true)}
+              className="flex items-center whitespace-nowrap px-3 py-2"
+              aria-label="Add Widget"
             >
-              <Plus className="h-5 w-5 mr-2" />
-              Add Widget
+              <Plus className="h-5 w-5" />
+              <span className="ml-2 hidden sm:inline">Add Widget</span>
             </Button>
             <Button
-              size="lg"
+              size="sm"
               variant="outline"
               onClick={handleDone}
-              className="border-2 border-primary text-primary hover:bg-primary/5"
+              className="border-2 border-primary text-primary hover:bg-primary/5 flex items-center whitespace-nowrap px-3 py-2"
+              aria-label="Done editing"
             >
-              <Check className="h-5 w-5 mr-2 text-primary" />
-              Done
+              <Check className="h-5 w-5 text-primary" />
+              <span className="ml-2 hidden sm:inline">Done</span>
             </Button>
           </>
         ) : (
-          <Button size="lg" onClick={handleEdit}>
-            <Pencil className="h-5 w-5 mr-2" />
-            Edit
+          <Button
+            size="sm"
+            onClick={handleEdit}
+            className="flex items-center px-3 py-2"
+            aria-label="Edit"
+          >
+            <Pencil className="h-5 w-5" />
+            <span className="ml-2 hidden sm:inline">Edit</span>
           </Button>
         )}
       </div>
