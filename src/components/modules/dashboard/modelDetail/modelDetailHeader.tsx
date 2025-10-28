@@ -9,22 +9,25 @@ import AddWidgetModelModal from './addWidgetModel/addWidgetModelModal'
 interface ModelDetailHeaderProps {
   modelName: string
   modelType: string
+  isEditing?: boolean
+  onEditingChange?: (isEditing: boolean) => void
 }
 
 export default function ModelDetailHeader({
   modelName,
   modelType,
+  isEditing = false,
+  onEditingChange,
 }: ModelDetailHeaderProps) {
   const router = useRouter()
-  const [isEditing, setIsEditing] = useState(false)
   const [showAddWidgetModal, setShowAddWidgetModal] = useState(false)
 
   const handleEdit = () => {
-    setIsEditing(true)
+    onEditingChange?.(true)
   }
 
   const handleDone = () => {
-    setIsEditing(false)
+    onEditingChange?.(false)
   }
 
   return (

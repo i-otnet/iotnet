@@ -43,6 +43,11 @@ export default function ModelDetailPage({
   )
 
   const [widgets, setWidgets] = useState<SavedModelWidget[]>([])
+  const [isEditing, setIsEditing] = useState(false)
+  const [selectedWidgetId, setSelectedWidgetId] = useState<string | null>(null)
+  const [editingWidget, setEditingWidget] = useState<SavedModelWidget | null>(
+    null
+  )
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -90,6 +95,40 @@ export default function ModelDetailPage({
     return () => clearTimeout(timer)
   }, [modelId])
 
+  const handleDeleteWidget = (widgetId: string) => {
+    setWidgets((prev) => prev.filter((w) => w.id !== widgetId))
+    setSelectedWidgetId((prev) => (prev === widgetId ? null : prev))
+  }
+
+  const handleEditWidget = (widgetId: string) => {
+    const widgetToEdit = widgets.find((w) => w.id === widgetId)
+    if (widgetToEdit) {
+      setEditingWidget(widgetToEdit)
+    }
+  }
+
+  // Handle clicking outside widget to deselect (same behavior as device page)
+  useEffect(() => {
+    if (!isEditing) {
+      setSelectedWidgetId(null)
+      return
+    }
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      // Check if click is on a widget container or button
+      const isWidgetClick = target.closest('[data-widget-container]')
+      if (!isWidgetClick) {
+        setSelectedWidgetId(null)
+      }
+    }
+
+    document.addEventListener('click', handleClickOutside)
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [isEditing])
+
   if (isLoading) {
     return (
       <RedirectPage
@@ -119,11 +158,16 @@ export default function ModelDetailPage({
       <main className="flex-1 p-4 md:p-6 overflow-y-auto bg-muted/30">
         <div className="w-full mx-auto max-w-7xl">
           <ModelDetailOverviewSection>
-            <ModelDetailHeader modelName={model.name} modelType={model.type} />
+            <ModelDetailHeader
+              modelName={model.name}
+              modelType={model.type}
+              isEditing={isEditing}
+              onEditingChange={setIsEditing}
+            />
 
             {/* Model Widget Grid Section */}
             <ModelDetailGridSection>
-              {widgets.map((w) => (
+              {widgets.map((w, index) => (
                 <ModelDetailWidget
                   key={w.id}
                   widget={w.widget}
@@ -134,6 +178,28 @@ export default function ModelDetailPage({
                     maxValue: w.config.maxValue,
                     currentValue: w.config.currentValue,
                   }}
+                  isEditing={isEditing}
+                  isSelected={selectedWidgetId === w.id}
+                  onSelect={() => setSelectedWidgetId(w.id)}
+                  onEdit={() => handleEditWidget(w.id)}
+                  onDelete={() => handleDeleteWidget(w.id)}
+                  onSizeChange={(size) => {
+                    setWidgets((prev) =>
+                      prev.map((item) =>
+                        item.id === w.id ? { ...item, size } : item
+                      )
+                    )
+                  }}
+                  onPositionChange={() => {}}
+                  initialSize={w.size}
+                  initialPosition={
+                    w.layout
+                      ? {
+                          row: (w.layout as any).row,
+                          col: (w.layout as any).col ?? 1,
+                        }
+                      : undefined
+                  }
                 />
               ))}
             </ModelDetailGridSection>
