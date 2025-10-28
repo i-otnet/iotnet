@@ -14,6 +14,8 @@ import {
   WidgetOption,
   MODEL_WIDGET_OPTIONS,
 } from '@/lib/json/data/widget/widgetOptionsData'
+import EditWidgetModelModal from '@/components/modules/dashboard/modelDetail/editWidgetModel/editWidgetModelModal'
+import { getModelWidgetDefaultSize } from '@/lib/utils/widgetUtils'
 import type { WidgetSize } from '@/lib/hooks/useWidgetResize'
 import type { ModelWidgetData } from '@/lib/json/data/widget/modelWidgetsMockData'
 
@@ -22,6 +24,7 @@ interface SavedModelWidget {
   widget: WidgetOption
   config: {
     name: string
+    description?: string
     // virtualPin removed for model widgets
     unit?: string
     minValue?: number
@@ -107,6 +110,33 @@ export default function ModelDetailPage({
     }
   }
 
+  const handleSaveEditedWidget = (config: {
+    widgetName: string
+    description?: string
+    size: number
+  }) => {
+    if (!editingWidget) return
+
+    setWidgets((prev) =>
+      prev.map((w) =>
+        w.id === editingWidget.id
+          ? {
+              ...w,
+              config: {
+                ...w.config,
+                name: config.widgetName,
+                // store description on config if applicable
+                description: config.description,
+              },
+              size: { cols: config.size, rows: w.size?.rows ?? 1 },
+            }
+          : w
+      )
+    )
+
+    setEditingWidget(null)
+  }
+
   // Handle clicking outside widget to deselect (same behavior as device page)
   useEffect(() => {
     if (!isEditing) {
@@ -167,7 +197,7 @@ export default function ModelDetailPage({
 
             {/* Model Widget Grid Section */}
             <ModelDetailGridSection>
-              {widgets.map((w, index) => (
+              {widgets.map((w) => (
                 <ModelDetailWidget
                   key={w.id}
                   widget={w.widget}
@@ -195,14 +225,32 @@ export default function ModelDetailPage({
                   initialPosition={
                     w.layout
                       ? {
-                          row: (w.layout as any).row,
-                          col: (w.layout as any).col ?? 1,
+                          row: w.layout.row,
+                          col: (w.layout as { col?: number }).col ?? 1,
                         }
                       : undefined
                   }
                 />
               ))}
             </ModelDetailGridSection>
+            {/* Edit Widget Modal (prefill from selected widget) */}
+            {editingWidget && (
+              <EditWidgetModelModal
+                open={!!editingWidget}
+                onOpenChange={(open) => {
+                  if (!open) setEditingWidget(null)
+                }}
+                widget={editingWidget.widget}
+                config={{
+                  widgetName: editingWidget.config.name || '',
+                  description: editingWidget.config.description || '',
+                  size:
+                    editingWidget.size?.cols ??
+                    getModelWidgetDefaultSize(editingWidget.widget.id),
+                }}
+                onConfigurationSave={handleSaveEditedWidget}
+              />
+            )}
           </ModelDetailOverviewSection>
         </div>
       </main>
