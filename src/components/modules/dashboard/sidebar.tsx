@@ -113,6 +113,7 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
           isMobile && !isOpen && '-translate-x-full',
           'lg:translate-x-0'
         )}
+        style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
       >
         {/* Header */}
         <div className="p-6 border-b border-sidebar-border shrink-0">
