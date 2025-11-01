@@ -11,7 +11,7 @@ Who this is for
 Live sites
 
 - Production: https://i-ot.net/
-- Development / v2 (demo): https://iotunnel.my.id
+- Development / v2 (demo): https://app.iotunnel.my.id
 
 Quick start (for developers)
 
