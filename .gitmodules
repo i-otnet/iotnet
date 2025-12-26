@@ -1,6 +1,0 @@
-[submodule "EMQX-Auth-Service"]
-	path = EMQX-Auth-Service
-	url = https://github.com/i-otnet/EMQX-Auth-Service.git
-[submodule "Multitenant-User-Management-Service"]
-	path = Multitenant-User-Management-Service
-	url = https://github.com/i-otnet/Multitenant-User-Management-Service.git
