@@ -1,0 +1,6 @@
+[submodule "EMQX-Auth-Service"]
+	path = EMQX-Auth-Service
+	url = https://github.com/farismnrr/EMQX-Auth-Service.git
+[submodule "Multitenant-User-Management-Service"]
+	path = Multitenant-User-Management-Service
+	url = https://github.com/farismnrr/Multitenant-User-Management-Service.git
