@@ -4,3 +4,6 @@
 [submodule "Multitenant-User-Management-Service"]
 	path = Multitenant-User-Management-Service
 	url = https://github.com/farismnrr/Multitenant-User-Management-Service.git
+[submodule "IoTNet-Core"]
+	path = IoTNet-Core
+	url = https://github.com/i-otnet/IoTNet-Core
