@@ -13,6 +13,7 @@ iotnet/
 ├─ IoTNet-UI/                          # Frontend UI (embedded)
 ├─ EMQX-Auth-Service/                  # Authentication & ACL service (submodule)
 ├─ Multitenant-User-Management-Service # User & tenant management (submodule)
+├─ IoTNet-Core/                        # Core business logic (submodule)
 └─ README.md
 ```
 
@@ -42,6 +43,14 @@ Centralized service for user, tenant, role, and cross-organization access manage
 - **Type:** Git Submodule
 - **Responsibilities:** User provisioning, tenant isolation, role-based access control, multi-tenant governance
 - **Technology Stack:** Rust - Actix
+
+### ⚙️ IoTNet Core
+Core business logic and device management service.
+
+- **Repository:** https://github.com/i-otnet/IoTNet-Core
+- **Type:** Git Submodule
+- **Responsibilities:** Device management, core business logic
+- **Technology Stack:** C# - .NET
 
 ---
 
