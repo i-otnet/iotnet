@@ -12,7 +12,17 @@ export default function SetupPage() {
 
   const handleThemeContinue = () => {
     setIsThemeModalOpen(false)
-    router.push('/auth/login')
+
+    // Generate fresh state and nonce on every click
+    const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+    const nonce = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+
+    // SSO redirect with required params
+    const ssoUrl = process.env.NEXT_PUBLIC_SSO_URL || 'http://localhost:5173'
+    const tenantId = process.env.NEXT_PUBLIC_TENANT_ID || ''
+    const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback`)
+
+    window.location.href = `${ssoUrl}/login?tenant_id=${tenantId}&redirect_uri=${redirectUri}&response_type=code&scope=openid&state=${state}&nonce=${nonce}`
   }
 
   const handleSetupProject = () => {

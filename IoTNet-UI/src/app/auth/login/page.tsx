@@ -1,63 +1,21 @@
 'use client'
 
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
+import { useEffect } from 'react'
 
 export default function LoginPage() {
-  const router = useRouter()
+  useEffect(() => {
+    // Only send redirect_uri and tenant_id to SSO
+    // SSO will generate fresh state/nonce on its side
+    const ssoUrl = process.env.NEXT_PUBLIC_SSO_URL || 'http://localhost:5173'
+    const tenantId = process.env.NEXT_PUBLIC_TENANT_ID || ''
+    const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback`)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    router.push('/dashboard')
-  }
+    window.location.href = `${ssoUrl}/login?tenant_id=${tenantId}&redirect_uri=${redirectUri}`
+  }, [])
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <Card className="w-full max-w-md shadow-sm border border-border/60">
-        <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl font-semibold tracking-tight">
-            Login
-          </CardTitle>
-          <p className="text-sm text-muted-foreground">
-            Enter your email and password to login
-          </p>
-        </CardHeader>
-
-        <CardContent>
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="Enter your email" />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-              />
-            </div>
-
-            <Button type="submit" className="w-full">
-              Login
-            </Button>
-          </form>
-
-          <p className="mt-6 text-center text-sm text-muted-foreground">
-            Don&apos;t have an account?{' '}
-            <Link
-              href="/auth/register"
-              className="text-primary hover:underline"
-            >
-              Register
-            </Link>
-          </p>
-        </CardContent>
-      </Card>
+    <div className="flex min-h-screen items-center justify-center bg-background">
+      <p className="text-muted-foreground">Redirecting to login...</p>
     </div>
   )
 }
