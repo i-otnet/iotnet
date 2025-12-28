@@ -5,12 +5,26 @@ import NotificationDropdown from '@/components/modules/dashboard/notifications/N
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Search, Menu } from 'lucide-react'
+import { useAuthStore } from '@/store/auth'
 
 interface DashboardHeaderProps {
   onMenuClick?: () => void
 }
 
 export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
+  const clearAuth = useAuthStore((state) => state.clearAuth)
+
+  const handleLogout = () => {
+    // Clear access token from store
+    clearAuth()
+
+    // Redirect to Backend SSO Logout (clears HTTP-only cookie)
+    // Then redirects back to our login page
+    const loginUrl = window.location.origin + '/auth/login'
+
+    // Using localhost:5500 as per backend config. 
+    window.location.href = `http://localhost:5500/auth/sso/logout?redirect_uri=${encodeURIComponent(loginUrl)}`
+  }
   return (
     <header className="bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 border-b border-border sticky top-0 z-40">
       <div className="flex h-16 items-center justify-between px-4 md:px-6 gap-4">
@@ -57,6 +71,7 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
           <Profile
             username="Admin User"
             // avatarUrl="/path/to/avatar.jpg" // Optional: uncomment and set avatar URL
+            onLogout={handleLogout}
           />
         </div>
       </div>
