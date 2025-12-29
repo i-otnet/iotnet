@@ -7,19 +7,27 @@ import { Button } from '@/components/ui/button'
 
 export default function SetupPage() {
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false)
-  const handleThemeContinue = () => {
+  const handleThemeContinue = async () => {
     setIsThemeModalOpen(false)
 
-    // Generate fresh state and nonce on every click
-    const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-    const nonce = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+    try {
+      const res = await fetch('/api/config')
+      const config = await res.json()
 
-    // SSO redirect with required params
-    const ssoUrl = process.env.NEXT_PUBLIC_SSO_URL
-    const tenantId = process.env.NEXT_PUBLIC_TENANT_ID
-    const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback`)
+      // Generate fresh state and nonce on every click
+      const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+      const nonce = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 
-    window.location.href = `${ssoUrl}/login?tenant_id=${tenantId}&redirect_uri=${redirectUri}&response_type=code&scope=openid&state=${state}&nonce=${nonce}`
+      // SSO redirect with required params
+      const ssoUrl = config.ssoUrl
+      const tenantId = config.tenantId
+      const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback`)
+
+      window.location.href = `${ssoUrl}/login?tenant_id=${tenantId}&redirect_uri=${redirectUri}&response_type=code&scope=openid&state=${state}&nonce=${nonce}`
+    } catch (error) {
+      console.error('Failed to load config:', error)
+      alert('Failed to connect to authentication server')
+    }
   }
 
   const handleSetupProject = () => {

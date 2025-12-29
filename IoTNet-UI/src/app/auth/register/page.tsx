@@ -1,21 +1,36 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function RegisterPage() {
-  useEffect(() => {
-    // Only send redirect_uri and tenant_id to SSO
-    // SSO will generate fresh state/nonce on its side
-    const ssoUrl = process.env.NEXT_PUBLIC_SSO_URL || 'http://localhost:5500'
-    const tenantId = process.env.NEXT_PUBLIC_TENANT_ID || ''
-    const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback`)
+  const [status, setStatus] = useState('Initializing...')
 
-    window.location.href = `${ssoUrl}/register?tenant_id=${tenantId}&redirect_uri=${redirectUri}`
+  useEffect(() => {
+    const initAuth = async () => {
+      try {
+        setStatus('Loading configuration...')
+        const res = await fetch('/api/config')
+        const config = await res.json()
+
+        const ssoUrl = config.ssoUrl
+        const tenantId = config.tenantId
+        const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback`)
+
+        setStatus('Redirecting to registration...')
+        window.location.href = `${ssoUrl}/register?tenant_id=${tenantId}&redirect_uri=${redirectUri}`
+      } catch (error) {
+        console.error('Failed to load config:', error)
+        setStatus('Error loading configuration')
+      }
+    }
+
+    initAuth()
   }, [])
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
-      <p className="text-muted-foreground">Redirecting to registration...</p>
+      <p className="text-muted-foreground">{status}</p>
     </div>
   )
 }
+

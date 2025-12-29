@@ -15,6 +15,7 @@ jobs:
       packages: write
 
     steps:
+      # - [x] Update Dockerfile & Workflows & Makefile <!-- id: 14 -->
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -48,8 +49,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
-          build-args: |
-            NEXT_PUBLIC_SSO_URL=${{ secrets.NEXT_PUBLIC_SSO_URL }}
-            NEXT_PUBLIC_TENANT_ID=${{ secrets.NEXT_PUBLIC_TENANT_ID }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

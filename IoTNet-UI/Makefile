@@ -61,10 +61,7 @@ build-docker:
 	@read -p "Enter Docker tag (default: latest): " tag; \
 	tag=$${tag:-latest}; \
 	echo "🐳 Building Docker image with tag: $$tag..."; \
-	export $$(grep -v '^#' .env 2>/dev/null | grep -v '^$$' | xargs); \
 	docker build \
-		--build-arg NEXT_PUBLIC_SSO_URL="$$NEXT_PUBLIC_SSO_URL" \
-		--build-arg NEXT_PUBLIC_TENANT_ID="$$NEXT_PUBLIC_TENANT_ID" \
 		-t $(DOCKER_IMAGE_NAME):$$tag -t $(GHCR_REPO):$$tag .; \
 	echo "✅ Image tagged as $(DOCKER_IMAGE_NAME):$$tag and $(GHCR_REPO):$$tag"
 
@@ -88,8 +85,6 @@ push-local:
 		echo "⚠️  No CR_PAT or GITHUB_TOKEN found. Skipping login (assuming already logged in)..."; \
 	fi; \
 	docker buildx build --platform linux/amd64,linux/arm64 \
-		--build-arg NEXT_PUBLIC_SSO_URL="$$NEXT_PUBLIC_SSO_URL" \
-		--build-arg NEXT_PUBLIC_TENANT_ID="$$NEXT_PUBLIC_TENANT_ID" \
 		-t $(GHCR_REPO):$$tag --push .; \
 	echo "✅ Image pushed to $(GHCR_REPO):$$tag"
 
