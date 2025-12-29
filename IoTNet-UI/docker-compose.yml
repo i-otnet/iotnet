@@ -1,0 +1,23 @@
+services:
+  iotnet-ui:
+    image: ghcr.io/i-otnet/iotnet:latest
+    container_name: iotnet-ui
+    ports:
+      - "3000:3000"
+    environment:
+      # SSO Configuration
+      NEXT_PUBLIC_SSO_URL: ${NEXT_PUBLIC_SSO_URL:-http://localhost:5500}
+      NEXT_PUBLIC_TENANT_ID: ${NEXT_PUBLIC_TENANT_ID}
+      
+      # Next.js Configuration
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: 1
+      PORT: 3000
+      HOSTNAME: "0.0.0.0"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s

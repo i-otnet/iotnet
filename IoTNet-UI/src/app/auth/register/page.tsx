@@ -6,7 +6,7 @@ export default function RegisterPage() {
   useEffect(() => {
     // Only send redirect_uri and tenant_id to SSO
     // SSO will generate fresh state/nonce on its side
-    const ssoUrl = process.env.NEXT_PUBLIC_SSO_URL || 'http://localhost:5173'
+    const ssoUrl = process.env.NEXT_PUBLIC_SSO_URL || 'http://localhost:5500'
     const tenantId = process.env.NEXT_PUBLIC_TENANT_ID || ''
     const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback`)
 
