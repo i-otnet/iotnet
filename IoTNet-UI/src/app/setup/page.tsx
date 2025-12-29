@@ -1,15 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { Zap, Settings } from 'lucide-react'
 import { ThemeSetupModal } from '@/components/modules/ThemeSetup/themeSetupModal'
 import { Button } from '@/components/ui/button'
 
 export default function SetupPage() {
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false)
-  const router = useRouter()
-
   const handleThemeContinue = () => {
     setIsThemeModalOpen(false)
 
@@ -18,8 +15,8 @@ export default function SetupPage() {
     const nonce = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 
     // SSO redirect with required params
-    const ssoUrl = process.env.NEXT_PUBLIC_SSO_URL || 'http://localhost:5500'
-    const tenantId = process.env.NEXT_PUBLIC_TENANT_ID || ''
+    const ssoUrl = process.env.NEXT_PUBLIC_SSO_URL
+    const tenantId = process.env.NEXT_PUBLIC_TENANT_ID
     const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback`)
 
     window.location.href = `${ssoUrl}/login?tenant_id=${tenantId}&redirect_uri=${redirectUri}&response_type=code&scope=openid&state=${state}&nonce=${nonce}`

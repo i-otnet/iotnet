@@ -18,6 +18,11 @@ COPY . .
 
 # Build the application
 ENV NEXT_TELEMETRY_DISABLED=1
+
+# Accept build arguments for public env vars
+ARG NEXT_PUBLIC_SSO_URL
+ARG NEXT_PUBLIC_TENANT_ID
+    
 RUN npm run build
 
 # Production image, copy all the files and run next

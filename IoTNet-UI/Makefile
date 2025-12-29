@@ -61,7 +61,11 @@ build-docker:
 	@read -p "Enter Docker tag (default: latest): " tag; \
 	tag=$${tag:-latest}; \
 	echo "🐳 Building Docker image with tag: $$tag..."; \
-	docker build -t $(DOCKER_IMAGE_NAME):$$tag -t $(GHCR_REPO):$$tag .; \
+	export $$(grep -v '^#' .env 2>/dev/null | grep -v '^$$' | xargs); \
+	docker build \
+		--build-arg NEXT_PUBLIC_SSO_URL="$$NEXT_PUBLIC_SSO_URL" \
+		--build-arg NEXT_PUBLIC_TENANT_ID="$$NEXT_PUBLIC_TENANT_ID" \
+		-t $(DOCKER_IMAGE_NAME):$$tag -t $(GHCR_REPO):$$tag .; \
 	echo "✅ Image tagged as $(DOCKER_IMAGE_NAME):$$tag and $(GHCR_REPO):$$tag"
 
 # Run via Docker
@@ -76,22 +80,27 @@ push:
 	@read -p "Enter Docker tag to push (default: latest): " tag; \
 	tag=$${tag:-latest}; \
 	echo "🚀 Pushing to GHCR with multi-arch build (amd64, arm64) - tag: $$tag..."; \
-	export $$(grep -v '^#' .env.local 2>/dev/null | grep -v '^$$' | xargs); \
+	export $$(grep -v '^#' .env 2>/dev/null | grep -v '^$$' | xargs); \
 	if [ -n "$${CR_PAT}" ] || [ -n "$${GITHUB_TOKEN}" ]; then \
 		echo "🔐 Logging in to GHCR..."; \
 		echo "$${CR_PAT:-$$GITHUB_TOKEN}" | docker login ghcr.io -u farismnrr --password-stdin; \
 	else \
 		echo "⚠️  No CR_PAT or GITHUB_TOKEN found. Skipping login (assuming already logged in)..."; \
 	fi; \
-	docker buildx build --platform linux/amd64,linux/arm64 -t $(GHCR_REPO):$$tag --push .; \
+	docker buildx build --platform linux/amd64,linux/arm64 \
+		--build-arg NEXT_PUBLIC_SSO_URL="$$NEXT_PUBLIC_SSO_URL" \
+		--build-arg NEXT_PUBLIC_TENANT_ID="$$NEXT_PUBLIC_TENANT_ID" \
+		-t $(GHCR_REPO):$$tag --push .; \
 	echo "✅ Image pushed to $(GHCR_REPO):$$tag"
 
 # --- Docker Compose Configuration ---
 
 # Pull latest image
 pull-docker:
-	@echo "📥 Pulling latest Docker image..."
-	docker pull $(GHCR_REPO):$(DOCKER_TAG)
+	@read -p "Enter Docker tag to pull (default: latest): " tag; \
+	tag=$${tag:-latest}; \
+	echo "📥 Pulling Docker image $(GHCR_REPO):$$tag..."; \
+	docker pull $(GHCR_REPO):$$tag
 
 # Start Docker Compose (pulls first)
 start-compose: pull-docker
