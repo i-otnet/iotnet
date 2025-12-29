@@ -17,8 +17,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
+
+      - name: Checkout Multitenant-User-Management-Service submodule
+        run: |
+          git submodule update --init --depth 1 Multitenant-User-Management-Service
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
