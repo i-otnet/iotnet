@@ -19,7 +19,6 @@ export default function RegisterPage() {
         setStatus('Redirecting to registration...')
         window.location.href = `${ssoUrl}/register?tenant_id=${tenantId}&redirect_uri=${redirectUri}`
       } catch (error) {
-        console.error('Failed to load config:', error)
         setStatus('Error loading configuration')
       }
     }

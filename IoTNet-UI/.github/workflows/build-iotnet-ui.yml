@@ -1,11 +1,11 @@
-name: Build Multitenant User Management (Manual)
+name: Build IoTNet UI (Manual)
 
 on:
   workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ghcr.io/farismnrr/user_auth_plugin
+  IMAGE_NAME: ghcr.io/i-otnet/iotnet
 
 jobs:
   build-and-push:
@@ -17,10 +17,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Checkout Multitenant-User-Management-Service submodule
-        run: |
-          git submodule update --init --depth 1 Multitenant-User-Management-Service
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -47,8 +43,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./Multitenant-User-Management-Service
-          file: ./Multitenant-User-Management-Service/Dockerfile
+          context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

@@ -25,7 +25,7 @@ export default function SetupPage() {
 
       window.location.href = `${ssoUrl}/login?tenant_id=${tenantId}&redirect_uri=${redirectUri}&response_type=code&scope=openid&state=${state}&nonce=${nonce}`
     } catch (error) {
-      console.error('Failed to load config:', error)
+      // console.error('Failed to load config:', error)
       alert('Failed to connect to authentication server')
     }
   }

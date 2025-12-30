@@ -19,7 +19,7 @@ export default function LoginPage() {
         setStatus('Redirecting to login...')
         window.location.href = `${ssoUrl}/login?tenant_id=${tenantId}&redirect_uri=${redirectUri}`
       } catch (error) {
-        console.error('Failed to load config:', error)
+        // console.error('Failed to load config:', error)
         setStatus('Error loading configuration')
       }
     }

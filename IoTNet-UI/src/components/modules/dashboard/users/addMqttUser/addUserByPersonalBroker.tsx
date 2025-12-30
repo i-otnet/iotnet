@@ -50,7 +50,7 @@ export default function BrokerPersonalSetup() {
       setConnectionStatus('success')
     } catch (error) {
       setConnectionStatus('error')
-      console.error('Connection test failed:', error)
+      // console.error('Connection test failed:', error)
     } finally {
       setIsTestingConnection(false)
     }
