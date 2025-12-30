@@ -47,17 +47,20 @@ clean:
 	rm -rf .next node_modules
 	@echo "✅ Clean completed"
 
-# Kill process running on port 3000
+# Kill process on port 3000 - 3010
 kill:
-	@echo "🔪 Killing processes on port 3000..."
-	@lsof -ti:3000 | xargs -r kill -9 || echo "✅ No process running on port 3000"
+	@echo "🔪 Killing process on port 3000-3010..."
+	@lsof -ti:3000-3010 | xargs -r kill -9 || true
+	@echo "🔪 Killing Next.js processes..."
+	@pkill -f "next dev" || true
+	@pkill -f "next-server" || true
+	@echo "✅ Cleanup complete"
 
 # --- Docker Configuration ---
 DOCKER_IMAGE_NAME = iotnet
 GHCR_REPO = ghcr.io/i-otnet/iotnet
 
 # Build via Docker
-docker: build-docker
 build-docker:
 	@read -p "Enter Docker tag (default: latest): " tag; \
 	tag=$${tag:-latest}; \
