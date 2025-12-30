@@ -3,9 +3,9 @@
 
 version: 2
 updates:
-  # npm dependencies untuk Next.js
+  # npm dependencies untuk IoTNet-UI (Next.js)
   - package-ecosystem: "npm"
-    directory: "/"
+    directory: "/IoTNet-UI"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 10
