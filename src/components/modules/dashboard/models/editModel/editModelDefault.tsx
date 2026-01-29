@@ -45,7 +45,7 @@ export default function EditModelDefault({ model }: EditModelDefaultProps) {
         {/* Icon Selector */}
         <div className="space-y-2">
           <Label>Model Icon</Label>
-          <div className="grid grid-cols-8 gap-2">
+          <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
             {iconOptions.map((option) => {
               const IconComponent = option.icon
               return (
@@ -58,9 +58,19 @@ export default function EditModelDefault({ model }: EditModelDefaultProps) {
                       : 'border-muted-foreground/20 hover:border-primary/50'
                   }`}
                   type="button"
+                  aria-pressed={selectedIcon === option.name}
                   title={option.name}
                 >
-                  <IconComponent className="w-5 h-5 text-primary" />
+                  {IconComponent ? (
+                    <IconComponent
+                      className="w-5 h-5 text-primary"
+                      aria-hidden
+                    />
+                  ) : (
+                    <span className="text-sm font-medium text-muted-foreground">
+                      {option.name.charAt(0)}
+                    </span>
+                  )}
                 </button>
               )
             })}

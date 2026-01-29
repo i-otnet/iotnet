@@ -79,7 +79,7 @@ const AddModelByQuickSetup = forwardRef<
       {/* Icon Selector - First */}
       <div className="space-y-2">
         <Label>Model Icon</Label>
-        <div className="grid grid-cols-8 gap-2">
+        <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
           {iconOptions.map((option) => {
             const IconComponent = option.icon
             return (
@@ -92,9 +92,16 @@ const AddModelByQuickSetup = forwardRef<
                     : 'border-muted-foreground/20 hover:border-primary/50'
                 }`}
                 type="button"
+                aria-pressed={modelIcon === option.name}
                 title={option.name}
               >
-                <IconComponent className="w-5 h-5 text-primary" />
+                {IconComponent ? (
+                  <IconComponent className="w-5 h-5 text-primary" aria-hidden />
+                ) : (
+                  <span className="text-sm font-medium text-muted-foreground">
+                    {option.name.charAt(0)}
+                  </span>
+                )}
               </button>
             )
           })}
@@ -151,7 +158,7 @@ const AddModelByQuickSetup = forwardRef<
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[var(--radix-dropdown-menu-trigger-width)] p-2"
+            className="w-(--radix-dropdown-menu-trigger-width) p-2"
             align="start"
           >
             <div className="max-h-60 overflow-y-auto space-y-1">

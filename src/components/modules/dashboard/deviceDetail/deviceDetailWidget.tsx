@@ -75,6 +75,18 @@ export default function DeviceDetailWidget({
   const [resizeLineX, setResizeLineX] = useState<number | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
+  // Detect mobile viewport to adjust layout/controls
+  const [isMobile, setIsMobile] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false
+    return window.innerWidth < 640
+  })
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 640)
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
   const constraints = getWidgetResizeConstraints(widget.id)
   const defaultSize = getWidgetDefaultSize(widget.id, 'device')
 
@@ -282,7 +294,8 @@ export default function DeviceDetailWidget({
           isDragging ? 'opacity-100 z-0' : 'opacity-100 z-0'
         }`}
         style={{
-          gridColumn: `span ${size.cols}`,
+          // make widget full-width on mobile
+          gridColumn: isMobile ? '1 / -1' : `span ${size.cols}`,
           gridRow: `span ${size.rows}`,
           userSelect: isResizing ? 'none' : 'auto',
           transform: 'translate(0, 0)',
@@ -328,6 +341,8 @@ export default function DeviceDetailWidget({
                   handleResizeStart(e, direction, containerRef.current)
                 }
               }}
+              // hide resize handle on mobile but keep drag handle
+              showResize={!isMobile}
             />
 
             {/* Widget Content */}
@@ -381,6 +396,7 @@ export default function DeviceDetailWidget({
                 e.preventDefault()
                 e.stopPropagation()
               }}
+              showResize={!isMobile}
             />
 
             {/* Widget Content */}

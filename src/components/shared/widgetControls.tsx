@@ -18,6 +18,8 @@ interface WidgetControlsProps {
     e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
   ) => void
   showHandles?: boolean
+  /** When false, hide only the resize handle (keep drag handle) */
+  showResize?: boolean
 }
 
 export default function WidgetControls({
@@ -30,6 +32,7 @@ export default function WidgetControls({
   onDragStart,
   onResizeStart,
   showHandles = true,
+  showResize = true,
 }: WidgetControlsProps) {
   return (
     <>
@@ -66,7 +69,7 @@ export default function WidgetControls({
       )}
 
       {/* Resize Handle Icon - Right Middle */}
-      {showHandles && isEditing && isSelected && (
+      {showHandles && showResize && isEditing && isSelected && (
         <div
           className="absolute -right-2 top-1/2 -translate-y-1/2 z-50 cursor-ew-resize group select-none"
           onMouseDown={onResizeStart}
