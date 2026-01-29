@@ -4,30 +4,15 @@ import { useState } from 'react'
 import { Zap, Settings } from 'lucide-react'
 import { ThemeSetupModal } from '@/components/modules/ThemeSetup/themeSetupModal'
 import { Button } from '@/components/ui/button'
+import { useAuthStore } from '@/store/auth'
 
 export default function SetupPage() {
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false)
   const handleThemeContinue = async () => {
     setIsThemeModalOpen(false)
-
-    try {
-      const res = await fetch('/api/config')
-      const config = await res.json()
-
-      // Generate fresh state and nonce on every click
-      const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-      const nonce = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-
-      // SSO redirect with required params
-      const ssoUrl = config.ssoUrl
-      const tenantId = config.tenantId
-      const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback`)
-
-      window.location.href = `${ssoUrl}/login?tenant_id=${tenantId}&redirect_uri=${redirectUri}&response_type=code&scope=openid&state=${state}&nonce=${nonce}`
-    } catch (error) {
-      // console.error('Failed to load config:', error)
-      alert('Failed to connect to authentication server')
-    }
+    // Mock login and redirect to dashboard
+    useAuthStore.getState().setAccessToken('mock_access_token')
+    window.location.href = '/dashboard'
   }
 
   const handleSetupProject = () => {
@@ -106,14 +91,23 @@ export default function SetupPage() {
           </p>
         </div>
 
-        <div className="flex flex-col items-center space-y-4 mt-12">
+        <div className="flex flex-col items-center space-y-4 mt-12 w-full max-w-sm">
           <Button
             onClick={handleSetupProject}
             size="lg"
-            className="px-8 py-6 text-lg font-medium bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+            className="w-full px-8 py-6 text-lg font-medium bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
           >
             <Settings className="w-5 h-5 mr-2" />
-            Setup your project
+            Get Started
+          </Button>
+
+          <Button
+            onClick={() => window.location.href = '/auth/login'}
+            variant="outline"
+            size="lg"
+            className="w-full px-8 py-6 text-lg font-medium border-primary/20 hover:bg-primary/5 transition-all duration-200"
+          >
+            Login to Account
           </Button>
 
           <div className="flex items-center space-x-6 text-sm text-muted-foreground mt-8">

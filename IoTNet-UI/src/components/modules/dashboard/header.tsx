@@ -17,13 +17,8 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
   const handleLogout = () => {
     // Clear access token from store
     clearAuth()
-
-    // Redirect to Backend SSO Logout (clears HTTP-only cookie)
-    // Then redirects back to our login page
-    const loginUrl = window.location.origin + '/auth/login'
-
-    // Using localhost:5500 as per backend config. 
-    window.location.href = `http://localhost:5500/auth/sso/logout?redirect_uri=${encodeURIComponent(loginUrl)}`
+    // Redirect to login page
+    window.location.href = '/auth/login'
   }
   return (
     <header className="bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 border-b border-border sticky top-0 z-40">
