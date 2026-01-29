@@ -1,61 +1,32 @@
-# IoTNet
+iotnet — Web dashboard for IoT device management
 
-**IoTNet** is a *meta repository / aggregator* that combines multiple independent services into a unified IoT platform ecosystem.
+Overview
+This repository contains a Next.js web application designed to manage Internet of Things (IoT) devices and automation rules. The application provides a dashboard for monitoring devices, configuring automations, and administrating users.
 
-This repository is **NOT a monorepo**. Each core service is managed as a **separate repository** and referenced through Git Submodules.
+Who this is for
 
----
+- End users: a web dashboard to view and control devices. For a ready-to-use experience, please visit the production site.
+- Developers and integrators: a codebase intended for extension, local testing, and deployment.
 
-## 🧩 Repository Structure
+Live sites
 
-```
-iotnet/
-├─ IoTNet-UI/                          # Frontend UI (embedded)
-├─ EMQX-Auth-Service/                  # Authentication & ACL service (submodule)
-├─ Multitenant-User-Management-Service # User & tenant management (submodule)
-├─ IoTNet-Core/                        # Core business logic (submodule)
-└─ README.md
-```
+- Production: https://i-ot.net/
+- Development / v2 (demo): https://app.iotunnel.my.id
 
----
+Quick start (for developers)
 
-## 🔗 Service Components
+1. Install dependencies:
+   - npm: `npm install`
+   - or yarn: `yarn`
+   - or pnpm: `pnpm install`
+2. Start the development server:
+   - `npm run dev`
+3. Open your browser at: http://localhost:3000
 
-### 🖥️ IoTNet UI
-Primary frontend application for the IoTNet platform.
+Status
+This project is under active development. The repository represents a development snapshot and may change frequently. For a live experience, visit the production or demo links above.
 
-- **Location:** `IoTNet-UI/`
-- **Type:** Embedded folder
-- **Technology Stack:** React - Nextjs
+License
+This project is licensed under the MIT License. See the bundled `LICENSE` file for the full text.
 
-### 🔐 EMQX Authentication Service
-Authentication and authorization service for EMQX (MQTT broker).
-
-- **Repository:** https://github.com/farismnrr/EMQX-Auth-Service
-- **Type:** Git Submodule
-- **Responsibilities:** MQTT authentication, ACL policy management, broker integration
-- **Technology Stack:** Rust - Actix
-
-### 👤 Multitenant User Management Service
-Centralized service for user, tenant, role, and cross-organization access management.
-
-- **Repository:** https://github.com/farismnrr/Multitenant-User-Management-Service
-- **Type:** Git Submodule
-- **Responsibilities:** User provisioning, tenant isolation, role-based access control, multi-tenant governance
-- **Technology Stack:** Rust - Actix
-
-### ⚙️ IoTNet Core
-Core business logic and device management service.
-
-- **Repository:** https://github.com/i-otnet/IoTNet-Core
-- **Type:** Git Submodule
-- **Responsibilities:** Device management, core business logic
-- **Technology Stack:** C# - .NET
-
----
-
-## 🧠 Architecture Principles
-
-- **Multi-repository architecture** — Each service maintains independent lifecycle, CI/CD pipelines, and version control
-- **Aggregator pattern** — Centralized entry point for project navigation, onboarding, and system visibility
-- **Loose coupling** — Services can be developed and deployed independently without shared dependencies
+Thank you for your interest in iotnet.
