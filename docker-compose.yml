@@ -3,13 +3,20 @@ services:
     image: ghcr.io/i-otnet/iotnet:latest
     container_name: iotnet-ui
     ports:
-      - "4000:3000"
+      - "127.0.0.1:4000:3000"
     env_file:
       - .env
     restart: unless-stopped
+    networks:
+      - postgres-network
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 5s
+
+networks:
+  postgres-network:
+    external: true
+    name: postgres-production_postgres-network
