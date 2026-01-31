@@ -1,25 +1,15 @@
 import React from 'react'
-import Profile from '@/components/modules/dashboard/profile'
 import { ThemeDropdown } from '@/components/modules/ThemeSetup/themeDropdown'
 import NotificationDropdown from '@/components/modules/dashboard/notifications/NotificationDropdown'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Search, Menu } from 'lucide-react'
-import { useAuthStore } from '@/store/auth'
 
 interface DashboardHeaderProps {
   onMenuClick?: () => void
 }
 
 export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
-  const clearAuth = useAuthStore((state) => state.clearAuth)
-
-  const handleLogout = () => {
-    // Clear access token from store
-    clearAuth()
-    // Redirect to login page
-    window.location.href = '/auth/login'
-  }
   return (
     <header className="bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 border-b border-border sticky top-0 z-40">
       <div className="flex h-16 items-center justify-between px-4 md:px-6 gap-4">
@@ -45,7 +35,7 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
           </div>
         </div>
 
-        {/* Right side - Theme, Notifications, Profile */}
+        {/* Right side - Theme, Notifications */}
         <div className="flex items-center gap-2 md:gap-3">
           {/* Search icon for mobile */}
           <Button
@@ -61,13 +51,6 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
 
           {/* Notification Dropdown */}
           <NotificationDropdown />
-
-          {/* Profile */}
-          <Profile
-            username="Admin User"
-            // avatarUrl="/path/to/avatar.jpg" // Optional: uncomment and set avatar URL
-            onLogout={handleLogout}
-          />
         </div>
       </div>
     </header>

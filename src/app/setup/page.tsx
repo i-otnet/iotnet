@@ -4,14 +4,12 @@ import { useState } from 'react'
 import { Zap, Settings } from 'lucide-react'
 import { ThemeSetupModal } from '@/components/modules/ThemeSetup/themeSetupModal'
 import { Button } from '@/components/ui/button'
-import { useAuthStore } from '@/store/auth'
 
 export default function SetupPage() {
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false)
   const handleThemeContinue = async () => {
     setIsThemeModalOpen(false)
-    // Mock login and redirect to dashboard
-    useAuthStore.getState().setAccessToken('mock_access_token')
+    // Redirect to dashboard
     window.location.href = '/dashboard'
   }
 
@@ -116,15 +114,6 @@ export default function SetupPage() {
           >
             <Settings className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
             Get Started
-          </Button>
-
-          <Button
-            onClick={() => (window.location.href = '/auth/login')}
-            variant="outline"
-            size="lg"
-            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-6 text-base sm:text-lg font-medium border-primary/20 hover:bg-primary/5 transition-all duration-200"
-          >
-            Login to Account
           </Button>
 
           {/* Mobile-only: dot above, text broken into two lines */}

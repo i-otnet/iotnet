@@ -1,54 +1,64 @@
-# Multi-stage build for Next.js application
-FROM node:20-alpine AS base
+# ==========================================
+# Stage 1: Build .NET Backend
+# ==========================================
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS backend-builder
+WORKDIR /src
+COPY ["services/IoTNet-Core/MyApp.csproj", "services/IoTNet-Core/"]
+RUN dotnet restore "services/IoTNet-Core/MyApp.csproj"
+COPY services/IoTNet-Core/ services/IoTNet-Core/
+WORKDIR "/src/services/IoTNet-Core"
+RUN dotnet publish "MyApp.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-# Install dependencies only when needed
-FROM base AS deps
-RUN apk add --no-cache libc6-compat
+# ==========================================
+# Stage 2: Build Next.js Frontend
+# ==========================================
+FROM node:20-alpine AS frontend-builder
 WORKDIR /app
-
-# Copy package files
+RUN apk add --no-cache libc6-compat
 COPY package.json package-lock.json* ./
 RUN npm ci
-
-# Rebuild the source code only when needed
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-# Build the application
 ENV NEXT_TELEMETRY_DISABLED=1
-
 RUN npm run build
 
-# Production image, copy all the files and run next
-FROM base AS runner
+# ==========================================
+# Stage 3: Final Unified Image
+# ==========================================
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runner
 WORKDIR /app
 
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
+# Install Node.js 20 for Frontend
+RUN apt-get update && apt-get install -y curl gnupg && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Add dumb-init and curl for process management and health checks
-RUN apk add --no-cache dumb-init curl
+# Add healthcheck dependency (curl)
+RUN apt-get update && apt-get install -y curl && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# Setup Users
+RUN groupadd --system --gid 1001 nodejs && \
+    useradd --system --uid 1001 -g nodejs nextjs
 
-# Copy necessary files with correct ownership to avoid double-layering
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# --- Setup Frontend ---
+COPY --from=frontend-builder /app/public ./public
+RUN mkdir .next && chown nextjs:nodejs .next
+COPY --from=frontend-builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=frontend-builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# --- Setup Backend ---
+COPY --from=backend-builder --chown=nextjs:nodejs /app/publish .
+
+# --- Setup Startup Script ---
+COPY --chown=nextjs:nodejs start.sh .
+RUN chmod +x start.sh
 
 USER nextjs
 
-EXPOSE 3000
-
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
+EXPOSE 3000 8080
 
 # Healthcheck
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://127.0.0.1:3000 || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost:8080/health && curl -f http://localhost:3000 || exit 1
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD ["node", "server.js"]
+ENTRYPOINT ["./start.sh"]

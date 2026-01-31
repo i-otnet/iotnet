@@ -1,0 +1,30 @@
+FROM mcr.microsoft.com/dotnet/sdk:10.0
+
+WORKDIR /app
+
+# Install Node.js 20
+RUN apt-get update && apt-get install -y curl gnupg && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Add healthcheck dependency (curl) and dotnet-ef tool
+RUN apt-get update && apt-get install -y curl && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install dotnet-ef tool
+RUN dotnet tool install --global dotnet-ef --version 10.0.0
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+# Environment variables for dev
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV DOTNET_USE_POLLING_FILE_WATCHER=1
+ENV ASPNETCORE_HTTP_PORTS=8080
+
+# Source will be mounted
+# Copy startup script
+COPY start-dev.sh .
+RUN chmod +x start-dev.sh
+
+EXPOSE 3000 8080
+
+CMD ["./start-dev.sh"]
