@@ -1,168 +1,198 @@
-# IoTNet-UI - Makefile for Development Automation
+# =====================================================
+# IoTNet - Unified Makefile (Dev + CI + Prod)
+# =====================================================
 
-.PHONY: help dev start build lint clean kill build-docker start-docker push-app push-auth push-all pull-docker start-compose stop-compose update dev-docker dev-docker-build dev-docker-stop dev-docker-clean dev-docker-rebuild-app dev-docker-rebuild-user-management
+# -----------------------------
+# Global Settings
+# -----------------------------
+SHELL := /bin/bash
+.NOTPARALLEL:
+.DEFAULT_GOAL := help
 
-# Default target
-help:
-	@echo "IoTNet-UI - Available Commands:"
+# Add local dotnet and cargo to PATH
+export PATH := $(CURDIR)/.dotnet:$(HOME)/.cargo/bin:$(PATH)
+
+# -----------------------------
+# Environment
+# -----------------------------
+ENV_FILE := .env.dev
+
+ifneq (,$(wildcard $(ENV_FILE)))
+	include $(ENV_FILE)
+	export
+endif
+
+# -----------------------------
+# Images / Tags
+# -----------------------------
+DOCKER_IMAGE_NAME ?= iotnet
+GHCR_REPO_APP ?= ghcr.io/i-otnet/iotnet-app
+TAG ?= latest
+
+# -----------------------------
+# Phony
+# -----------------------------
+.PHONY: help dev check-env kill install-deps install-tools lint-test \
+	dev-auth dev-backend dev-ui \
+	migrate-up migrate-fresh \
+	install start build clean \
+	build-docker start-docker push-app
+
+# =====================================================
+# Help
+# =====================================================
+help: ## Show available commands
 	@echo ""
-	@echo "  make dev              - Run development server with hot reload"
-	@echo "  make start            - Run production server (requires build)"
-	@echo "  make build            - Build for production"
-	@echo "  make lint             - Run linter"
-	@echo "  make clean            - Clean build artifacts (.next, node_modules)"
-	@echo "  make kill             - Kill process on port 3000"
-	@echo "  make build-docker     - Build Docker image"
-	@echo "  make start-docker     - Run Docker image (on port 3000)"
-	@echo "  make push             - Push Docker image to GHCR"
-	@echo "  make pull-docker      - Pull latest image from GHCR"
-	@echo "  make start-compose    - Start Docker Compose stack (pulls first)"
-	@echo "  make stop-compose     - Stop Docker Compose stack"
-	@echo "  make dev-docker       - Run development environment in Docker (Fast)"
-	@echo "  make dev-docker-build - Run development environment in Docker (Build)"
-	@echo "  make dev-docker-stop  - Stop development environment and clean volumes"
-	@echo "  make update           - Update running container using Watchtower"
+	@echo "🚀 IoTNet Makefile"
+	@echo ""
+	@grep -h -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | \
+		awk 'BEGIN {FS = ":.*?## "}; {printf "  %-28s %s\n", $$1, $$2}'
 	@echo ""
 
-# Run development server
-dev:
-	@echo "🚀 Starting development server..."
-	npm run dev
+# =====================================================
+# Dev Flow
+# =====================================================
+dev: check-env kill install-tools install-deps migrate-up ## Run full dev environment (All services)
+	@echo "🚀 Starting all services (AUTH, BACKEND, UI)..."
+	@bash -c "trap 'make kill' EXIT; \
+	npx concurrently \
+		--names 'AUTH,BACK,UI' \
+		--prefix-colors 'magenta,cyan,green' \
+		--kill-others-on-fail \
+		'make dev-auth' \
+		'make dev-backend' \
+		'make dev-ui'"
 
-# Run production server
-start:
-	@echo "🚀 Starting production server..."
-	npm run start
+check-env: ## Ensure .env.dev exists and link it
+	@if [ ! -f $(ENV_FILE) ]; then \
+		echo "❌ $(ENV_FILE) not found"; exit 1; \
+	fi
+	@echo "🔗 Linking $(ENV_FILE) to services..."
+	@ln -sf ../../$(ENV_FILE) services/IoTNet-Core/.env
+	@ln -sf ../../$(ENV_FILE) services/Multitenant-User-Management-Service/.env
+	@echo "✅ Environment loaded and linked"
 
-# Build for production
-build:
-	@echo "🔨 Building for production..."
-	npm run build
+# =====================================================
+# Service Runners
+# =====================================================
+dev-auth: ## Run Auth service (Rust)
+	cd services/Multitenant-User-Management-Service && \
+	SERVER_PORT=$(AUTH_PORT) \
+	make dev
 
-# Run linter
-lint:
-	@echo "🔍 Running linter..."
-	npm run lint
+dev-backend: ## Run IoTNet Core (.NET)
+	cd services/IoTNet-Core && \
+		export ASPNETCORE_ENVIRONMENT=Development && \
+		export DOTNET_WATCH_SUPPRESS_LAUNCH_BROWSER=1 && \
+		export DB_PORT=$(POSTGRES_PORT) && \
+		export ASPNETCORE_HTTP_PORTS=$(BACKEND_PORT) && \
+		dotnet watch run
 
-# Clean build artifacts
-clean:
-	@echo "🧹 Cleaning build artifacts..."
-	rm -rf .next node_modules
-	@echo "✅ Clean completed"
+dev-ui: ## Run Next.js frontend
+	PORT=$(PORTOFOLIO_PORT) npm run dev
 
-# Kill process on port 3000 - 3010
-kill:
-	@echo "🔪 Killing process on port 3000-3010..."
-	@lsof -ti:3000-3010 | xargs -r kill -9 || true
-	@echo "🔪 Killing Next.js processes..."
-	@pkill -f "next dev" || true
-	@pkill -f "next-server" || true
+# =====================================================
+# Migration / Database
+# =====================================================
+db-start: ## Start PostgreSQL container
+	@echo "🐳 Starting PostgreSQL container..."
+	@docker compose -f docker-compose.dev.yml up -d database
+	@echo "⏳ Waiting for PostgreSQL to be ready..."
+	@until docker exec iotnet-db-dev pg_isready -U $(POSTGRES_USER) > /dev/null 2>&1; do sleep 1; done
+	@echo "✅ PostgreSQL is ready"
+
+db-stop: ## Stop PostgreSQL container
+	@echo "🐳 Stopping PostgreSQL container..."
+	@docker compose -f docker-compose.dev.yml stop database || true
+
+migrate-up: db-start ## Run all migrations
+	@echo "🔄 Running Service Migrations..."
+	@cd services/Multitenant-User-Management-Service && \
+	SERVER_PORT=$(AUTH_PORT) \
+	CORE_DB_PORT=$(POSTGRES_PORT) \
+	make migrate-up
+#	@cd services/IoTNet-Core && dotnet ef database update || echo "⚠️ .NET migrations skipped"
+	@echo "✅ Database & Migrations ready"
+
+migrate-fresh: ## Drop & re-run migrations
+	@echo "🧹 Fresh migrations..."
+	@docker rm -f iotnet-db-dev 2>/dev/null || true
+	@make migrate-up
+
+# =====================================================
+# Install / Setup
+# =====================================================
+install: install-tools install-deps ## Install all dependencies
+
+install-tools: ## Install required dev tools
+	@if [ ! -f node_modules/.bin/concurrently ]; then \
+		npm install --save-dev concurrently && echo "✅ concurrently installed"; \
+	fi
+
+install-deps: ## Install project dependencies
+	@echo "📦 Installing dependencies..."
+	@npm install
+	@if [ ! -d services/Multitenant-User-Management-Service/web/node_modules ]; then \
+		cd services/Multitenant-User-Management-Service/web && npm install; \
+	fi
+	@cd services/IoTNet-Core && dotnet restore
+	@echo "✅ Dependencies ready"
+
+# =====================================================
+# Cleanup / Kill
+# =====================================================
+kill: ## Gracefully stop dev services
+	@echo "🔪 Stopping services by names and ports..."
+	@-pkill -9 -f "dotnet watch" || true
+	@-pkill -9 -f "cargo-watch" || true
+	@-pkill -9 -f "MyApp" || true
+	@-pkill -9 -f "user-auth-plugin" || true
+	@-pkill -9 -f "next-server" || true
+	@-pkill -9 -f "VBCSCompiler" || true
+	@for port in $(PORTOFOLIO_PORT) $(BACKEND_PORT) $(AUTH_PORT) 5000 5173; do \
+		if [ -n "$$port" ]; then \
+			lsof -ti:$$port | xargs -r kill -9 2>/dev/null || true; \
+		fi; \
+	done
+	@echo "⏳ Waiting for ports to be released..."
+	@for i in {1..10}; do \
+		if ! lsof -i:$(PORTOFOLIO_PORT),$(BACKEND_PORT),$(AUTH_PORT),5000,5173 > /dev/null 2>&1; then \
+			echo "✅ All ports released"; \
+			break; \
+		fi; \
+		echo "◌ Waiting... ($$i/10)"; \
+		sleep 1; \
+	done
+	@echo "🧹 Cleaning caches..."
+	@-rm -rf .next .next/cache .next/dev || true
+	@echo "🐳 Stopping database container..."
+	@-docker stop iotnet-db-dev 2>/dev/null || true
 	@echo "✅ Cleanup complete"
 
-# --- Docker Configuration ---
-DOCKER_IMAGE_NAME = iotnet
-GHCR_REPO_APP = ghcr.io/i-otnet/iotnet-app
+clean: ## Clean build artifacts
+	@echo "🧹 Cleaning build artifacts..."
+	@rm -rf .next node_modules
+	@cd services/IoTNet-Core && rm -rf bin obj
 
-# Build via Docker
-build-docker:
+# =====================================================
+# Production / Docker
+# =====================================================
+build: ## Build for production
+	npm run build
+
+start: ## Run production server
+	npm run start
+
+build-docker: ## Build Docker image
 	@read -p "Enter Docker tag (default: latest): " tag; \
 	tag=$${tag:-latest}; \
 	echo "🐳 Building Docker image with tag: $$tag..."; \
-	docker build \
-		-t $(DOCKER_IMAGE_NAME):$$tag -t $(GHCR_REPO_APP):$$tag .; \
+	docker build -t $(DOCKER_IMAGE_NAME):$$tag -t $(GHCR_REPO_APP):$$tag .; \
 	@echo "✅ Image tagged as $(DOCKER_IMAGE_NAME):$$tag and $(GHCR_REPO_APP):$$tag"
 
-# Run via Docker
-start-docker:
-	@read -p "Enter Docker tag to run (default: latest): " tag; \
-	tag=$${tag:-latest}; \
-	echo "🚀 Starting Docker container with tag: $$tag..."; \
-	docker run --rm -it -p 3000:3000 -p 8080:8080 $(DOCKER_IMAGE_NAME):$$tag
-
-# Push App (Unified UI + Core) to GHCR
-push-app: build-docker
+push-app: build-docker ## Push App to GHCR
 	@read -p "Enter Docker tag to push (default: latest): " tag; \
 	tag=$${tag:-latest}; \
-	echo "🚀 Pushing Unified App to GHCR with multi-arch build (amd64, arm64) - tag: $$tag..."; \
-	export $$(grep -v '^#' .env 2>/dev/null | grep -v '^$$' | xargs); \
-	if [ -n "$${CR_PAT}" ] || [ -n "$${GITHUB_TOKEN}" ]; then \
-		echo "🔐 Logging in to GHCR..."; \
-		echo "$${CR_PAT:-$$GITHUB_TOKEN}" | docker login ghcr.io -u farismnrr --password-stdin; \
-	else \
-		echo "⚠️  No CR_PAT or GITHUB_TOKEN found. Skipping login (assuming already logged in)..."; \
-	fi; \
-	docker buildx build --platform linux/amd64,linux/arm64 \
-		-t $(GHCR_REPO_APP):$$tag --push .; \
+	echo "📦 Pushing Unified App to GHCR..."; \
+	docker buildx build --platform linux/amd64,linux/arm64 -t $(GHCR_REPO_APP):$$tag --push .; \
 	@echo "✅ Unified App Image pushed to $(GHCR_REPO_APP):$$tag"
-
-# Push Auth (Delegated to Submodule)
-push-auth:
-	@echo "🚀 Delegating Auth push to services/Multitenant-User-Management-Service..."
-	@export $$(grep -v '^#' .env 2>/dev/null | grep -v '^$$' | xargs); \
-	if [ -n "$${CR_PAT}" ] || [ -n "$${GITHUB_TOKEN}" ]; then \
-		echo "🔐 Logging in to GHCR (Root)..."; \
-		echo "$${CR_PAT:-$$GITHUB_TOKEN}" | docker login ghcr.io -u farismnrr --password-stdin; \
-	fi; \
-	$(MAKE) -C services/Multitenant-User-Management-Service push-local SKIP_LOGIN=true
-
-# Push All (Sequential: Auth -> App)
-push-all: push-auth push-app
-	@echo "✅ All services pushed successfully!"
-
-# --- Docker Compose Configuration ---
-
-# Start Docker Compose (pulls first)
-start-compose:
-	@echo "📥 Pulling latest images..."
-	@docker pull $(GHCR_REPO_APP):latest
-	@echo "🚀 Starting IoTNet-App via Docker Compose..."
-	docker compose up -d
-
-# Stop Docker Compose
-stop-compose:
-	@echo "🛑 Stopping Docker Compose stack..."
-	docker compose down
-
-# Update running container using Watchtower
-update:
-	@echo "🔄 Checking for updates with Watchtower..."
-	docker run --rm \
-		-v /var/run/docker.sock:/var/run/docker.sock \
-		--env DOCKER_API_VERSION=1.45 \
-		containrrr/watchtower \
-		--run-once \
-		$(DOCKER_IMAGE_NAME)
-
-# --- Development with Docker ---
-
-# Run development environment with Docker Compose (fast start, uses cache/existing images)
-dev-docker:
-	@echo "🚀 Starting development environment in Docker (Fresh Start)..."
-	docker compose --env-file .env.dev -f docker-compose.dev.yml up --build
-
-# Alias for stop
-dev-docker-clean: dev-docker-stop
-	
-# Stop development environment and clean up
-dev-docker-stop:
-	@echo "🛑 Stopping development environment (Deep Clean)..."
-	@docker compose -p iotnet --env-file .env.dev -f docker-compose.dev.yml down --remove-orphans --volumes 2>/dev/null || true
-	@echo "🧹 Cleaning up project volumes and containers..."
-	@docker ps -aq --filter "name=iotnet" | xargs -r docker rm -f 2>/dev/null || true
-	@# Forcing removal of 'outside root' volumes using the provided sudo password
-	@# We name them explicitly to avoid wildcard expansion issues
-	@echo "291201" | sudo -S rm -rf /mnt/docker-volumes/iotnet_iotnet_dev_data /mnt/docker-volumes/iotnet_postgres_dev_data /mnt/docker-volumes/iotnet_user_management_dev_data 2>/dev/null || true
-	@# Clean any volume metadata remnants
-	@docker volume ls -q --filter "name=iotnet" | xargs -r docker volume rm -f 2>/dev/null || true
-	@echo "✅ Cleanup complete"
-
-# Rebuild app only (UI + Backend)
-dev-docker-rebuild-iotnet:
-	@echo "🔨 Rebuilding unified iotnet service..."
-	docker compose --env-file .env.dev -f docker-compose.dev.yml up -d --build iotnet
-
-# Rebuild user-management only
-dev-docker-rebuild-user-management:
-	@echo "🔨 Rebuilding user-management..."
-	docker compose --env-file .env.dev -f docker-compose.dev.yml up -d --build user-management
-
